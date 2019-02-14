@@ -1,4 +1,4 @@
-#PythonVSFortran
+# PythonVSFortran
 
 A test to see the speed difrence between Python3 (using NumPy) and Fortran when solving the particle in a box problem. I wrote a python program to reproduce the type of calculations used in the POC code and then implemented the same program in Fortran and compaired the runtime of the two programs. 
 
