@@ -5,7 +5,7 @@
 *.lib
 *.out
 *.mp4
-
+*.swp
 *.pk
 
 POC/tmp/*
