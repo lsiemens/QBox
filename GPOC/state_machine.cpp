@@ -21,17 +21,20 @@ StateMachine::~StateMachine() {
 void StateMachine::Init() {
     // Load shaders
     ResourceManager::LoadShader("shaders/sprite.vert", "shaders/sprite.frag", nullptr, "sprite");
+    ResourceManager::LoadShader("shaders/text.vert", "shaders/text.frag", nullptr, "text");
 
     // Load Textures
     ResourceManager::LoadTexture("textures/background.jpg", "background");
 
     // pass data to GPU glUniform
     glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(this->Width), static_cast<GLfloat>(this->Height), 0.0f, -1.0f, 1.0f);
-    ResourceManager::GetShader("sprite").Use().SetInteger("image", 0);
-    ResourceManager::GetShader("sprite").SetMatrix4("projection", projection);
+    ResourceManager::GetShader("sprite").Uniform1("image", 0, GL_TRUE);
+    ResourceManager::GetShader("sprite").Uniform4x4("projection", projection);
+    ResourceManager::GetShader("text").Uniform1("image", 0, GL_TRUE);
+    ResourceManager::GetShader("text").Uniform4x4("projection", projection);
 
     Renderer = new SpriteRenderer(ResourceManager::GetShader("sprite"));
-    Text = new TextRenderer(this->Width, this->Height);
+    Text = new TextRenderer(this->Width, this->Height, ResourceManager::GetShader("text"));
     Text->Load("fonts/OCRAEXT.TTF", 24);
 }
 
