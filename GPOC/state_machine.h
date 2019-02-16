@@ -19,6 +19,9 @@ public:
     GLuint Width, Height;
     GLfloat fps;
 
+    // GLvariables
+    GLuint VAO, shader_program, texture_handel;
+
     // class constructor destructor
     StateMachine(GLuint width, GLuint height);
     ~StateMachine();

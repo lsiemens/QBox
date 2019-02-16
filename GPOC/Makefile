@@ -4,7 +4,7 @@ FREETYPE_DIR=/usr/include/freetype2
 INCLUDE=$(ROOT_DIR)/include
 CFLAGS=-g -I$(INCLUDE)
 LINKFLAGS=-ldl -lglfw -lfreetype
-OBJECTS=glad.o QBox_POC.o state_machine.o
+OBJECTS=glad.o QBox_POC.o shader.o state_machine.o
 
 GPOC.out:$(OBJECTS)
 	g++ GPOC.cpp $(OBJECTS) $(CFLAGS) $(LINKFLAGS) -o GPOC.out
@@ -23,6 +23,9 @@ glad.o:
 
 QBox_POC.o:
 	g++ -c QBox_POC.cpp $(CFLAGS) -o QBox_POC.o
+
+shader.o:
+	g++ -c shader.cpp $(CFLAGS) -o shader.o
 
 state_machine.o:
 	g++ -c state_machine.cpp $(CFLAGS) -o state_machine.o
