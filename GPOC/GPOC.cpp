@@ -3,7 +3,6 @@
 #include <iostream>
 
 #include "state_machine.h"
-#include "resource_manager.h"
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
 
@@ -53,23 +52,20 @@ int main(int argc, char* argv[]) {
         // get timming
         GLfloat currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
-        std::cout << 1.0f/deltaTime << std::endl;
         lastFrame = currentFrame;
+
         glfwPollEvents();
 
         GPOCStateMachine.ProcessInput(deltaTime);
         GPOCStateMachine.Update(deltaTime);
 
         // Render
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         GPOCStateMachine.Render();
 
         glfwSwapBuffers(window);
     }
-
-    // Cleanup assets
-    ResourceManager::Clear();
 
     // close window
     glfwTerminate();
