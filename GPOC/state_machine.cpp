@@ -11,7 +11,7 @@ DQBox* QBox;
 TextRenderer* Text;
 
 StateMachine::StateMachine(GLuint width, GLuint height)
-    : State(STATE_EIGENVECTOR), Keys(), Width(width), Height(height), fps(0.0f), fps_smoothing(0.99f) { }
+    : Keys(), Width(width), Height(height), fps(0.0f), fps_smoothing(0.99f){ }
 
 StateMachine::~StateMachine() {
 }
@@ -21,7 +21,14 @@ void StateMachine::Init() {
     Text = new TextRenderer(this->Width, this->Height);
     Text->Load("fonts/LeagueGothic-Regular.otf", 24);
 
-    this->shader_program = ShaderProgram("shaders/sprite.vert", "shaders/sprite.frag");
+    this->wave_function_shader = ShaderProgram("shaders/sprite.vert", "shaders/wave_function.frag");
+    this->probability_density_shader = ShaderProgram("shaders/sprite.vert", "shaders/probability_density.frag");
+
+    // initalize active shader
+    this->State = STATE_EIGENVECTOR;
+    this->shader_program = this->wave_function_shader;
+    this->qstate_id = 0;
+    this->shader_range = QBox->state_range[this->qstate_id];
 
     GLfloat quad[] = {0.9f, 0.9f, 1.0f, 0.0f,
                     0.9f, -0.9f, 1.0f, 1.0f,
@@ -65,23 +72,62 @@ void StateMachine::Init() {
     glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, GL_R32F, width, height, depth, 0, GL_RED, GL_FLOAT, QBox->state);
     glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
 
-    glUseProgram(this->shader_program);
-    glUniform1i(glGetUniformLocation(this->shader_program, "texture0"), 0);
+    glUseProgram(this->wave_function_shader);
+    glUniform1i(glGetUniformLocation(this->wave_function_shader, "texture0"), 0);
+    glUseProgram(this->probability_density_shader);
+    glUniform1i(glGetUniformLocation(this->probability_density_shader, "texture0"), 0);
 }
 
 void StateMachine::ProcessInput(GLfloat dt) {
     if (this->State == STATE_EIGENVECTOR) {
-        if (this->Keys[GLFW_KEY_ENTER] && !KeysRegistered[GLFW_KEY_ENTER]) {
+        if (this->Keys[GLFW_KEY_ENTER] && !this->KeysRegistered[GLFW_KEY_ENTER]) {
             this->State = STATE_TIME_EVOLUTION;
+            this->shader_program = this->probability_density_shader;
             this->KeysRegistered[GLFW_KEY_ENTER] = GL_TRUE;
         }
+
+        if (this->Keys[GLFW_KEY_A] && !this->KeysRegistered[GLFW_KEY_A]) {
+            this->qstate_id -= 1;
+            if (this->qstate_id < 0) {
+                this->qstate_id = QBox->num - 1;
+            }
+            this->shader_range = QBox->state_range[this->qstate_id];
+            std::cout << this->qstate_id << std::endl;
+            this->KeysRegistered[GLFW_KEY_A] = GL_TRUE;
+        }
+
+        if (this->Keys[GLFW_KEY_D] && !this->KeysRegistered[GLFW_KEY_D]) {
+            this->qstate_id += 1;
+            if (this->qstate_id >= QBox->num) {
+                this->qstate_id = 0;
+            }
+            this->shader_range = QBox->state_range[this->qstate_id];
+            std::cout << this->qstate_id << std::endl;
+            this->KeysRegistered[GLFW_KEY_D] = GL_TRUE;
+        }
     } else if (this->State == STATE_TIME_EVOLUTION) {
-        if (this->Keys[GLFW_KEY_ENTER] && !KeysRegistered[GLFW_KEY_ENTER]) {
+        if (this->Keys[GLFW_KEY_ENTER] && !this->KeysRegistered[GLFW_KEY_ENTER]) {
             this->State = STATE_EIGENVECTOR;
+            this->shader_program = this->wave_function_shader;
             this->KeysRegistered[GLFW_KEY_ENTER] = GL_TRUE;
         }
     }
+
+    if (this->Keys[GLFW_KEY_W]) {
+        this->shader_range *= 1.01;
+    }
+
+    if (this->Keys[GLFW_KEY_S]) {
+        this->shader_range /= 1.01;
+    }
+
+    if (this->Keys[GLFW_KEY_R] && !this->KeysRegistered[GLFW_KEY_R]) {
+        this->shader_range = QBox->state_range[this->qstate_id];
+        this->KeysRegistered[GLFW_KEY_R] = GL_TRUE;
+    }
+
 }
+
 
 void StateMachine::Update(GLfloat dt) {
     //calculate exponentaly smoothed FPS
@@ -93,6 +139,9 @@ void StateMachine::Render() {
     glBindTexture(GL_TEXTURE_2D_ARRAY, this->texture_handel);
 
     glUseProgram(this->shader_program);
+    glUniform1f(glGetUniformLocation(this->shader_program, "shader_range"), this->shader_range);
+    glUniform1i(glGetUniformLocation(this->shader_program, "qstate_id"), this->qstate_id);
+
     glBindVertexArray(this->VAO);
     glDrawArrays(GL_TRIANGLES, 0, 6);
 

@@ -35,4 +35,22 @@ DQBox::DQBox(std::string file) {
     } else {
         std::cout << "ERROR could not open file: " << file << std::endl;
     }
+    this->initalize_ranges();
+}
+
+void DQBox::initalize_ranges() {
+    this->state_range = new float[this->num];
+    int offset = this->n*this->n;
+    float min, max;
+    for (int i=0; i < this->num; i++) {
+        min = 0.0;
+        for (int j=0; j < offset; j++) {
+            if (this->state[j + offset*i] > max)
+                max = this->state[j + offset*i];
+
+            if (this->state[j + offset*i] < -max)
+                max = -this->state[j + offset*i];
+        }
+        this->state_range[i] = max;
+    }
 }

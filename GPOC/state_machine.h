@@ -20,7 +20,12 @@ public:
     GLfloat fps;
 
     // GLvariables
-    GLuint VAO, shader_program, texture_handel;
+    GLuint wave_function_shader, probability_density_shader;
+    GLuint shader_program, VAO, texture_handel;
+
+    // shader parameters
+    GLfloat shader_range;
+    GLint qstate_id;
 
     // class constructor destructor
     StateMachine(GLuint width, GLuint height);
