@@ -18,13 +18,13 @@ void StateMachine::Init() {
 
     this->shader_program = ShaderProgram("shaders/sprite.vert", "shaders/sprite.frag");
 
-    float quad[] = {0.9f, -0.9f, 1.0f, 0.0f,
-                    0.9f, 0.9f, 1.0f, 1.0f,
-                    -0.9f, -0.9f, 0.0f, 0.0f,
+    float quad[] = {0.9f, 0.9f, 1.0f, 0.0f,
+                    0.9f, -0.9f, 1.0f, 1.0f,
+                    -0.9f, 0.9f, 0.0f, 0.0f,
 
-                    -0.9f, -0.9f, 0.0f, 0.0f,
-                    0.9f, 0.9f, 1.0f, 1.0f,
-                    -0.9f, 0.9f, 0.0f, 1.0f};
+                    -0.9f, 0.9f, 0.0f, 0.0f,
+                    0.9f, -0.9f, 1.0f, 1.0f,
+                    -0.9f, -0.9f, 0.0f, 1.0f};
 
     GLuint VBO;
     glGenVertexArrays(1, &this->VAO);
@@ -41,19 +41,23 @@ void StateMachine::Init() {
     glBindTexture(GL_TEXTURE_2D_ARRAY, this->texture_handel);
     glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-    GLuint width, height, depth, num_channels;
-    width = 100;
-    height = 100;
-    depth = 3;
-    GLfloat* data = new GLfloat[width*height*depth];
-    for (int i = 0; i < width*height*num_channels; i++) {
-        data[i] = cos(3.14f*i/10.0f);
+    GLuint width, height, depth;
+    width = QBox->n;
+    height = QBox->n;
+    depth = QBox->num;
+
+    float max = 0;
+    for (int i = 0; i < width*height*depth; i++) {
+        if (QBox->state[i] > max) {
+            max = QBox->state[i];
+        }
     }
+    std::cout << "max " << max << std::endl;
 
-    glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, GL_R32F, width, height, depth, 0, GL_RED, GL_FLOAT, data);
+    glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, GL_R32F, width, height, depth, 0, GL_RED, GL_FLOAT, QBox->state);
     glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
 
     glUseProgram(this->shader_program);
