@@ -38,23 +38,23 @@ void StateMachine::Init() {
     glBindVertexArray(0);
 
     glGenTextures(1, &this->texture_handel);
-    glBindTexture(GL_TEXTURE_2D, this->texture_handel);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glBindTexture(GL_TEXTURE_2D_ARRAY, this->texture_handel);
+    glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-    GLuint width, height, num_channels;
+    GLuint width, height, depth, num_channels;
     width = 100;
     height = 100;
-    num_channels = 1;
-    GLfloat* data = new GLfloat[width*height*num_channels];
+    depth = 3;
+    GLfloat* data = new GLfloat[width*height*depth];
     for (int i = 0; i < width*height*num_channels; i++) {
         data[i] = cos(3.14f*i/10.0f);
     }
 
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_R32F, width, height, 0, GL_RED, GL_FLOAT, data);
-    glBindTexture(GL_TEXTURE_2D, 0);
+    glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, GL_R32F, width, height, depth, 0, GL_RED, GL_FLOAT, data);
+    glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
 
     glUseProgram(this->shader_program);
     glUniform1i(glGetUniformLocation(this->shader_program, "texture0"), 0);
@@ -81,7 +81,7 @@ void StateMachine::Update(GLfloat dt) {
 
 void StateMachine::Render() {
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, this->texture_handel);
+    glBindTexture(GL_TEXTURE_2D_ARRAY, this->texture_handel);
 
     glUseProgram(this->shader_program);
     glBindVertexArray(this->VAO);
