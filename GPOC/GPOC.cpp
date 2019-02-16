@@ -38,12 +38,13 @@ int main(int argc, char* argv[]) {
 
     // OpenGL configuration
     glViewport(0, 0, SCREEN_SIZE, SCREEN_SIZE);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     GPOCStateMachine.Init();
     GLfloat deltaTime = 0.0f;
     GLfloat lastFrame = 0.0f;
 
-    //glfwSwapInterval(0);
     // Main Loop
     while (!glfwWindowShouldClose(window)) {
         // get timming

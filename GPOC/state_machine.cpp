@@ -1,24 +1,29 @@
 #include "state_machine.h"
 
+#include <sstream>
 #include <iostream>
 
 #include "QBox_POC.h"
 #include "shader.h"
+#include "text_renderer.h"
 
 DQBox* QBox;
+TextRenderer* Text;
 
 StateMachine::StateMachine(GLuint width, GLuint height)
-    : State(STATE_EIGENVECTOR), Keys(), Width(width), Height(height), fps(0.0f), fps_smoothing(0.9f) { }
+    : State(STATE_EIGENVECTOR), Keys(), Width(width), Height(height), fps(0.0f), fps_smoothing(0.99f) { }
 
 StateMachine::~StateMachine() {
 }
 
 void StateMachine::Init() {
     QBox = new DQBox("test.raw");
+    Text = new TextRenderer(this->Width, this->Height);
+    Text->Load("fonts/LeagueGothic-Regular.otf", 24);
 
     this->shader_program = ShaderProgram("shaders/sprite.vert", "shaders/sprite.frag");
 
-    float quad[] = {0.9f, 0.9f, 1.0f, 0.0f,
+    GLfloat quad[] = {0.9f, 0.9f, 1.0f, 0.0f,
                     0.9f, -0.9f, 1.0f, 1.0f,
                     -0.9f, 0.9f, 0.0f, 0.0f,
 
@@ -90,5 +95,15 @@ void StateMachine::Render() {
     glUseProgram(this->shader_program);
     glBindVertexArray(this->VAO);
     glDrawArrays(GL_TRIANGLES, 0, 6);
+
+    std::stringstream stream_fps;
+    stream_fps.precision(1);
+    stream_fps << std::fixed << this->fps;
+    Text->RenderText("FPS: " + stream_fps.str(), glm::vec2(10.0f, 5.0f), 1.0f);
+
+    if (this->State == STATE_EIGENVECTOR)
+        Text->RenderText("Press ENTER to switch mode: Eigenvectors", glm::vec2(150.0f, 5.0f), 1.0f);
+    if (this->State == STATE_TIME_EVOLUTION)
+        Text->RenderText("Press ENTER to switch mode: Time evolution", glm::vec2(150.0f, 5.0f), 1.0f);
 }
 
