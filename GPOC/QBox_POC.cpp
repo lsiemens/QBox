@@ -35,6 +35,36 @@ DQBox::DQBox(std::string file) {
     } else {
         std::cout << "ERROR could not open file: " << file << std::endl;
     }
+    this->initalize();
+}
+
+void DQBox::normalize(glm::vec2* qcoefficients) {
+    float value = 0.0;
+    for (int i = 0; i < this->num; i++) {
+        value += qcoefficients[i].x*qcoefficients[i].x + qcoefficients[i].y*qcoefficients[i].y;
+    }
+    value = glm::sqrt(value);
+    for (int i = 0; i < this->num; i++) {
+        qcoefficients[i] /= value;
+    }
+
+}
+
+void DQBox::find_coefficients(glm::vec2* wave_function, glm::vec2* qcoefficients) {
+    glm::vec2 value;
+    for (int i = 0; i < this->num; i++) {
+        value = glm::vec2(0.0f, 0.0f);
+        int offset = this->n*this->n;
+        for (int j = 0; j < offset; j++) {
+            value.x += wave_function[j].x*this->state[j + offset*i];
+            value.y += wave_function[j].y*this->state[j + offset*i];
+        }
+        qcoefficients[i] = value;
+    }
+}
+
+void DQBox::initalize() {
+    // do any cleaning up like removeing nans
     this->initalize_ranges();
 }
 

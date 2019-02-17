@@ -54,7 +54,7 @@ GLuint compile_shader(std::string file, GLuint type, std::vector<DEFINE>* precom
             }
             temp_shader_source.replace(index, substring.length(), substring + " " + define.value + " /* automatic precompiling redefinition */");
         }
-        std::cout << temp_shader_source << std::endl;
+//        std::cout << temp_shader_source << std::endl;
     }
 
     const GLchar* shader_code = temp_shader_source.c_str();
