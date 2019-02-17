@@ -33,7 +33,6 @@ def boundry(phi):
 
 def normalize(phi):
     mag = numpy.sum(numpy.abs(phi)**2)
-#    print(mag)
     return phi/numpy.sqrt(mag)
 
 class QBox:
@@ -55,15 +54,17 @@ class QBox:
         self.States = []
         self.Energy_levels = []
 
-    def bsave(self, file): # save incomplete data in binary form
+    def bsave(self, file, verbose=False): # save incomplete data in binary form
         id = 2020557393
         num = len(self.States)
         n = self.res
         byte_len = 4*3 + 4*(n**2 + 1)*num
 
-        print("writing " + str(byte_len) + " bytes.")
+        if (verbose):
+            print("writing " + str(byte_len) + " bytes to file: " + file)
         with open(file, "wb") as fout:
-            print(id, num, n)
+            if (verbose):
+                print("\tfile type ID: " + str(id) + "\n\tnumber of energy eigenfunctions: " + str(num) + "\n\tresolution: " + str(n) + "x" + str(n))
             bdata = array.array("I", [id, num, n])
             bdata.tofile(fout)
 
@@ -74,9 +75,6 @@ class QBox:
             bdata = array.array("f", self.Energy_levels)
             bdata.tofile(fout)
 
-    def bload(file): # load incomplete data in binary form
-        pass
-
     def save(self):
         with open(self.path, "wb") as fout:
             data_phys = {"h_bar":self.h_bar, "mass":self.mass}
@@ -85,8 +83,10 @@ class QBox:
             DATA = {"data_phys":data_phys, "data_grid":data_grid, "data_quantum":data_quantum}
             pickle.dump(DATA, fout)
 
-    def load(self):
+    def load(self, verbose=False):
         with open(self.path, "rb") as fin:
+            if verbose:
+                print("loading POC pickle file: " + self.path)
             DATA = pickle.load(fin)
             data_phys = DATA["data_phys"]
             data_grid = DATA["data_grid"]
@@ -95,6 +95,10 @@ class QBox:
             self.h_bar, self.mass = data_phys["h_bar"], data_phys["mass"]
             self.x, self.y, self.X, self.Y, self.dx = data_grid["x"], data_grid["y"], data_grid["X"], data_grid["Y"], data_grid["dx"]
             self.States, self.Energy_levels, self.V = data_quantum["States"], data_quantum["Energy_levels"], data_quantum["V"]
+
+            self.res = len(self.x)
+            self.x_max = self.x[-1]
+            self.min_resolved_phi = numpy.sqrt(1.0/self.res**2) # sqrt of uniform probability density
 
     def set_potential(self, V):
         self.V = V
