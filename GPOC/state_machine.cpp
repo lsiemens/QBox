@@ -22,10 +22,10 @@ StateMachine::~StateMachine() {
 }
 
 void StateMachine::Init() {
-    QBox = new DQBox("test.raw");
+    QBox = new DQBox("wellLow.raw");
 
-    // fast upto 32
-//    QBox->num = 32; // ----------------------------------------------------------------------- theck for unrolling since fram drops by order of magniture after one more energy level
+    // fast upto 32. at res 50^2, 100^2 and 200^2 it runs at over 250 FPS when num < 32 and ~30fps when num >=33
+    QBox->num = 33; // ----------------------------------------------------------------------- theck for unrolling since fram drops by order of magniture after one more energy level
 
     Text = new TextRenderer(this->Width, this->Height);
     Text->Load("fonts/LeagueGothic-Regular.otf", 24);
@@ -101,17 +101,6 @@ void StateMachine::ProcessInput(GLfloat dt) {
             this->State = STATE_PRE_TIME_EVOLUTION;
             this->shader_program = this->probability_density_shader;
             this->time = 0.0f;
-
-/*            int offset = QBox->n*QBox->n;
-            glm::vec2* data = new glm::vec2[offset];
-            for (int i = 0; i < offset; i++) {
-                glm::vec2 value = glm::vec2(0.0f, 0.0f);
-                for (int j = 0; j < QBox->num; j++) {
-                    value += this->qcoefficients[j]*QBox->state[i + offset*j];
-                }
-                data[i] = value;
-            }*/
-
             this->KeysRegistered[GLFW_KEY_ENTER] = GL_TRUE;
         }
 
@@ -133,9 +122,6 @@ void StateMachine::ProcessInput(GLfloat dt) {
             this->KeysRegistered[GLFW_KEY_D] = GL_TRUE;
         }
     } else if (this->State == STATE_PRE_TIME_EVOLUTION) {
-//            GLboolean Button_mouse[8];
-//    GLboolean Button_mouseRegistered[8];
-
         if (this->Button_mouse[GLFW_MOUSE_BUTTON_LEFT] && !this->Button_mouseRegistered[GLFW_MOUSE_BUTTON_LEFT]) {
             this->State = STATE_TIME_EVOLUTION;
             this->shader_program = this->probability_density_shader;

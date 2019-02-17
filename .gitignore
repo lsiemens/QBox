@@ -6,7 +6,11 @@
 *.out
 *.mp4
 *.swp
+*.save
+
+# custom file types .pk (POC python pickle files) and .raw (GPOC binary data files).
 *.pk
+*.raw
 
 POC/tmp/*
 __pycache__*

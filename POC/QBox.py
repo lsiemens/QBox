@@ -10,6 +10,8 @@
 
 import time
 import pickle
+import array
+
 import numpy
 from matplotlib import pyplot
 
@@ -52,6 +54,28 @@ class QBox:
         self.V = 0*self.X
         self.States = []
         self.Energy_levels = []
+
+    def bsave(self, file): # save incomplete data in binary form
+        id = 2020557393
+        num = len(self.States)
+        n = self.res
+        byte_len = 4*3 + 4*(n**2 + 1)*num
+
+        print("writing " + str(byte_len) + " bytes.")
+        with open(file, "wb") as fout:
+            print(id, num, n)
+            bdata = array.array("I", [id, num, n])
+            bdata.tofile(fout)
+
+            for state in self.States:
+                bdata = array.array("f", list(state.ravel()))
+                bdata.tofile(fout)
+
+            bdata = array.array("f", self.Energy_levels)
+            bdata.tofile(fout)
+
+    def bload(file): # load incomplete data in binary form
+        pass
 
     def save(self):
         with open(self.path, "wb") as fout:
