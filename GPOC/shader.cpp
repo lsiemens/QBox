@@ -4,11 +4,11 @@
 #include <fstream>
 #include <sstream>
 
-GLuint compile_shader(std::string file, GLuint type);
+GLuint compile_shader(std::string file, GLuint type, std::vector<DEFINE>* precompile=nullptr);
 
-GLuint ShaderProgram(std::string file_vertex, std::string file_fragment) {
-    GLuint vertex_shader_handel = compile_shader(file_vertex, GL_VERTEX_SHADER);
-    GLuint fragment_shader_handel = compile_shader(file_fragment, GL_FRAGMENT_SHADER);
+GLuint ShaderProgram(std::string file_vertex, std::string file_fragment, std::vector<DEFINE>* precompile) {
+    GLuint vertex_shader_handel = compile_shader(file_vertex, GL_VERTEX_SHADER, precompile);
+    GLuint fragment_shader_handel = compile_shader(file_fragment, GL_FRAGMENT_SHADER, precompile);
 
     GLuint program = glCreateProgram();
     glAttachShader(program, vertex_shader_handel);
@@ -32,7 +32,7 @@ GLuint ShaderProgram(std::string file_vertex, std::string file_fragment) {
     return program;
 }
 
-GLuint compile_shader(std::string file, GLuint type) {
+GLuint compile_shader(std::string file, GLuint type, std::vector<DEFINE>* precompile) {
     std::stringstream sstr;
     std::string temp_shader_source;
     std::ifstream fin;
@@ -44,6 +44,19 @@ GLuint compile_shader(std::string file, GLuint type) {
     } catch (std::ifstream::failure e) {
         std::cout << "ERROR: Vertex shader failed to load: " << file << std::endl;
     }
+
+    if (precompile != nullptr) {
+        for (const auto &define : *precompile) {
+            std::string substring = "#define " + define.key;
+            std::size_t index = temp_shader_source.find(substring, 0);
+            if (index == std::string::npos) {
+                break;
+            }
+            temp_shader_source.replace(index, substring.length(), substring + " " + define.value + " /* automatic precompiling redefinition */");
+        }
+        std::cout << temp_shader_source << std::endl;
+    }
+
     const GLchar* shader_code = temp_shader_source.c_str();
 
     GLuint shader_handel = glCreateShader(type);

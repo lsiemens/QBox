@@ -27,6 +27,10 @@ public:
     GLfloat shader_range;
     GLint qstate_id;
 
+    // time evolution
+    GLfloat time;
+    glm::vec2* qcoefficients;
+
     // class constructor destructor
     StateMachine(GLuint width, GLuint height);
     ~StateMachine();

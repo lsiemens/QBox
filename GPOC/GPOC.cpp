@@ -45,6 +45,7 @@ int main(int argc, char* argv[]) {
     GLfloat deltaTime = 0.0f;
     GLfloat lastFrame = 0.0f;
 
+    glfwSwapInterval(0);
     // Main Loop
     while (!glfwWindowShouldClose(window)) {
         // get timming
