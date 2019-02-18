@@ -40,12 +40,12 @@ class QBox:
         self.res = res
         self.path = path
 
-        self.min_resolved_phi = numpy.sqrt(1.0/self.res**2) # sqrt of uniform probability density
-
         self.x = numpy.linspace(-x_max, x_max, res)
         self.y = numpy.linspace(-x_max, x_max, res)
         self.dx = numpy.mean(self.x[1:] - self.x[:-1])
         self.X, self.Y = numpy.meshgrid(self.x, self.y)
+
+        self.min_resolved_phi = numpy.sqrt(1.0/(2*self.x_max)**2) # sqrt of uniform probability density
 
         self.V = 0*self.X
         self.States = []
@@ -95,7 +95,7 @@ class QBox:
 
             self.res = len(self.x)
             self.x_max = self.x[-1]
-            self.min_resolved_phi = numpy.sqrt(1.0/self.res**2) # sqrt of uniform probability density
+            self.min_resolved_phi = numpy.sqrt(1.0/(2*self.x_max)**2) # sqrt of uniform probability density
 
     def set_potential(self, V):
         self.V = V
@@ -106,7 +106,7 @@ class QBox:
             r_max, r_min = 0.4, 0.1
             swaps_max = 10
             swaps = 0
-            phi = normalize(numpy.random.uniform(-1.0, 1.0, size=self.X.shape))
+            phi = self.normalize(numpy.random.uniform(-1.0, 1.0, size=self.X.shape))
 
 #############
 #            e, error = [], []
@@ -119,7 +119,7 @@ class QBox:
                 for _ in range(1000):
                     phi = boundry(phi)
                     for state in self.States:
-                        phi = phi - numpy.sum(phi*numpy.conj(state))*state
+                        phi = phi - numpy.sum(phi*numpy.conj(state))*self.dx**2*state
                     F = (numpy.roll(phi, 1, axis=0) + numpy.roll(phi, -1, axis=0) + numpy.roll(phi, 1, axis=1) + numpy.roll(phi, -1, axis=1) - 4*phi)/self.dx**2
                     dt_phi = (self.h_bar/(2*self.mass)*F) - self.V*phi/self.h_bar
 
@@ -135,8 +135,8 @@ class QBox:
                         r_max = r_max*0.5
                         r_min = r_min*0.5
 
-                    phi = normalize(phi + dt_phi*dt)
-                phi = normalize(phi)
+                    phi = self.normalize(phi + dt_phi*dt)
+                phi = self.normalize(phi)
                 E, E_error = self.get_energy(phi)
 
                 if num_rounds > max_round:
@@ -176,11 +176,12 @@ class QBox:
 
     def get_energy(self, phi, perr=False):
         phi = numpy.array(phi)
-        F = (numpy.roll(phi, 1, axis=0) + numpy.roll(phi, -1, axis=0) + numpy.roll(phi, 1, axis=1) + numpy.roll(phi, -1, axis=1) - 4*phi)/self.dx**2
-        phi[numpy.abs(phi)<self.min_resolved_phi] = numpy.nan
-        E_local = (-self.h_bar**2/(2*self.mass))*F/phi + self.V
+        E_local = self.E_hat(phi)
+        phi[numpy.abs(phi)<self.min_resolved_phi*0.05] = numpy.nan
+        E_local = E_local/phi
+        E_local[E_local < 0] = numpy.nan
         if perr:
-            pyplot.hist(E_local[~mask].ravel(), 100)
+            pyplot.hist(E_local[~numpy.isnan(E_local)].ravel(), 100)
             pyplot.show()
         E, E_error = numpy.nanmean(E_local), numpy.nanstd(E_local)
 #        print(E_error/numpy.sqrt(numpy.count_nonzero(~numpy.isnan(E_local))))
@@ -207,7 +208,7 @@ class QBox:
         function = normalize(function)
         pairs = []
         for i, state in enumerate(self.States):
-            pair = (i, numpy.sum(function*numpy.conj(state)))
+            pair = (i, numpy.sum(function*numpy.conj(state))*self.dx**2)
             pairs.append(pair)
         return pairs
 
