@@ -12,6 +12,7 @@ import time
 import pickle
 import array
 
+import scipy
 import numpy
 from matplotlib import pyplot
 
@@ -30,10 +31,6 @@ def boundry(phi):
     phi[0,  :] = 0.0
     phi[-1, :] = 0.0
     return phi
-
-def normalize(phi):
-    mag = numpy.sum(numpy.abs(phi)**2)
-    return phi/numpy.sqrt(mag)
 
 class QBox:
     def __init__(self, x_max, res, path="DATA_QBox.pk"):
@@ -123,7 +120,7 @@ class QBox:
                     phi = boundry(phi)
                     for state in self.States:
                         phi = phi - numpy.sum(phi*numpy.conj(state))*state
-                    F = numpy.roll(phi, 1, axis=0) + numpy.roll(phi, -1, axis=0) + numpy.roll(phi, 1, axis=1) + numpy.roll(phi, -1, axis=1) - 4*phi
+                    F = (numpy.roll(phi, 1, axis=0) + numpy.roll(phi, -1, axis=0) + numpy.roll(phi, 1, axis=1) + numpy.roll(phi, -1, axis=1) - 4*phi)/self.dx**2
                     dt_phi = (self.h_bar/(2*self.mass)*F) - self.V*phi/self.h_bar
 
                     a, da = (numpy.abs(phi)).max(), dt*(numpy.abs(dt_phi)).max()
@@ -141,6 +138,7 @@ class QBox:
                     phi = normalize(phi + dt_phi*dt)
                 phi = normalize(phi)
                 E, E_error = self.get_energy(phi)
+
                 if num_rounds > max_round:
                     print("E_error has not met the minimum requirement before timing out.")
                     break
@@ -164,16 +162,28 @@ class QBox:
             self.Energy_levels.append(E)
         self.save()
 
+    def get_energy_new(self, phi, perr=False):
+        E_hat = self.E_hat
+        E = self.expectation_value(phi, operator=E_hat)
+        Esqr_hat = lambda phi : self.E_hat(self.E_hat(phi))
+        E_error = numpy.sqrt(self.expectation_value(phi, Esqr_hat) - E**2)
+#        print(E_error/numpy.sqrt(len(phi.ravel())))
+        return E, E_error
+
+    def E_hat(self, phi):
+        F = (numpy.roll(phi, 1, axis=0) + numpy.roll(phi, -1, axis=0) + numpy.roll(phi, 1, axis=1) + numpy.roll(phi, -1, axis=1) - 4*phi)/self.dx**2
+        return (-self.h_bar**2/(2*self.mass)*F) + self.V*phi
+
     def get_energy(self, phi, perr=False):
         phi = numpy.array(phi)
-        F = numpy.roll(phi, 1, axis=0) + numpy.roll(phi, -1, axis=0) + numpy.roll(phi, 1, axis=1) + numpy.roll(phi, -1, axis=1) - 4*phi
-        mask = numpy.abs(phi)<self.min_resolved_phi
+        F = (numpy.roll(phi, 1, axis=0) + numpy.roll(phi, -1, axis=0) + numpy.roll(phi, 1, axis=1) + numpy.roll(phi, -1, axis=1) - 4*phi)/self.dx**2
         phi[numpy.abs(phi)<self.min_resolved_phi] = numpy.nan
         E_local = (-self.h_bar**2/(2*self.mass))*F/phi + self.V
         if perr:
             pyplot.hist(E_local[~mask].ravel(), 100)
             pyplot.show()
         E, E_error = numpy.nanmean(E_local), numpy.nanstd(E_local)
+#        print(E_error/numpy.sqrt(numpy.count_nonzero(~numpy.isnan(E_local))))
         return E, E_error
 
     def normalize_constants(self, pairs):
@@ -186,9 +196,12 @@ class QBox:
 
     def expectation_value(self, phi, operator=None):
         if operator is None:
-            return numpy.sum(phi*numpy.conj(phi))
+            return numpy.sum(phi*numpy.conj(phi))*self.dx**2
         else:
-            return numpy.sum(phi*operator(numpy.conj(phi)))
+            return numpy.sum(phi*operator(numpy.conj(phi)))*self.dx**2
+
+    def normalize(self, phi):
+        return phi/numpy.sqrt(self.expectation_value(phi))
 
     def calculate_constants(self, function):
         function = normalize(function)
@@ -203,3 +216,84 @@ class QBox:
         for state_id, alpha in A:
             phi += alpha*self.States[state_id]*numpy.exp((-1.0j*self.Energy_levels[state_id]/self.h_bar)*t)
         return phi
+
+class Analytic(QBox):
+    def __init__(self, x_max, res, path, isBox=True):
+        super().__init__(x_max, res, path)
+        self.isBox = isBox;
+        self._indices = []
+        self.omega = 1
+        self._hermite_polynomial_comp = {}
+        self.set_potential(self.omega)
+
+    def set_potential(self, omega):
+        self.omega = omega
+        self.V = self.mass*self.omega**2*(self.X**2 + self.Y**2)/2.0
+
+    def find_quantum_state(self, num_states, error_level=None, max_rounds=None):
+        if self.isBox:
+            self.find_quantum_state_box(len(self.States) + num_states)
+        else:
+            self.find_quantum_state_oscillator(len(self.States) + num_states)
+
+    def find_quantum_state_box(self, num_states):
+        indices = []
+        n = int(numpy.sqrt(numpy.sqrt(2)*num_states))
+        for i in range(1, (n + 1)):
+            for j in range(1, (n + 1)):
+                indices.append((i**2 + j**2, (i, j)))
+        indices.sort(key=lambda tup: tup[0])
+        indices=indices[:num_states]
+
+        self._indices = [quantum_numbers for _, quantum_numbers in indices]
+
+        E_0 = (self.h_bar**2*numpy.pi**2*2)/(2*self.mass*(2*self.x_max)**2)
+        self.Energy_levels = [E_0*k/2.0 for k, _ in indices]
+
+        for n_x, n_y in self._indices:
+            phi = numpy.sin(n_x*numpy.pi*(self.X + self.x_max)/(2*self.x_max))*numpy.sin(n_y*numpy.pi*(self.Y + self.x_max)/(2*self.x_max))/self.x_max
+            self.States.append(phi)
+        self.save()
+
+    def find_quantum_state_oscillator(self, num_states):
+        indices = []
+        n = int(numpy.sqrt(1 + 8*num_states)/2) + 1
+        for i in range(n):
+            for j in range(n):
+                indices.append((i + j, (i, j)))
+        indices.sort(key=lambda tup: tup[0])
+        indices=indices[:num_states]
+
+        self._indices = [quantum_numbers for _, quantum_numbers in indices]
+
+        self.Energy_levels = [self.h_bar*self.omega*(k + 1) for k, _ in indices]
+
+        for n_x, n_y in self._indices:
+            #-------------------------------------- incorrect normalization --------------
+            # swaping axis to produce _oscillator_1d_y
+            phi = self._oscillator_1d_x(n_x)*numpy.swapaxes(self._oscillator_1d_x(n_y), 0, 1)
+            self.States.append(phi)
+        self.save()
+
+    def _oscillator_1d_x(self, n):
+        scale = (1.0/(scipy.special.factorial(n)*2**n))*numpy.sqrt(numpy.sqrt(self.mass*self.omega/(numpy.pi*self.h_bar)))
+        phi = numpy.exp(-(self.mass*self.omega*self.X**2)/(2*self.h_bar))*self._hermite_polynomial(n, self.X*numpy.sqrt(self.mass*self.omega/self.h_bar))
+        return scale*phi
+
+    def _hermite_polynomial(self, n, X):
+        n = int(n)
+        if n in self._hermite_polynomial_comp:
+            return self._hermite_polynomial_comp[n]
+
+        if (n == 0):
+            function = X*0 + 1.0
+            self._hermite_polynomial_comp[n] = function
+            return function
+        elif (n == 1):
+            function = 2*X
+            self._hermite_polynomial_comp[n] = function
+            return function
+        else:
+            function = 2*X*self._hermite_polynomial(n - 1, X) - 2*(n - 1)*self._hermite_polynomial(n - 2, X)
+            self._hermite_polynomial_comp[n] = function
+            return function
