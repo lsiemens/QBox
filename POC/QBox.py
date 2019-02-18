@@ -12,7 +12,7 @@ import time
 import pickle
 import array
 
-import scipy
+from scipy.special import factorial
 import numpy
 from matplotlib import pyplot
 
@@ -269,16 +269,16 @@ class Analytic(QBox):
         self.Energy_levels = [self.h_bar*self.omega*(k + 1) for k, _ in indices]
 
         for n_x, n_y in self._indices:
-            #-------------------------------------- incorrect normalization --------------
             # swaping axis to produce _oscillator_1d_y
             phi = self._oscillator_1d_x(n_x)*numpy.swapaxes(self._oscillator_1d_x(n_y), 0, 1)
             self.States.append(phi)
         self.save()
 
     def _oscillator_1d_x(self, n):
-        scale = (1.0/(scipy.special.factorial(n)*2**n))*numpy.sqrt(numpy.sqrt(self.mass*self.omega/(numpy.pi*self.h_bar)))
-        phi = numpy.exp(-(self.mass*self.omega*self.X**2)/(2*self.h_bar))*self._hermite_polynomial(n, self.X*numpy.sqrt(self.mass*self.omega/self.h_bar))
-        return scale*phi
+        a = numpy.sqrt(self.mass*self.omega/self.h_bar)
+        normalization_constant = numpy.sqrt(a/(2**n*numpy.sqrt(numpy.pi)*factorial(n)))
+        phi = numpy.exp(-a**2*self.X**2/2)*self._hermite_polynomial(n, a*self.X)
+        return normalization_constant*phi
 
     def _hermite_polynomial(self, n, X):
         n = int(n)
