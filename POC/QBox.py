@@ -77,28 +77,34 @@ class QBox:
 
     def save(self):
         with open(self.path, "wb") as fout:
-            data_phys = {"h_bar":self.h_bar, "mass":self.mass}
-            data_grid = {"x":self.x, "y":self.y, "X":self.X, "Y":self.Y, "dx":self.dx}
-            data_quantum = {"States":self.States, "Energy_levels":self.Energy_levels, "V":self.V}
-            DATA = {"data_phys":data_phys, "data_grid":data_grid, "data_quantum":data_quantum}
-            pickle.dump(DATA, fout)
+            pickle.dump(self._save(), fout)
+
+    def _save(self):
+        data_phys = {"h_bar":self.h_bar, "mass":self.mass}
+        data_grid = {"x":self.x, "y":self.y, "X":self.X, "Y":self.Y, "dx":self.dx}
+        data_quantum = {"States":self.States, "Energy_levels":self.Energy_levels, "V":self.V}
+        DATA = {"data_phys":data_phys, "data_grid":data_grid, "data_quantum":data_quantum}
+        return DATA
 
     def load(self, verbose=False):
         with open(self.path, "rb") as fin:
             if verbose:
                 print("loading POC pickle file: " + self.path)
             DATA = pickle.load(fin)
-            data_phys = DATA["data_phys"]
-            data_grid = DATA["data_grid"]
-            data_quantum = DATA["data_quantum"]
+            self._load(DATA)
 
-            self.h_bar, self.mass = data_phys["h_bar"], data_phys["mass"]
-            self.x, self.y, self.X, self.Y, self.dx = data_grid["x"], data_grid["y"], data_grid["X"], data_grid["Y"], data_grid["dx"]
-            self.States, self.Energy_levels, self.V = data_quantum["States"], data_quantum["Energy_levels"], data_quantum["V"]
+    def _load(self, DATA):
+        data_phys = DATA["data_phys"]
+        data_grid = DATA["data_grid"]
+        data_quantum = DATA["data_quantum"]
 
-            self.res = len(self.x)
-            self.x_max = self.x[-1]
-            self.min_resolved_phi = numpy.sqrt(1.0/(2*self.x_max)**2) # sqrt of uniform probability density
+        self.h_bar, self.mass = data_phys["h_bar"], data_phys["mass"]
+        self.x, self.y, self.X, self.Y, self.dx = data_grid["x"], data_grid["y"], data_grid["X"], data_grid["Y"], data_grid["dx"]
+        self.States, self.Energy_levels, self.V = data_quantum["States"], data_quantum["Energy_levels"], data_quantum["V"]
+
+        self.res = len(self.x)
+        self.x_max = self.x[-1]
+        self.min_resolved_phi = numpy.sqrt(1.0/(2*self.x_max)**2) # sqrt of uniform probability density
 
     def set_potential(self, V):
         self.V = V
@@ -168,6 +174,10 @@ class QBox:
     def get_energy_new(self, phi, perr=False):
         E_hat = self.E_hat
         E = self.expectation_value(phi, operator=E_hat)
+        if numpy.isclose(numpy.imag(E), 0.0):
+            E = numpy.abs(E)
+        else:
+            raise ValueError("non trivial imaginary energy.")
         Esqr_hat = lambda phi : self.E_hat(self.E_hat(phi))
         E_error = numpy.sqrt(numpy.abs(self.expectation_value(phi, Esqr_hat) - E**2))
 #        print(E_error/numpy.sqrt(len(phi.ravel())))
@@ -188,6 +198,10 @@ class QBox:
             pyplot.hist(E_local[~numpy.isnan(E_local)].ravel(), 100)
             pyplot.show()
         E, E_error = numpy.nanmean(E_local), numpy.nanstd(E_local)
+        if numpy.isclose(numpy.imag(E), 0.0):
+            E = numpy.abs(E)
+        else:
+            raise ValueError("non trivial imaginary energy.")
 #        print(E_error/numpy.sqrt(numpy.count_nonzero(~numpy.isnan(E_local))))
         return E, E_error
 
@@ -215,7 +229,6 @@ class QBox:
         return [(state_id, alpha/sqrt_mag) for state_id, alpha in pairs]
 
     def calculate_constants(self, function):
-        function = self.normalize(function)
         pairs = []
         for i, state in enumerate(self.States):
             pair = (i, numpy.sum(function*numpy.conj(state))*self.dx**2)
@@ -234,10 +247,23 @@ class Analytic(QBox):
         self.isBox = isBox;
         self._indices = []
         self._state_subspace = []
-        self.omega = 1
+        self.omega = 1.0
         self._hermite_polynomial_comp = {}
         if not self.isBox:
             self.set_potential(self.omega)
+
+    def _save(self):
+        DATA = super()._save()
+        data_analytic = {"isBox":self.isBox, "_indices":self._indices, "_state_subspace":self._state_subspace, "omega":self.omega}
+        DATA["data_analytic"] = data_analytic
+        return DATA
+
+    def _load(self, DATA):
+        super()._load(DATA)
+        if not "data_analytic" in DATA:
+            raise ValueError("Error loaded file does not contain analytic data.")
+        data_analytic = DATA["data_analytic"]
+        self.isBox, self._indices, self._state_subspace, self.omega = data_analytic["isBox"], data_analytic["_indices"], data_analytic["_state_subspace"], data_analytic["omega"]
 
     def set_potential(self, omega):
         self.omega = omega
@@ -247,6 +273,8 @@ class Analytic(QBox):
             self.V = self.X*0
 
     def find_quantum_state(self, num_states, error_level=None, max_rounds=None):
+        if len(self.States) != 0:
+            print("WARNING: regenerating all analytic states")
         if self.isBox:
             self.find_quantum_state_box(len(self.States) + num_states)
         else:

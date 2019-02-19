@@ -1,87 +1,106 @@
+#!/usr/bin/env python3
+
+""" 
+Usage:
+  validate.py ANALYTIC NUMERICAL [options]
+  validate.py -h | --help
+
+Comapaire analytic solutions to numerical solutions.
+
+Arguments:
+  ANALYTIC      path to POC readable file containing analytic solutions
+  NUMERICAL     path to POC readable file containing numerical solutions
+
+Options:
+  -v --verbose      explain what is being done
+  -h --help         display this help and exit
+
+"""
+
+import docopt
 import numpy
+import scipy.stats
 from matplotlib import pyplot
+
 import QBox
 
-x_max = 1.0
-resolution = 100
-num_states = 100
-path = "validation"
-isBox = True
-type = ""
+#analytic_path = "validation_analytic_infinite_well_100_1.0.pk"
+#numerical_path = "validation_numerical_infinite_well_100_1.0.pk"
+analytic_path = "validation_analytic_harmonic_oscillator_100_10.0.pk"
+numerical_path = "validation_numerical_harmonic_oscillator_100_10.0.pk"
 
-"validation_numerical_infinite_well_100_1.0.pk"
+def validate(analytic_path, numerical_path, verbose=False):
+    analytic_solver = QBox.Analytic(1.0, 10, path=analytic_path)
+    analytic_solver.load()
 
-if isBox:
-    type = "infinite_well"
-else:
-    type = "harmonic_oscillator"
+    numerical_solver = QBox.QBox(1.0, 10, path=numerical_path)
+    numerical_solver.load()
 
-analytic_path = "_".join([path, "analytic", type, str(resolution), str(x_max)]) + ".pk"
-analytic_solver = QBox.Analytic(x_max, resolution, path=analytic_path, isBox=isBox)
-analytic_solver.set_potential(1.0)
+    data = []
+    for state_i in numerical_solver.States:
+        row = []
+        for state_j in numerical_solver.States:
+            row.append(numpy.sum(QBox.dboundry(state_i)*QBox.dboundry(numpy.conj(state_j)))*numerical_solver.dx**2)
+        data.append(row)
+    data = numpy.array(data) - numpy.identity(len(data))
 
-numerical_path = "_".join([path, "numerical", type, str(resolution), str(x_max)]) + ".pk"
-numerical_solver = QBox.QBox(x_max, resolution, path=numerical_path)
-numerical_solver.set_potential(analytic_solver.V)
+    max_deviation = numpy.abs(data).max()
+    mean_deviation = numpy.mean(data)
+    std_deviation = numpy.std(data)
+    sem_deviation = scipy.stats.sem(data, axis=None)
+    median_deviation = numpy.median(data)
 
-analytic_solver.find_quantum_state(num_states)
-
-numerical_solver.load()
-
-#for _ in range(num_states):
-#    numerical_solver.find_quantum_state(1, error_level=2.0E-3, max_rounds=50)
-
-data = []
-for state_i in numerical_solver.States:
-    row = []
-    for state_j in numerical_solver.States:
-        row.append(numpy.sum(QBox.dboundry(state_i)*QBox.dboundry(numpy.conj(state_j)))*numerical_solver.dx**2)
-    data.append(row)
-data = numpy.array(data) - numpy.identity(len(data))
-
-max_deviation = numpy.abs(data).max()
-mean_deviation = numpy.mean(data)
-std_deviation = numpy.std(data)
-sem_deviation = std_deviation/numpy.sqrt(len(data.ravel()))
-median_deviation = numpy.median(data)
-print("max:", max_deviation, "mean:", mean_deviation, "sem:", sem_deviation, "std:", std_deviation, "med:", median_deviation)
-
-for subspace in analytic_solver._state_subspace:
-    print("sub space", subspace)
-    energy = []
     normalization = []
-    vector_components = []
-    for i in subspace:
-        analytic_state = analytic_solver.States[i]
-        phi_state = numerical_solver.calculate_constants(analytic_state)
-        phi = numerical_solver.system(phi_state, 0)
+    energy_reldiff = []
+    for subspace in analytic_solver._state_subspace:
+        energy = []
+        vector_components = []
+        for i in subspace:
+            analytic_state = analytic_solver.States[i]
+            phi_state = numerical_solver.calculate_constants(analytic_state)
+            phi = numerical_solver.system(phi_state, 0)
 
-        energy_method_coefficient = 0.0
-        phi_contribution = []
-        for i, coefficient in phi_state:
-            phi_contribution.append((i, coefficient*numpy.conj(coefficient)))
-            energy_method_coefficient += coefficient*numerical_solver.Energy_levels[i]*numpy.conj(coefficient)
+            energy_method_coefficient = 0.0
+            phi_contribution = []
+            for i, coefficient in phi_state:
+                phi_contribution.append((i, coefficient*numpy.conj(coefficient)))
+                energy_method_coefficient += coefficient*numerical_solver.Energy_levels[i]*numpy.conj(coefficient)
 
-        norm = numpy.sum([prob for _, prob in phi_contribution])
+            norm = numpy.sum([prob for _, prob in phi_contribution])
 
-        energy_method_expectation, _ = numerical_solver.get_energy_new(phi)
-        energy_method_ratio, _ = numerical_solver.get_energy(phi)
+            energy_method_expectation, _ = numerical_solver.get_energy_new(phi)
+            energy_method_ratio, _ = numerical_solver.get_energy(phi)
 
-        normalization.append(norm)
-        energy += [energy_method_expectation, energy_method_ratio, energy_method_coefficient]
-        vector_components += phi_contribution
+            normalization.append(norm)
+            energy += [energy_method_expectation, energy_method_ratio, energy_method_coefficient]
+            vector_components += phi_contribution
 
-    subspace_components = numpy.zeros(shape=(len(analytic_solver.States),))
-    for component in vector_components:
-        i, prob = component
-        subspace_components[i] += prob
+        subspace_components = numpy.zeros(shape=(len(analytic_solver.States),))
+        for component in vector_components:
+            i, prob = component
+            subspace_components[i] += prob
 
-    print(normalization)
-    print(energy)
-    print([comp for comp in subspace_components if (not numpy.isclose(comp, 0.0))])
-    print()
+        energy_reldiff += list((numpy.array(energy) - analytic_solver.Energy_levels[subspace[0]])/analytic_solver.Energy_levels[subspace[0]])
+        major_comp = sorted([comp for comp in subspace_components if (not numpy.isclose(comp, 0.0))])
+        if verbose:
+            if len(subspace) != len(major_comp):
+                print("Warning subspace dimension missmatch. Extra component with magnitude ", numpy.array(major_comp[:-len(subspace)]))
 
-    # calculate projection in numerical solution
-    # O test normalization (did the probability change)
-    # O test energy (is it the same energy)
-    # O test dimension of subspace (is there lots of mixing betwean numerical subspaces)
+    mean_energy_reldiff = numpy.mean(energy_reldiff)
+    error_energy_reldiff = scipy.stats.sem(energy_reldiff, axis=None)
+    normalization_diff = numpy.array(normalization) - 1.0
+    mean_normalization_diff = numpy.mean(normalization_diff)
+    error_normalization_diff = scipy.stats.sem(normalization_diff, axis=None)
+
+    print("\nComponent wise deviation from Orthonormal")
+    print("max:", max_deviation, "mean:", mean_deviation, "error", sem_deviation, "std:", std_deviation, "med:", median_deviation)
+
+    print("\nmean energy relative difference:", mean_energy_reldiff, "error", error_energy_reldiff)
+    print("mean normalization difference:", mean_normalization_diff, "error", error_normalization_diff)
+
+if __name__ == "__main__":
+    arguments = docopt.docopt(__doc__)
+    analytic_path = arguments["ANALYTIC"]
+    numerical_path = arguments["NUMERICAL"]
+    verbose = arguments["--verbose"]
+    validate(analytic_path, numerical_path, verbose=verbose)

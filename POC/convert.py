@@ -12,7 +12,7 @@ Arguments:
   DEST      destination GPOC readable file (binary data file)
 
 Options:
-  -v --verbose     explain what is being done
+  -v --verbose      explain what is being done
   -h --help         display this help and exit
 
 """
