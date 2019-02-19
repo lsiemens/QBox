@@ -215,7 +215,7 @@ class QBox:
         return [(state_id, alpha/sqrt_mag) for state_id, alpha in pairs]
 
     def calculate_constants(self, function):
-        function = normalize(function)
+        function = self.normalize(function)
         pairs = []
         for i, state in enumerate(self.States):
             pair = (i, numpy.sum(function*numpy.conj(state))*self.dx**2)
@@ -233,6 +233,7 @@ class Analytic(QBox):
         super().__init__(x_max, res, path)
         self.isBox = isBox;
         self._indices = []
+        self._state_subspace = []
         self.omega = 1
         self._hermite_polynomial_comp = {}
         if not self.isBox:
@@ -260,6 +261,16 @@ class Analytic(QBox):
         indices.sort(key=lambda tup: tup[0])
         indices=indices[:num_states]
 
+        self._state_subspace = []
+        current_index = indices[0][0]
+        current_subspace = []
+        for i, (index, _) in enumerate(indices):
+            if current_index != index:
+                self._state_subspace.append(current_subspace)
+                current_subspace = []
+            current_index = index
+            current_subspace.append(i)
+
         self._indices = [quantum_numbers for _, quantum_numbers in indices]
 
         E_0 = (self.h_bar**2*numpy.pi**2*2)/(2*self.mass*(2*self.x_max)**2)
@@ -278,6 +289,16 @@ class Analytic(QBox):
                 indices.append((i + j, (i, j)))
         indices.sort(key=lambda tup: tup[0])
         indices=indices[:num_states]
+
+        self._state_subspace = []
+        current_index = indices[0][0]
+        current_subspace = []
+        for i, (index, _) in enumerate(indices):
+            if current_index != index:
+                self._state_subspace.append(current_subspace)
+                current_subspace = []
+            current_index = index
+            current_subspace.append(i)
 
         self._indices = [quantum_numbers for _, quantum_numbers in indices]
 
