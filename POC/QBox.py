@@ -249,6 +249,8 @@ class Analytic(QBox):
         self._state_subspace = []
         self.omega = 1.0
         self._hermite_polynomial_comp = {}
+
+        self._max_energy_ratio = 0.75 # warn the user if harmonic solutions are likely invalid
         if not self.isBox:
             self.set_potential(self.omega)
 
@@ -331,6 +333,8 @@ class Analytic(QBox):
         self._indices = [quantum_numbers for _, quantum_numbers in indices]
 
         self.Energy_levels = [self.h_bar*self.omega*(k + 1) for k, _ in indices]
+        if self.Energy_levels[-1]/(self.mass*self.omega**2*(self.x_max**2)/2.0) > self._max_energy_ratio:
+            print("WARNING: the maximum energy level is over " + str(100*self._max_energy_ratio) + "% of the boundry energy. Approximating the solution with a ideal harmonic potential is not valid.")
 
         for n_x, n_y in self._indices:
             # swaping axis to produce _oscillator_1d_y
