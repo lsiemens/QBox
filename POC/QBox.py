@@ -32,6 +32,9 @@ def boundry(phi):
     phi[-1, :] = 0.0
     return phi
 
+def dboundry(phi, n=2):
+    return phi[n:-n,n:-n]
+
 class QBox:
     def __init__(self, x_max, res, path="DATA_QBox.pk"):
         self.h_bar = 1.0
@@ -166,26 +169,42 @@ class QBox:
         E_hat = self.E_hat
         E = self.expectation_value(phi, operator=E_hat)
         Esqr_hat = lambda phi : self.E_hat(self.E_hat(phi))
-        E_error = numpy.sqrt(self.expectation_value(phi, Esqr_hat) - E**2)
+        E_error = numpy.sqrt(numpy.abs(self.expectation_value(phi, Esqr_hat) - E**2))
 #        print(E_error/numpy.sqrt(len(phi.ravel())))
         return E, E_error
 
     def E_hat(self, phi):
         F = (numpy.roll(phi, 1, axis=0) + numpy.roll(phi, -1, axis=0) + numpy.roll(phi, 1, axis=1) + numpy.roll(phi, -1, axis=1) - 4*phi)/self.dx**2
-        return (-self.h_bar**2/(2*self.mass)*F) + self.V*phi
+        return (((-self.h_bar**2/(2*self.mass))*F) + self.V*phi)
 
     def get_energy(self, phi, perr=False):
         phi = numpy.array(phi)
         E_local = self.E_hat(phi)
-        phi[numpy.abs(phi)<self.min_resolved_phi*0.05] = numpy.nan
-        E_local = E_local/phi
-        E_local[E_local < 0] = numpy.nan
+# -------------------------------- Do I still need this --------------------------------------------
+#        phi[numpy.abs(phi)<self.min_resolved_phi] = numpy.nan
+        E_local = dboundry(E_local/phi)
+#        E_local[E_local < 0] = numpy.nan #----------------------------- Does this help
         if perr:
             pyplot.hist(E_local[~numpy.isnan(E_local)].ravel(), 100)
             pyplot.show()
         E, E_error = numpy.nanmean(E_local), numpy.nanstd(E_local)
 #        print(E_error/numpy.sqrt(numpy.count_nonzero(~numpy.isnan(E_local))))
         return E, E_error
+
+    def expectation_value(self, phi, operator=None):
+#        if operator is None:
+#            return numpy.sum(phi*numpy.conj(phi))*self.dx**2
+#        else:
+#            return numpy.sum(phi*operator(numpy.conj(phi)))*self.dx**2
+
+# ---------------------------------------- Energy is Biased as low resolution -----------------------------
+        if operator is None:
+            return numpy.sum(dboundry(phi)*dboundry(numpy.conj(phi)))*self.dx**2
+        else:
+            return numpy.sum(dboundry(phi)*dboundry(operator(numpy.conj(phi))))*self.dx**2
+
+    def normalize(self, phi):
+        return phi/numpy.sqrt(self.expectation_value(phi))
 
     def normalize_constants(self, pairs):
         for state_id, _ in pairs:
@@ -194,15 +213,6 @@ class QBox:
 
         sqrt_mag = numpy.sqrt(numpy.sum([numpy.abs(alpha)**2 for _, alpha in pairs]))
         return [(state_id, alpha/sqrt_mag) for state_id, alpha in pairs]
-
-    def expectation_value(self, phi, operator=None):
-        if operator is None:
-            return numpy.sum(phi*numpy.conj(phi))*self.dx**2
-        else:
-            return numpy.sum(phi*operator(numpy.conj(phi)))*self.dx**2
-
-    def normalize(self, phi):
-        return phi/numpy.sqrt(self.expectation_value(phi))
 
     def calculate_constants(self, function):
         function = normalize(function)
@@ -225,11 +235,15 @@ class Analytic(QBox):
         self._indices = []
         self.omega = 1
         self._hermite_polynomial_comp = {}
-        self.set_potential(self.omega)
+        if not self.isBox:
+            self.set_potential(self.omega)
 
     def set_potential(self, omega):
         self.omega = omega
-        self.V = self.mass*self.omega**2*(self.X**2 + self.Y**2)/2.0
+        if not self.isBox:
+            self.V = self.mass*self.omega**2*(self.X**2 + self.Y**2)/2.0
+        else:
+            self.V = self.X*0
 
     def find_quantum_state(self, num_states, error_level=None, max_rounds=None):
         if self.isBox:
