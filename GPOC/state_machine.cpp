@@ -14,6 +14,9 @@ TextRenderer* Text;
 
 
 GLfloat gausian_width = 6.0f;
+glm::vec2 P_vector = glm::vec2(0.0f, 0.0f);
+GLfloat P_speed = 3.0f;
+GLfloat simulation_speed = 20.0f;
 
 StateMachine::StateMachine(GLuint width, GLuint height)
     : Keys(), Width(width), Height(height), fps(0.0f), fps_smoothing(0.9f), time(0.0f), mouse_scroll_sensifivity(0.1f){ }
@@ -85,7 +88,11 @@ void StateMachine::Init() {
     height = QBox->n;
     depth = QBox->num;
 
+    std::cout << "texture width: " << width << " height:" << height << " depth: " << depth << std::endl;
+
+    std::cout << "start glTexImage3D" << std::endl;
     glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, GL_R32F, width, height, depth, 0, GL_RED, GL_FLOAT, QBox->state);
+    std::cout << "end glTexImage3D" << std::endl;
     glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
 
     glUseProgram(this->wave_function_shader);
@@ -101,6 +108,8 @@ void StateMachine::ProcessInput(GLfloat dt) {
             this->State = STATE_PRE_TIME_EVOLUTION;
             this->shader_program = this->probability_density_shader;
             this->time = 0.0f;
+            gausian_width = 6.0f;
+            P_vector = glm::vec2(0.0f, 0.0f);
             this->KeysRegistered[GLFW_KEY_ENTER] = GL_TRUE;
         }
 
@@ -141,6 +150,22 @@ void StateMachine::ProcessInput(GLfloat dt) {
         }
     }
 
+    if (this->Keys[GLFW_KEY_RIGHT]) {
+        P_vector.x += P_speed*dt;
+    }
+
+    if (this->Keys[GLFW_KEY_LEFT]) {
+        P_vector.x -= P_speed*dt;
+    }
+
+    if (this->Keys[GLFW_KEY_DOWN]) {
+        P_vector.y += P_speed*dt;
+    }
+
+    if (this->Keys[GLFW_KEY_UP]) {
+        P_vector.y -= P_speed*dt;
+    }
+
     if (this->Keys[GLFW_KEY_W]) {
         this->shader_range += this->shader_range*dt;
     }
@@ -169,7 +194,8 @@ void StateMachine::Update(GLfloat dt) {
         for (int i = 0; i < QBox->n; i++) {
             for (int j = 0; j < QBox->n; j++) {
                 glm::vec2 value = glm::vec2(2.0f*i/(float)QBox->n - 1.0f, 2.0f*j/(float)QBox->n - 1.0f) - this->mouse_pos;
-                data[i + QBox->n*j] = glm::vec2(1.0, 1.0)*std::exp(-(value.x*value.x + value.y*value.y)*gausian_width*gausian_width);
+                glm::vec2 phase = glm::vec2(std::cos(glm::dot(value, P_vector)), std::sin(glm::dot(value, P_vector)));
+                data[i + QBox->n*j] = phase*std::exp(-(value.x*value.x + value.y*value.y)*gausian_width*gausian_width);
             }
         }
 
@@ -182,7 +208,7 @@ void StateMachine::Update(GLfloat dt) {
 
 
     if (this->State == STATE_TIME_EVOLUTION) {
-        this->time += 200.0f*dt;
+        this->time += simulation_speed*dt;
     }
 }
 
