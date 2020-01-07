@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MaterialController : MonoBehaviour
+// QuantumSystemController manages and holds refrences to the QuantumSystems
+public class QSystemController : MonoBehaviour
 {
-    public Material material;
+    public QuantumSystem quantumSystem;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        quantumSystem.Load();
     }
 
     // Update is called once per frame

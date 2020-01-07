@@ -2,7 +2,10 @@
 {
     Properties
     {
-        _MainTex ("Texture", 2D) = "white" {}
+        _States ("States", 2DArray) = "" {}
+        _Potential ("Potential", 2D) = "white" {}
+        _Index ("index", Range(0, 4)) = 0
+        _Color ("color", Color) = (1.0, 0.0, 0.0, 0.0)
     }
     SubShader
     {
@@ -37,14 +40,18 @@
                 return o;
             }
 
-            sampler2D _MainTex;
+            int _Index;
+            float4 _Color;
+            sampler2D _Potential;
+            UNITY_DECLARE_TEX2DARRAY(_States);
 
             fixed4 frag (v2f i) : SV_Target
             {
-                fixed4 col = tex2D(_MainTex, i.uv);
-                // just invert the colors
-                col.rgb = 1 - col.rgb;
-                return col;
+                float4 col = UNITY_SAMPLE_TEX2DARRAY(_States, float3(i.uv.x, i.uv.y, _Index)); // integer indexing
+                float pot = tex2D(_Potential, i.uv);
+                col.a = pot; // since the alpha channel is empty anyway
+                col = col*_Color;
+                return col*col + col.a;
             }
             ENDCG
         }
