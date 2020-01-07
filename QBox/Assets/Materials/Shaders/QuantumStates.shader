@@ -4,8 +4,8 @@
     {
         _States ("States", 2DArray) = "" {}
         _Potential ("Potential", 2D) = "white" {}
-        _Index ("index", Range(0, 4)) = 0
-        _Color ("color", Color) = (1.0, 0.0, 0.0, 0.0)
+        _MaxIndex ("Maximum Index", Range(0, 1023)) = 0
+        _Scale ("Scale", Range(-10, 10)) = 0
     }
     SubShader
     {
@@ -40,19 +40,39 @@
                 return o;
             }
 
-            int _Index;
-            float4 _Color;
+            float _Scale;
+            int _MaxIndex;
+            float4 _RealCoefficients[1023];
+            float4 _ImaginaryCoefficients[1023];
             sampler2D _Potential;
             UNITY_DECLARE_TEX2DARRAY(_States);
 
+            float4 RealValue, ImaginaryValue;
+            float2 Phi;
+
             fixed4 frag (v2f i) : SV_Target
             {
-                float4 col = UNITY_SAMPLE_TEX2DARRAY(_States, float3(i.uv.x, i.uv.y, _Index)); // integer indexing
+                RealValue = 0.0;
+                ImaginaryValue = 0.0;
+                for (int j = 0; j < _MaxIndex; j++) {
+                    RealValue += _RealCoefficients[j]*UNITY_SAMPLE_TEX2DARRAY(_States, float3(i.uv.x, i.uv.y, j));
+                    ImaginaryValue += _ImaginaryCoefficients[j]*UNITY_SAMPLE_TEX2DARRAY(_States, float3(i.uv.x, i.uv.y, j));
+                }
+                Phi.x = RealValue.r + RealValue.g + RealValue.b;
+                Phi.y = ImaginaryValue.r + ImaginaryValue.g + ImaginaryValue.b;
+
                 float pot = tex2D(_Potential, i.uv);
-                col.a = pot; // since the alpha channel is empty anyway
-                col = col*_Color;
-                return col*col + col.a;
+                return (Phi.x*Phi.x + Phi.y*Phi.y)*exp(_Scale);
             }
+//            fixed4 frag (v2f i) : SV_Target
+//            {
+//                float4 col = UNITY_SAMPLE_TEX2DARRAY(_States, float3(i.uv.x, i.uv.y, _Index)); // integer indexing
+//                float pot = tex2D(_Potential, i.uv);
+//                col.a = pot; // since the alpha channel is empty anyway
+//                col = col*_Color;
+//                return (col*col + col.a);
+//                //return (col*col*_Test[0] + col.a*_Test[_Index]);
+//            }
             ENDCG
         }
     }

@@ -11,11 +11,12 @@ public class QuantumSystem : ScriptableObject {
 
     public Material mat;
 
-    int maxTextureLayer;
-    int numberOfStates;
+    [System.NonSerialized] public int stateChannels;
+    [System.NonSerialized] public int maxTextureLayer;
+    [System.NonSerialized] public int numberOfStates;
     int resolution;
     float[,,] states; // states[level, i, j]
-    float[] energyLevels;
+    [System.NonSerialized] public float[] energyLevels;
     Texture2D potentialTexture;
     Texture2DArray statesTexture;
 
@@ -29,6 +30,7 @@ public class QuantumSystem : ScriptableObject {
             energyLevels[i] = (float)importData.energyLevels[i];
         }
         resolution = importData.resolution;
+        stateChannels = importData.statesAtlasChannels;
 
         // ------------------- POTENTAL ----------------------------
         potentialTexture = new Texture2D(resolution, resolution, TextureFormat.RFloat, false);
@@ -54,7 +56,7 @@ public class QuantumSystem : ScriptableObject {
         states = new float[numberOfStates, resolution, resolution];
         for (int grid_i = importData.statesAtlasGrid - 1; grid_i >= 0; grid_i--) {
             for (int grid_j = 0; grid_j < importData.statesAtlasGrid; grid_j++) {
-                for (int grid_c = 0; grid_c < importData.statesAtlasChannels; grid_c++) {
+                for (int grid_c = 0; grid_c < stateChannels; grid_c++) {
 
                     for (int pixel_i = 0; pixel_i < resolution; pixel_i++) {
                         for (int pixel_j = 0; pixel_j < resolution; pixel_j++) {
@@ -70,19 +72,19 @@ public class QuantumSystem : ScriptableObject {
             if (stateIndex >= numberOfStates) break; // cascading breaks
         }
 
-        if (numberOfStates % importData.statesAtlasChannels != 0) {
+        if (numberOfStates % stateChannels != 0) {
             Debug.LogError("Error: " + numberOfStates + " quantum states can not fit into an integer number of " + importData.statesAtlasChannels + " channel textures.");
         }
 
-        maxTextureLayer = numberOfStates / importData.statesAtlasChannels;
+        maxTextureLayer = numberOfStates / stateChannels;
         statesTexture = new Texture2DArray(resolution, resolution, maxTextureLayer, TextureFormat.RGBAFloat, false);
         for (int layer = 0; layer < maxTextureLayer; layer++) {
             Color[] tempState = new Color[resolution*resolution];
 
             for (int i = 0; i < resolution; i++) {
                 for (int j = 0; j < resolution; j++) {
-                    for (int k = 0; k < importData.statesAtlasChannels; k++) {
-                        tempState[j + i*resolution][k] = states[k + layer*importData.statesAtlasChannels, i, j];
+                    for (int k = 0; k < stateChannels; k++) {
+                        tempState[j + i*resolution][k] = states[k + layer*stateChannels, i, j];
                     }
                 }
             }
@@ -91,6 +93,12 @@ public class QuantumSystem : ScriptableObject {
         }
         statesTexture.Apply();
         mat.SetTexture("_States", statesTexture);
+        mat.SetInt("_MaxIndex", maxTextureLayer);
         Debug.Log("Texture Loaded!");
+//        Color[] T = new Color[1023];
+//        for (int i=0; i<1023; i++) {
+//            T[i] = new Color(Mathf.Cos(i*3.14f/100.0f), Mathf.Sin(i*3.14f/100.0f), 0.0f, 0.0f);
+//        }
+//        mat.SetColorArray("_Test", T);
     }
 }

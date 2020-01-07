@@ -19,10 +19,6 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _Potential:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -32,6 +28,6 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _Index: 0
-    m_Colors:
-    - _Color: {r: 0.636, g: 0.524, b: 0.685, a: 0.015686275}
+    - _MaxIndex: 25
+    - _Scale: 0
+    m_Colors: []
