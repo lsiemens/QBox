@@ -7,15 +7,22 @@ public class QSystemController : MonoBehaviour
 {
     public QuantumSystem quantumSystem;
 
-    // Start is called before the first frame update
+    private static QSystemController qsystemController;
+
+    public static QuantumSystem currentQuantumSystem {
+        get {
+            if (!qsystemController) {
+                qsystemController = (QSystemController)FindObjectOfType(typeof(QSystemController));
+                if (!qsystemController) {
+                    Debug.LogError("No active QSystemController component found.");
+                }
+            }
+            return qsystemController.quantumSystem;
+        }
+    }
+
     void Start()
     {
         quantumSystem.Load();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 }

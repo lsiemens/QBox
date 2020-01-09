@@ -5,15 +5,18 @@ using UnityEngine;
 public class MaterialController : MonoBehaviour
 {
     public Material material;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
+    private static MaterialController materialController;
 
+    public static Material currentMaterial {
+        get {
+            if (!materialController) {
+                materialController = (MaterialController)FindObjectOfType(typeof(MaterialController));
+                if (!materialController) {
+                    Debug.LogError("No active MaterialController component found.");
+                }
+            }
+            return materialController.material;
+        }
     }
 }

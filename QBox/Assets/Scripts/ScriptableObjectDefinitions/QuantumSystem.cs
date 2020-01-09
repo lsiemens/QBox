@@ -9,8 +9,6 @@ public class QuantumSystem : ScriptableObject {
     public Texture2D potentialTextureEXR;
     public Texture2D statesTextureEXR;
 
-    public Material mat;
-
     [System.NonSerialized] public int stateChannels;
     [System.NonSerialized] public int maxTextureLayer;
     [System.NonSerialized] public int numberOfStates;
@@ -19,6 +17,77 @@ public class QuantumSystem : ScriptableObject {
     [System.NonSerialized] public float[] energyLevels;
     Texture2D potentialTexture;
     Texture2DArray statesTexture;
+
+// ------------------------------ TEMPORARY
+    public float Norm2(float[,] data) {
+        float dx = 0.1f; // Get from ImportData
+        if ((data.GetLength(0) != resolution) || (data.GetLength(1) != resolution)) {
+            Debug.LogError("function must have dimensions resolution X resolution");
+        }
+        float value = 0.0f;
+        for (int i = 0; i < resolution; i++) {
+            for (int j = 0; j < resolution; j++) {
+                value += data[i, j]*data[i, j]*dx*dx;
+            }
+        }
+        return value;
+    }
+
+// ---------------------------------- TEMPORARY
+    public float[,] MakeGaussian(float width) {
+        float[,] coefficients = new float[numberOfStates, 2];
+        float[,] gaussian = new float[resolution, resolution];
+        float dx = 0.1f;
+        float x, y;
+        for (int i = 0; i < resolution; i++) {
+            for (int j = 0; j < resolution; j++) {
+                x = (j - resolution/2 + 0)*dx;
+                y = (i - resolution/2 - 64)*dx;
+                gaussian[i, j] = Mathf.Exp(-(x*x + y*y)/(width*width));
+            }
+        }
+        float norm = Mathf.Sqrt(Norm2(gaussian));
+        /*for (int i = 0; i < resolution; i++) {
+            for (int j = 0; j < resolution; j++) {
+                gaussian[i, j] = gaussian[i, j]/norm;
+            }
+        }*/
+
+        for (int k = 0; k < numberOfStates; k++) {
+            float value = 0.0f;
+            /*for (int i = 0; i < resolution; i++) {
+                for (int j = 0; j < resolution; j++) {
+                    value += states[k, i, j]*states[k, i, j]*dx*dx;
+                }
+            }
+            norm = Mathf.Sqrt(value);
+            for (int i = 0; i < resolution; i++) {
+                for (int j = 0; j < resolution; j++) {
+                    states[k, i, j] = states[k, i, j]/norm;
+                }
+            }*/
+
+            value = 0.0f;
+            for (int i = 0; i < resolution; i++) {
+                for (int j = 0; j < resolution; j++) {
+                    value += states[k, i, j]*gaussian[i, j]*dx*dx; //*gaussian[i, j]
+                }
+            }
+            coefficients[k, 0] = value;
+
+        }
+        float value1 = 0.0f;
+        for (int k = 0; k < numberOfStates; k++) {
+            value1 += coefficients[k, 0]*coefficients[k, 0] + coefficients[k, 1]*coefficients[k, 1];
+        }
+        value1 = Mathf.Sqrt(value1);
+        for (int k = 0; k < numberOfStates; k++) {
+            coefficients[k, 0] /= value1;
+            coefficients[k, 1] /= value1;
+        }
+
+        return coefficients;
+    }
 
     public void Load() {
         // ------------------ CONFIGURATION DATA ---------------------------------
@@ -45,7 +114,7 @@ public class QuantumSystem : ScriptableObject {
         }
         potentialTexture.SetPixels(textureData, 0);
         potentialTexture.Apply();
-        mat.SetTexture("_Potential", potentialTexture);
+        MaterialController.currentMaterial.SetTexture("_MainTex", potentialTexture);
 
         // ------------------- STATES ----------------------------
         // load state data to states
@@ -92,13 +161,8 @@ public class QuantumSystem : ScriptableObject {
             statesTexture.SetPixels(tempState, layer);
         }
         statesTexture.Apply();
-        mat.SetTexture("_States", statesTexture);
-        mat.SetInt("_MaxIndex", maxTextureLayer);
+        MaterialController.currentMaterial.SetTexture("_States", statesTexture);
+        MaterialController.currentMaterial.SetInt("_MaxIndex", maxTextureLayer);
         Debug.Log("Texture Loaded!");
-//        Color[] T = new Color[1023];
-//        for (int i=0; i<1023; i++) {
-//            T[i] = new Color(Mathf.Cos(i*3.14f/100.0f), Mathf.Sin(i*3.14f/100.0f), 0.0f, 0.0f);
-//        }
-//        mat.SetColorArray("_Test", T);
     }
 }

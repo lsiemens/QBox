@@ -339,6 +339,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1036632483}
+  - component: {fileID: 1036632485}
+  - component: {fileID: 1036632486}
   - component: {fileID: 1036632482}
   - component: {fileID: 1036632481}
   - component: {fileID: 1036632480}
@@ -359,10 +361,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1036632479}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6656311a54d2552459d559f34e6a00c3, type: 3}
+  m_Script: {fileID: 11500000, guid: 05dacdb4d6b4fb14cb3b986909c93847, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  material: {fileID: 2100000, guid: a4946aa6cff01cb48900aaa994aba556, type: 2}
+  quantumSystem: {fileID: 11400000, guid: 36cb4deee8772bc4fa91e6489a2f466d, type: 2}
 --- !u!114 &1036632481
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -372,10 +374,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1036632479}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05dacdb4d6b4fb14cb3b986909c93847, type: 3}
+  m_Script: {fileID: 11500000, guid: 6656311a54d2552459d559f34e6a00c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  quantumSystem: {fileID: 11400000, guid: 36cb4deee8772bc4fa91e6489a2f466d, type: 2}
+  material: {fileID: 2100000, guid: a4946aa6cff01cb48900aaa994aba556, type: 2}
 --- !u!114 &1036632482
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -388,6 +390,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 960ea63875e05ab4b8851f0559826f2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initalState: {fileID: 11400000, guid: ac37e4338896e3d4dbbc30a80158bc01, type: 2}
 --- !u!4 &1036632483
 Transform:
   m_ObjectHideFlags: 0
@@ -414,9 +417,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffe6d070d66359649bc1e5c7e7b82ade, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  quantumSystem: {fileID: 11400000, guid: 36cb4deee8772bc4fa91e6489a2f466d, type: 2}
-  mat: {fileID: 2100000, guid: a4946aa6cff01cb48900aaa994aba556, type: 2}
-  speed: 0
+  speed: 0.1
+--- !u!114 &1036632485
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1036632479}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a36512ef8f9c5f4f835abdcf4c07a30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1036632486
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1036632479}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3504bb0952beae48bf719c40581e6ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1931591305
 GameObject:
   m_ObjectHideFlags: 0

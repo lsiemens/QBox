@@ -3,7 +3,8 @@
     Properties
     {
         _States ("States", 2DArray) = "" {}
-        _Potential ("Potential", 2D) = "white" {}
+        // _Potential texture slot called _MainTex to keep unity from raising errors about missing _MainTex
+        _MainTex ("Potential", 2D) = "white" {}
         _MaxIndex ("Maximum Index", Range(0, 1023)) = 0
         _Scale ("Scale", Range(-10, 10)) = 0
     }
@@ -44,7 +45,7 @@
             int _MaxIndex;
             float4 _RealCoefficients[1023];
             float4 _ImaginaryCoefficients[1023];
-            sampler2D _Potential;
+            sampler2D _MainTex;
             UNITY_DECLARE_TEX2DARRAY(_States);
 
             float4 RealValue, ImaginaryValue;
@@ -61,18 +62,10 @@
                 Phi.x = RealValue.r + RealValue.g + RealValue.b;
                 Phi.y = ImaginaryValue.r + ImaginaryValue.g + ImaginaryValue.b;
 
-                float pot = tex2D(_Potential, i.uv);
-                return (Phi.x*Phi.x + Phi.y*Phi.y)*exp(_Scale);
+                float pot = tex2D(_MainTex, i.uv);
+                return float4((Phi.x*Phi.x + Phi.y*Phi.y)*exp(_Scale), 0.0, 0.0, 0.0) + pot/10;
+                //return (Phi.x*Phi.x + Phi.y*Phi.y)*exp(_Scale);
             }
-//            fixed4 frag (v2f i) : SV_Target
-//            {
-//                float4 col = UNITY_SAMPLE_TEX2DARRAY(_States, float3(i.uv.x, i.uv.y, _Index)); // integer indexing
-//                float pot = tex2D(_Potential, i.uv);
-//                col.a = pot; // since the alpha channel is empty anyway
-//                col = col*_Color;
-//                return (col*col + col.a);
-//                //return (col*col*_Test[0] + col.a*_Test[_Index]);
-//            }
             ENDCG
         }
     }
