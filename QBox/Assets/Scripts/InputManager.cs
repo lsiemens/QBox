@@ -4,13 +4,26 @@ using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
+    private static InputManager inputManager;
 
+    public static Vector2 mousePosition {
+        get {
+            if (!inputManager) {
+                inputManager = FindObjectOfType(typeof(InputManager)) as InputManager;
+                if (!inputManager) {
+                    Debug.LogError("No active InputManager component found.");
+                }
+            }
+            return inputManager.GetMousePosition();
+        }
     }
 
-    // Update is called once per frame
+    public static float shaderScale {
+        get {
+            return Input.GetAxis("Shader Scale");
+        }
+    }
+
     void Update()
     {
         if (Input.GetButtonDown("Edit Mode")) {
@@ -22,5 +35,21 @@ public class InputManager : MonoBehaviour
         if (Input.GetButtonDown("Mouse Click")) {
             ProgramStateMachine.AttemptTransition("Run");
         }
+
+        if (Input.GetButtonDown("Raise State")) {
+            EventManager.TriggerEvent("Raise State");
+            Debug.Log("Raise state");
+        }
+        if (Input.GetButtonDown("Lower State")) {
+            EventManager.TriggerEvent("Lower State");
+        }
+
+        if (Input.GetButtonDown("Cycle Shader")) {
+            EventManager.TriggerEvent("Cycle Shader");
+        }
+    }
+
+    Vector2 GetMousePosition() {
+        return new Vector2(2*Input.mousePosition.x/Screen.width - 1.0f, 2*Input.mousePosition.y/Screen.height - 1.0f);
     }
 }

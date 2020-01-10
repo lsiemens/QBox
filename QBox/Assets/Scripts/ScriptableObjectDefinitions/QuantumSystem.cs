@@ -13,78 +13,34 @@ public class QuantumSystem : ScriptableObject {
     [System.NonSerialized] public int maxTextureLayer;
     [System.NonSerialized] public int numberOfStates;
     int resolution;
+    float xMax, dx;
     float[,,] states; // states[level, i, j]
     [System.NonSerialized] public float[] energyLevels;
     Texture2D potentialTexture;
     Texture2DArray statesTexture;
 
-// ------------------------------ TEMPORARY
-    public float Norm2(float[,] data) {
-        float dx = 0.1f; // Get from ImportData
-        if ((data.GetLength(0) != resolution) || (data.GetLength(1) != resolution)) {
-            Debug.LogError("function must have dimensions resolution X resolution");
-        }
-        float value = 0.0f;
-        for (int i = 0; i < resolution; i++) {
-            for (int j = 0; j < resolution; j++) {
-                value += data[i, j]*data[i, j]*dx*dx;
-            }
-        }
-        return value;
-    }
+    QMath qMath;
 
 // ---------------------------------- TEMPORARY
-    public float[,] MakeGaussian(float width) {
+    public float[,] MakeGaussian(Vector2 offset, float width) {
         float[,] coefficients = new float[numberOfStates, 2];
-        float[,] gaussian = new float[resolution, resolution];
-        float dx = 0.1f;
-        float x, y;
-        for (int i = 0; i < resolution; i++) {
-            for (int j = 0; j < resolution; j++) {
-                x = (j - resolution/2 + 0)*dx;
-                y = (i - resolution/2 - 64)*dx;
-                gaussian[i, j] = Mathf.Exp(-(x*x + y*y)/(width*width));
-            }
-        }
-        float norm = Mathf.Sqrt(Norm2(gaussian));
-        /*for (int i = 0; i < resolution; i++) {
-            for (int j = 0; j < resolution; j++) {
-                gaussian[i, j] = gaussian[i, j]/norm;
-            }
-        }*/
+        float[,] gaussian = qMath.Gaussian(offset, width);
 
         for (int k = 0; k < numberOfStates; k++) {
             float value = 0.0f;
-            /*for (int i = 0; i < resolution; i++) {
-                for (int j = 0; j < resolution; j++) {
-                    value += states[k, i, j]*states[k, i, j]*dx*dx;
-                }
-            }
-            norm = Mathf.Sqrt(value);
-            for (int i = 0; i < resolution; i++) {
-                for (int j = 0; j < resolution; j++) {
-                    states[k, i, j] = states[k, i, j]/norm;
-                }
-            }*/
 
             value = 0.0f;
             for (int i = 0; i < resolution; i++) {
                 for (int j = 0; j < resolution; j++) {
-                    value += states[k, i, j]*gaussian[i, j]*dx*dx; //*gaussian[i, j]
+                    value += states[k, i, j]*gaussian[i, j]*dx*dx;
                 }
             }
             coefficients[k, 0] = value;
 
         }
-        float value1 = 0.0f;
-        for (int k = 0; k < numberOfStates; k++) {
-            value1 += coefficients[k, 0]*coefficients[k, 0] + coefficients[k, 1]*coefficients[k, 1];
-        }
-        value1 = Mathf.Sqrt(value1);
-        for (int k = 0; k < numberOfStates; k++) {
-            coefficients[k, 0] /= value1;
-            coefficients[k, 1] /= value1;
-        }
+        Debug.Log("1 " + qMath.InnerProductV(coefficients));
+        qMath.NormalizeV(coefficients);
+        Debug.Log("2 " + qMath.InnerProductV(coefficients));
 
         return coefficients;
     }
@@ -99,7 +55,11 @@ public class QuantumSystem : ScriptableObject {
             energyLevels[i] = (float)importData.energyLevels[i];
         }
         resolution = importData.resolution;
+        xMax = (float)importData.xMax;
+        dx = 2*xMax/(resolution - 1);
         stateChannels = importData.statesAtlasChannels;
+
+        qMath = new QMath(resolution, xMax);
 
         // ------------------- POTENTAL ----------------------------
         potentialTexture = new Texture2D(resolution, resolution, TextureFormat.RFloat, false);

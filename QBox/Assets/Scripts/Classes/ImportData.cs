@@ -5,8 +5,11 @@ public struct ImportData
 {
     public int potentialAtlasResolution, potentialAtlasGrid, potentialAtlasChannels;
     public double potentialMax, potentialMin;
+
     public int statesAtlasResolution, statesAtlasGrid, statesAtlasChannels;
+
     public int numberOfStates, resolution;
+    public double xMax;
     public bool isLinear;
     public double[] energyLevels;
 }

@@ -1,4 +1,4 @@
-﻿Shader "QBox/QuantumStates"
+﻿Shader "QBox/QuantumStatesMagnitude"
 {
     Properties
     {

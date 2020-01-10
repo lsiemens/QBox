@@ -14,20 +14,30 @@ public class WaveFunction : MonoBehaviour
 
     QuantumSystem quantumSystem;
     private UnityAction OnStateMachineTransitionAction;
+    private UnityAction OnRaiseStateAction;
+    private UnityAction OnLowerStateAction;
 
     private delegate void MethodPointer();
     private MethodPointer ContextPreupdate;
 
+    private int viewStateIndex;
+
     void Awake() {
         OnStateMachineTransitionAction = new UnityAction(OnStateMachineTransition);
+        OnRaiseStateAction = new UnityAction(OnRaiseState);
+        OnLowerStateAction = new UnityAction(OnLowerState);
     }
 
     void OnEnable() {
         EventManager.RegisterListener("OnStateMachineTransition", OnStateMachineTransitionAction);
+        EventManager.RegisterListener("Raise State", OnRaiseStateAction);
+        EventManager.RegisterListener("Lower State", OnLowerStateAction);
     }
 
     void OnDisable() {
         EventManager.DeregisterListener("OnStateMachineTransition", OnStateMachineTransitionAction);
+        EventManager.DeregisterListener("Raise State", OnRaiseStateAction);
+        EventManager.DeregisterListener("Lower State", OnLowerStateAction);
     }
 
     void Start()
@@ -65,8 +75,19 @@ public class WaveFunction : MonoBehaviour
         MaterialController.currentMaterial.SetColorArray("_ImaginaryCoefficients", imaginaryData);
     }
 
+    void ViewUpdate() {
+        for (int i = 0; i < numberOfStates; i++) {
+            coefficients[i, 0] = 0.0f;
+            coefficients[i, 1] = 0.0f;
+            if (i == viewStateIndex) {
+                coefficients[i, 0] = 1.0f;
+            }
+        }
+    }
+
     void EditUpdate() {
-        coefficients = quantumSystem.MakeGaussian(3.0f*(Mathf.Cos(Time.time) + 1.01f));
+        Debug.Log(InputManager.mousePosition);
+        coefficients = quantumSystem.MakeGaussian(InputManager.mousePosition, 0.5f*(Mathf.Cos(Time.time) + 1.01f));
     }
 
     void RunUpdate() {
@@ -74,32 +95,39 @@ public class WaveFunction : MonoBehaviour
     }
 
     void OnStateMachineTransition() {
+        viewStateIndex = 0;
         time = 0.0f;
         ContextPreupdate = null;
         string state = ProgramStateMachine.state;
         switch (state) {
             case "View":
-                Debug.Log("view");
-                for (int i = 0; i < numberOfStates; i++) {
-                    coefficients[i, 0] = 0.0f;
-                    coefficients[i, 1] = 0.0f;
-                }
-                coefficients[0,0] = 1.0f;
+                //ViewUpdate need only be called periodicaly when somthing changes
+                ViewUpdate();
                 break;
             case "Edit":
-                for (int i = 0; i < numberOfStates; i++) {
-                    coefficients[i, 0] = 0.0f;
-                    coefficients[i, 1] = 0.0f;
-                }
                 ContextPreupdate = EditUpdate;
                 break;
             case "Run":
-                //coefficients = quantumSystem.MakeGaussian(3.0f);
                 ContextPreupdate = RunUpdate;
                 break;
             default:
                 Debug.Log("WaveFunction, OnStateMachineTransition: unhandled transition, state: " + state);
                 break;
         }
+    }
+
+    void OnRaiseState() {
+        Debug.Log("Raising state");
+        if (viewStateIndex + 1 < numberOfStates) {
+            viewStateIndex++;
+        }
+        ViewUpdate();
+    }
+
+    void OnLowerState(){
+        if (viewStateIndex > 0) {
+            viewStateIndex--;
+        }
+        ViewUpdate();
     }
 }
