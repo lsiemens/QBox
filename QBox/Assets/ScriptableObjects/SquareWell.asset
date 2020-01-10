@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc6f329e1c69f4a4daac4c155946a3b5, type: 3}
+  m_Name: SquareWell
+  m_EditorClassIdentifier: 
+  systemConfig: {fileID: 4900000, guid: bff02d11e4979644db957fa4d9d2aa4f, type: 3}
+  potentialTextureEXR: {fileID: 2800000, guid: 65977c42fcf246c4cb3b12d63e9e5d17, type: 3}
+  statesTextureEXR: {fileID: 2800000, guid: 46461d1794e734d4b85b0e41f0db940e, type: 3}
+  mat: {fileID: 2100000, guid: a4946aa6cff01cb48900aaa994aba556, type: 2}
