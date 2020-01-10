@@ -423,6 +423,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 0.1
+  gaussianWidthSpeed: 1
+  gaussianWidthMinimum: -4
 --- !u!114 &1036632485
 MonoBehaviour:
   m_ObjectHideFlags: 0

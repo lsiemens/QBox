@@ -18,6 +18,12 @@ public class InputManager : MonoBehaviour
         }
     }
 
+    public static float mouseScroll {
+        get {
+            return Input.mouseScrollDelta.y;
+        }
+    }
+
     public static float shaderScale {
         get {
             return Input.GetAxis("Shader Scale");

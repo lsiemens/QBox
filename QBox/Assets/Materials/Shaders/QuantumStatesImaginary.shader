@@ -6,7 +6,6 @@
         // _Potential texture slot called _MainTex to keep unity from raising errors about missing _MainTex
         _MainTex ("Potential", 2D) = "white" {}
         _MaxIndex ("Maximum Index", Range(0, 1023)) = 0
-        _Scale ("Scale", Range(-10, 10)) = 0
     }
     SubShader
     {

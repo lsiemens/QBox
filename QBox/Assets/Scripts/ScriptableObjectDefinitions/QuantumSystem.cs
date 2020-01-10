@@ -12,38 +12,15 @@ public class QuantumSystem : ScriptableObject {
     [System.NonSerialized] public int stateChannels;
     [System.NonSerialized] public int maxTextureLayer;
     [System.NonSerialized] public int numberOfStates;
+    [System.NonSerialized] public float xMax;
     int resolution;
-    float xMax, dx;
-    float[,,] states; // states[level, i, j]
+    float dx;
+    float[][,] states; // states[level, i, j]
     [System.NonSerialized] public float[] energyLevels;
     Texture2D potentialTexture;
     Texture2DArray statesTexture;
 
-    QMath qMath;
-
-// ---------------------------------- TEMPORARY
-    public float[,] MakeGaussian(Vector2 offset, float width) {
-        float[,] coefficients = new float[numberOfStates, 2];
-        float[,] gaussian = qMath.Gaussian(offset, width);
-
-        for (int k = 0; k < numberOfStates; k++) {
-            float value = 0.0f;
-
-            value = 0.0f;
-            for (int i = 0; i < resolution; i++) {
-                for (int j = 0; j < resolution; j++) {
-                    value += states[k, i, j]*gaussian[i, j]*dx*dx;
-                }
-            }
-            coefficients[k, 0] = value;
-
-        }
-        Debug.Log("1 " + qMath.InnerProductV(coefficients));
-        qMath.NormalizeV(coefficients);
-        Debug.Log("2 " + qMath.InnerProductV(coefficients));
-
-        return coefficients;
-    }
+    public QMath qMath;
 
     public void Load() {
         // ------------------ CONFIGURATION DATA ---------------------------------
@@ -82,14 +59,21 @@ public class QuantumSystem : ScriptableObject {
 
         int stateIndex = 0;
 
-        states = new float[numberOfStates, resolution, resolution];
+        // initalize states
+        states = new float[numberOfStates][,];
+        for (int i=0; i < numberOfStates; i++) {
+            states[i] = new float[resolution,resolution];
+        }
+
+        // get states data from EXR texture and decode by takig the Log
+        // read in textures from grid red channel to green channel, left to right, top to bottom
         for (int grid_i = importData.statesAtlasGrid - 1; grid_i >= 0; grid_i--) {
             for (int grid_j = 0; grid_j < importData.statesAtlasGrid; grid_j++) {
                 for (int grid_c = 0; grid_c < stateChannels; grid_c++) {
 
                     for (int pixel_i = 0; pixel_i < resolution; pixel_i++) {
                         for (int pixel_j = 0; pixel_j < resolution; pixel_j++) {
-                            states[stateIndex, pixel_i, pixel_j] = Mathf.Log(textureData[pixel_j + resolution*(grid_j + importData.statesAtlasGrid*(pixel_i + grid_i*resolution))][grid_c]);
+                            states[stateIndex][pixel_i, pixel_j] = Mathf.Log(textureData[pixel_j + resolution*(grid_j + importData.statesAtlasGrid*(pixel_i + grid_i*resolution))][grid_c]);
                         }
                     }
 
@@ -105,6 +89,7 @@ public class QuantumSystem : ScriptableObject {
             Debug.LogError("Error: " + numberOfStates + " quantum states can not fit into an integer number of " + importData.statesAtlasChannels + " channel textures.");
         }
 
+        // pack states as triplets in a color texture2DArray
         maxTextureLayer = numberOfStates / stateChannels;
         statesTexture = new Texture2DArray(resolution, resolution, maxTextureLayer, TextureFormat.RGBAFloat, false);
         for (int layer = 0; layer < maxTextureLayer; layer++) {
@@ -113,7 +98,7 @@ public class QuantumSystem : ScriptableObject {
             for (int i = 0; i < resolution; i++) {
                 for (int j = 0; j < resolution; j++) {
                     for (int k = 0; k < stateChannels; k++) {
-                        tempState[j + i*resolution][k] = states[k + layer*stateChannels, i, j];
+                        tempState[j + i*resolution][k] = states[k + layer*stateChannels][i, j];
                     }
                 }
             }
@@ -125,4 +110,9 @@ public class QuantumSystem : ScriptableObject {
         MaterialController.currentMaterial.SetInt("_MaxIndex", maxTextureLayer);
         Debug.Log("Texture Loaded!");
     }
+
+    public float[,] ProjectFunction(float[,] function) {
+        return qMath.ProjectFunction(states, function);
+    }
+
 }

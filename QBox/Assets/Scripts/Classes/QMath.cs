@@ -76,12 +76,28 @@ public class QMath
         float magnitude = 1.0f; // compute normalization
         for (int i = 0; i < resolution; i++) {
             for (int j = 0; j < resolution; j++) {
-                x = (j - resolution/2)*dx - offset.x*xMax;
-                y = (i - resolution/2)*dx - offset.y*xMax;
+                x = (j - resolution/2)*dx - offset.x;
+                y = (i - resolution/2)*dx - offset.y;
                 gaussian[i, j] = magnitude*Mathf.Exp(-(x*x + y*y)/(width*width));
             }
         }
         return gaussian;
+    }
+
+    public float[,] ProjectFunction(float[][,] states, float[,] function) {
+        if ((function.GetLength(0) != resolution) || (function.GetLength(1) != resolution)) {
+            Debug.LogError("function must have dimensions resolution X resolution");
+        }
+        float[,] coefficients = new float[states.Length, 2];
+
+        for (int k = 0; k < states.Length; k++) {
+            if ((states[k].GetLength(0) != resolution) || (states[k].GetLength(1) != resolution)) {
+                Debug.LogError("State[" + k + "] must have dimensions resolution X resolution");
+            }
+            coefficients[k, 0] = InnerProductF(states[k], function);
+        }
+        NormalizeV(coefficients);
+        return coefficients;
     }
 
 }

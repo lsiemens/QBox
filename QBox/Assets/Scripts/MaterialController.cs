@@ -65,7 +65,8 @@ public class MaterialController : MonoBehaviour
         } else {
             Debug.LogError("MaterialController has not been assigned any shaders.");
         }
-        
+
         material.shader = shaders[shaderIndex];
+        currentMaterial.SetFloat("_Scale", shaderScale);
     }
 }

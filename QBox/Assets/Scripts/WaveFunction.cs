@@ -21,6 +21,9 @@ public class WaveFunction : MonoBehaviour
     private MethodPointer ContextPreupdate;
 
     private int viewStateIndex;
+    private float gaussianWidth;
+    public float gaussianWidthSpeed = 1.0f;
+    public float gaussianWidthMinimum = -4.0f;
 
     void Awake() {
         OnStateMachineTransitionAction = new UnityAction(OnStateMachineTransition);
@@ -84,10 +87,20 @@ public class WaveFunction : MonoBehaviour
             }
         }
     }
-
+    
     void EditUpdate() {
-        Debug.Log(InputManager.mousePosition);
-        coefficients = quantumSystem.MakeGaussian(InputManager.mousePosition, 0.5f*(Mathf.Cos(Time.time) + 1.01f));
+        if (InputManager.mouseScroll != 0.0f) {
+            if (gaussianWidth < gaussianWidthMinimum) {
+                gaussianWidth = gaussianWidthMinimum;
+            } else {
+                gaussianWidth += gaussianWidthSpeed*Time.deltaTime*InputManager.mouseScroll;
+            }
+        }
+
+        Debug.Log(gaussianWidth);
+        float[,] gaussian = quantumSystem.qMath.Gaussian(InputManager.mousePosition*quantumSystem.xMax, Mathf.Exp(gaussianWidth)*quantumSystem.xMax);
+
+        coefficients = quantumSystem.ProjectFunction(gaussian);
     }
 
     void RunUpdate() {
@@ -97,6 +110,7 @@ public class WaveFunction : MonoBehaviour
     void OnStateMachineTransition() {
         viewStateIndex = 0;
         time = 0.0f;
+        gaussianWidth = -2.0f;
         ContextPreupdate = null;
         string state = ProgramStateMachine.state;
         switch (state) {
