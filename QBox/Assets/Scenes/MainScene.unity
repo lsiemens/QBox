@@ -364,7 +364,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05dacdb4d6b4fb14cb3b986909c93847, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  quantumSystem: {fileID: 11400000, guid: 36cb4deee8772bc4fa91e6489a2f466d, type: 2}
+  quantumSystem: {fileID: 11400000, guid: 6239936a3b9348b45b9b913c1acfca66, type: 2}
 --- !u!114 &1036632481
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -422,7 +422,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffe6d070d66359649bc1e5c7e7b82ade, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0.1
+  speed: 0.5
   gaussianWidthSpeed: 1
   gaussianWidthMinimum: -4
 --- !u!114 &1036632485

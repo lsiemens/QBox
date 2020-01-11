@@ -10,9 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bc6f329e1c69f4a4daac4c155946a3b5, type: 3}
-  m_Name: SquareWell
+  m_Name: Hydrogen
   m_EditorClassIdentifier: 
-  systemConfig: {fileID: 4900000, guid: bff02d11e4979644db957fa4d9d2aa4f, type: 3}
-  potentialTextureEXR: {fileID: 2800000, guid: 65977c42fcf246c4cb3b12d63e9e5d17, type: 3}
-  statesTextureEXR: {fileID: 2800000, guid: 46461d1794e734d4b85b0e41f0db940e, type: 3}
-  mat: {fileID: 2100000, guid: a4946aa6cff01cb48900aaa994aba556, type: 2}
+  systemConfig: {fileID: 4900000, guid: 3916685e20a125c4c8ba8addfd586b7d, type: 3}
+  potentialTextureEXR: {fileID: 2800000, guid: a243144d3c4a588469ac4600f9e2a1f0, type: 3}
+  statesTextureEXR: {fileID: 2800000, guid: 6106488d27eb3534ab0f793b1b13586c, type: 3}
