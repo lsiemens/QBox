@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 // WaveFunction contains all the the nessisary information to describe a quantum
 // superposition and methods to get its time evelution.
@@ -11,7 +10,6 @@ public class WaveFunction : MonoBehaviour
     [System.NonSerialized] public bool isLoaded=false;
     float[,] coefficients; // {{real part, imaginary part}, ...}
 
-    private UnityAction OnStateMachineTransitionAction;
     QuantumSystem quantumSystem;
     private static WaveFunction waveFunction;
 
@@ -38,31 +36,10 @@ public class WaveFunction : MonoBehaviour
         }
     }
 
-    void Awake() {
-        OnStateMachineTransitionAction = new UnityAction(OnStateMachineTransition);
-    }
-
-    void OnEnable() {
-        EventManager.RegisterListener("OnStateMachineTransition", OnStateMachineTransitionAction);
-    }
-
-    void OnDisable() {
-        EventManager.DeregisterListener("OnStateMachineTransition", OnStateMachineTransitionAction);
-    }
-
-    void Start() {
-        OnStateMachineTransition();
-    }
-
-    void OnStateMachineTransition() {
-        string state = ProgramStateMachine.state;
-        switch (state) {
-            case "Loading":
-                instance.isLoaded = false;
-                break;
-            default:
-                break;
-        }
+    public static void Reload() {
+        QSystemController.Reload();
+        instance.isLoaded = false; //------------------------- TODO remove this
+        instance.Initalize();
     }
 
     void Initalize() {
@@ -96,7 +73,7 @@ public class WaveFunction : MonoBehaviour
                     imaginaryData[i][j] = instance.coefficients[k, 1]*cos_et + instance.coefficients[k, 0]*sin_et;
                 }
             }
-            
+
             MaterialController.currentMaterial.SetColorArray("_RealCoefficients", realData);
             MaterialController.currentMaterial.SetColorArray("_ImaginaryCoefficients", imaginaryData);
         }

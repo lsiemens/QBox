@@ -30,11 +30,19 @@ public class LoadingMode : MonoBehaviour
         switch (state) {
             case "Loading":
                 loading.SetActive(true);
+                // Start load sequence next frame to give objects time to process Loading transition.
+                StartCoroutine(LoadingCoroutine());
                 break;
             default:
                 loading.SetActive(false);
                 break;
         }
+    }
+
+    IEnumerator LoadingCoroutine() {
+        yield return null;
+        WaveFunction.Reload();
+        ProgramStateMachine.AttemptTransition("View");
     }
 
 }

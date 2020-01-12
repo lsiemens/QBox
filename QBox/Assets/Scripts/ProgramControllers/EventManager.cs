@@ -5,6 +5,7 @@ using UnityEngine.Events;
 
 public class EventManager : MonoBehaviour {
     private Dictionary<string, UnityEvent> eventDictionary;
+    private bool eventLock;
 
     private static EventManager eventManager;
 
@@ -34,6 +35,7 @@ public class EventManager : MonoBehaviour {
     }
 
     void Initalize() {
+        eventLock=false;
         if (eventDictionary == null) {
             eventDictionary = new Dictionary<string, UnityEvent>();
         }
@@ -50,7 +52,13 @@ public class EventManager : MonoBehaviour {
     public static void TriggerEvent(string eventName) {
         UnityEvent thisEvent = null;
         if (instance.eventDictionary.TryGetValue(eventName, out thisEvent)) {
-            thisEvent.Invoke();
+            if (!instance.eventLock) {
+                instance.eventLock = true;
+                thisEvent.Invoke();
+                instance.eventLock = false;
+            } else {
+                Debug.LogError("Events can not be triggered while processing events.");
+            }
         }
     }
 }
