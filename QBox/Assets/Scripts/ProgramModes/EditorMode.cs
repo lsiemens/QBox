@@ -49,7 +49,7 @@ public class EditorMode : MonoBehaviour
         }
     }
 
-    public void Run() {
+    public void DoneEditing() {
         ProgramStateMachine.AttemptTransition("Run");
     }
 

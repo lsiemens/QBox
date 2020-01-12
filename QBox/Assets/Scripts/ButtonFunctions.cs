@@ -8,9 +8,17 @@ public class ButtonFunctions : MonoBehaviour
         #if UNITY_STANDALONE
             Application.Quit();
         #endif
-     
+
         #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
         #endif
+    }
+
+    public void NavigationView() {
+        ProgramStateMachine.AttemptTransition("View");
+    }
+
+    public void NavigationEdit() {
+        ProgramStateMachine.AttemptTransition("Edit");
     }
 }
