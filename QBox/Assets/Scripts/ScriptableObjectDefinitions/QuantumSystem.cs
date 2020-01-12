@@ -9,6 +9,7 @@ public class QuantumSystem : ScriptableObject {
     public Texture2D potentialTextureEXR;
     public Texture2D statesTextureEXR;
 
+    [System.NonSerialized] public bool isLoaded = false;
     [System.NonSerialized] public int stateChannels;
     [System.NonSerialized] public int maxTextureLayer;
     [System.NonSerialized] public int numberOfStates;
@@ -109,6 +110,7 @@ public class QuantumSystem : ScriptableObject {
         MaterialController.currentMaterial.SetTexture("_States", statesTexture);
         MaterialController.currentMaterial.SetInt("_MaxIndex", maxTextureLayer);
         Debug.Log("Texture Loaded!");
+        isLoaded = true;
     }
 
     public float[,] ProjectFunction(float[,] function) {

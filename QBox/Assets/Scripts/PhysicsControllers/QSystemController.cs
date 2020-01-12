@@ -8,6 +8,9 @@ public class QSystemController : MonoBehaviour
     public QuantumSystem quantumSystem;
 
     private static QSystemController qsystemController;
+    private bool isLoaded=false;
+    [Tooltip("Minimum number of frames to display the loading screen.")]
+    public int delayedLoading;
 
     public static QuantumSystem currentQuantumSystem {
         get {
@@ -21,8 +24,14 @@ public class QSystemController : MonoBehaviour
         }
     }
 
-    void Start()
-    {
-        quantumSystem.Load();
+    void Update() {
+        Debug.Log("u");
+        if ((!isLoaded) && (Time.frameCount > delayedLoading)) {
+            Debug.Log(Time.time);
+            quantumSystem.Load();
+            ProgramStateMachine.AttemptTransition("View");
+            isLoaded = true;
+        }
     }
+
 }

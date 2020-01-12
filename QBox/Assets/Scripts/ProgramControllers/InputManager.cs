@@ -38,9 +38,6 @@ public class InputManager : MonoBehaviour
         if (Input.GetButtonDown("View Mode")) {
             ProgramStateMachine.AttemptTransition("View");
         }
-        if (Input.GetButtonDown("Mouse Click")) {
-            ProgramStateMachine.AttemptTransition("Run");
-        }
 
         if (Input.GetButtonDown("Raise State")) {
             EventManager.TriggerEvent("Raise State");

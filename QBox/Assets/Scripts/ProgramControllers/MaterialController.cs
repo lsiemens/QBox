@@ -68,5 +68,6 @@ public class MaterialController : MonoBehaviour
 
         material.shader = shaders[shaderIndex];
         currentMaterial.SetFloat("_Scale", shaderScale);
+        WaveFunction.UpdateRender();
     }
 }
