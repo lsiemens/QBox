@@ -21,4 +21,5 @@ public class ButtonFunctions : MonoBehaviour
     public void NavigationEdit() {
         ProgramStateMachine.AttemptTransition("Edit");
     }
+
 }

@@ -5,7 +5,6 @@ using UnityEngine.Events;
 
 public class ViewerMode : MonoBehaviour
 {
-
     private UnityAction OnRaiseStateAction;
     private UnityAction OnLowerStateAction;
 
@@ -55,6 +54,7 @@ public class ViewerMode : MonoBehaviour
         string state = ProgramStateMachine.state;
         switch (state) {
             case "View":
+                viewStateIndex = 0;
                 isViewMode = true;
                 ViewUpdate();
                 break;

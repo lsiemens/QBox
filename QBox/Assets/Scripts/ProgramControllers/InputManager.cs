@@ -41,7 +41,6 @@ public class InputManager : MonoBehaviour
 
         if (Input.GetButtonDown("Raise State")) {
             EventManager.TriggerEvent("Raise State");
-            Debug.Log("Raise state");
         }
         if (Input.GetButtonDown("Lower State")) {
             EventManager.TriggerEvent("Lower State");

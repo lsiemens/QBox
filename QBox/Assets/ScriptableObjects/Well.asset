@@ -15,3 +15,4 @@ MonoBehaviour:
   systemConfig: {fileID: 4900000, guid: 64cd00c53f98a5043be653c8a96fa77e, type: 3}
   potentialTextureEXR: {fileID: 2800000, guid: 3f9b433763c4dba4b8024c5e63bc44a8, type: 3}
   statesTextureEXR: {fileID: 2800000, guid: afb20e1e76b9dbd449a2caf7a0fe930d, type: 3}
+  potentialLabel: Well

@@ -8,9 +8,10 @@ using UnityEngine.Events;
 public class WaveFunction : MonoBehaviour
 {
     [System.NonSerialized] public int numberOfStates;
-
     [System.NonSerialized] public bool isLoaded=false;
     float[,] coefficients; // {{real part, imaginary part}, ...}
+
+    private UnityAction OnStateMachineTransitionAction;
     QuantumSystem quantumSystem;
     private static WaveFunction waveFunction;
 
@@ -34,6 +35,33 @@ public class WaveFunction : MonoBehaviour
                 waveFunction.Initalize();
             }
             return waveFunction;
+        }
+    }
+
+    void Awake() {
+        OnStateMachineTransitionAction = new UnityAction(OnStateMachineTransition);
+    }
+
+    void OnEnable() {
+        EventManager.RegisterListener("OnStateMachineTransition", OnStateMachineTransitionAction);
+    }
+
+    void OnDisable() {
+        EventManager.DeregisterListener("OnStateMachineTransition", OnStateMachineTransitionAction);
+    }
+
+    void Start() {
+        OnStateMachineTransition();
+    }
+
+    void OnStateMachineTransition() {
+        string state = ProgramStateMachine.state;
+        switch (state) {
+            case "Loading":
+                instance.isLoaded = false;
+                break;
+            default:
+                break;
         }
     }
 
@@ -68,8 +96,7 @@ public class WaveFunction : MonoBehaviour
                     imaginaryData[i][j] = instance.coefficients[k, 1]*cos_et + instance.coefficients[k, 0]*sin_et;
                 }
             }
-
-            Debug.Log("send states to shader" + instance.coefficients.Length);
+            
             MaterialController.currentMaterial.SetColorArray("_RealCoefficients", realData);
             MaterialController.currentMaterial.SetColorArray("_ImaginaryCoefficients", imaginaryData);
         }

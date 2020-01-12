@@ -41,7 +41,6 @@ public class EditorMode : MonoBehaviour
                 }
             }
 
-            Debug.Log(gaussianWidth);
             float[,] gaussian = QSystemController.currentQuantumSystem.qMath.Gaussian(InputManager.mousePosition*QSystemController.currentQuantumSystem.xMax, Mathf.Exp(gaussianWidth)*QSystemController.currentQuantumSystem.xMax);
 
             WaveFunction.SetCoefficients(QSystemController.currentQuantumSystem.ProjectFunction(gaussian));

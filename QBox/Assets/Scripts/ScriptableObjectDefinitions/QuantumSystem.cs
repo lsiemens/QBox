@@ -8,6 +8,7 @@ public class QuantumSystem : ScriptableObject {
     public TextAsset systemConfig;
     public Texture2D potentialTextureEXR;
     public Texture2D statesTextureEXR;
+    public string potentialLabel;
 
     [System.NonSerialized] public bool isLoaded = false;
     [System.NonSerialized] public int stateChannels;

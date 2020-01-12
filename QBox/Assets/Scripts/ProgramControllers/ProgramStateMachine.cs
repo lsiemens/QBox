@@ -35,8 +35,6 @@ public class ProgramStateMachine : MonoBehaviour
         if (instance.currentState.stateTransitions.TryGetValue(state, out newState)) {
             instance.currentState = newState;
             EventManager.TriggerEvent("OnStateMachineTransition");
-        } else {
-            Debug.Log("Failed attempt to change state to " + state + " the current state is " + instance.currentState.state);
         }
     }
 
