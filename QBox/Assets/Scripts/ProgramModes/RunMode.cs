@@ -38,12 +38,15 @@ public class RunMode : MonoBehaviour
 
     void OnStateMachineTransition() {
         string state = ProgramStateMachine.state;
+        time = 0.0f;
         switch (state) {
             case "Run":
                 isRunMode = true;
+                run.SetActive(true);
                 break;
             default:
                 isRunMode = false;
+                run.SetActive(false);
                 break;
         }
     }
