@@ -11,9 +11,6 @@ public class ScrollListCoefficients : MonoBehaviour
     public EditorMode editorMode;
     private Stack<GameObject> objects = new Stack<GameObject>();
 
-    void Start() {
-    }
-
     public void AddElements() {
         editorMode.coefficientsActive = new float[WaveFunction.NumberOfStates,2];
         for (int i = 0; i < WaveFunction.NumberOfStates; i++) {
@@ -45,15 +42,4 @@ public class ScrollListCoefficients : MonoBehaviour
         editorMode.coefficientsActive = null;
     }
 
-/*    void Start() {
-        for (int i = 0; i < WaveFunction.NumberOfStates; i++) {
-            // Instantiate new button prefab
-            GameObject newObject = Instantiate(prefab) as GameObject;
-            newObject.transform.SetParent(contentPanel);
-            newObject.SetActive(true);
-            // Initalize dynamic button component
-            ManualDataInput newComponent = newObject.GetComponent<ManualDataInput>();
-            newComponent.Initalize(i);
-        }
-    }*/
 }
