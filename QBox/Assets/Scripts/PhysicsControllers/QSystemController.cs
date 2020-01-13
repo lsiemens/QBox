@@ -9,7 +9,6 @@ public class QSystemController : MonoBehaviour
     public QuantumSystem[] quantumSystems;
 
     private static QSystemController qsystemController;
-    private bool isLoaded=false;
 
     public static QuantumSystem currentQuantumSystem {
         get {
@@ -23,16 +22,10 @@ public class QSystemController : MonoBehaviour
                 qsystemController = (QSystemController)FindObjectOfType(typeof(QSystemController));
                 if (!qsystemController) {
                     Debug.LogError("No active QSystemController component found.");
-                } else {
-                    qsystemController.Initalize();
                 }
             }
             return qsystemController;
         }
-    }
-
-    void Initalize() {
-        isLoaded = false;
     }
 
     public static void LoadState(int index) {
@@ -40,14 +33,12 @@ public class QSystemController : MonoBehaviour
             Debug.LogError("Can not load state " + index + " index is out of bounds.");
         }
         instance.quantumSystemIndex = index;
-        instance.Initalize();
         ProgramStateMachine.AttemptTransition("Loading");
     }
 
     public static void Reload() {
         MaterialController.Reload();
         instance.quantumSystems[instance.quantumSystemIndex].Load();
-        instance.isLoaded = true;
     }
 
 }

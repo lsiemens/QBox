@@ -10,8 +10,12 @@ public class EditorMode : MonoBehaviour
 
     public GameObject editor;
 
+    public List<float[,]> coefficientsList;
+    public float[,] coefficientsActive = null;
+    public float minimumCoefficiantNorm2 = 1.0e-20f;
+
     private bool isEditorMode;
-    private float gaussianWidth;
+    public float gaussianWidth;
     public float gaussianWidthSpeed = 1.0f;
     public float gaussianWidthMinimum = -4.0f;
 
@@ -33,7 +37,7 @@ public class EditorMode : MonoBehaviour
 
     void Update() {
         if (isEditorMode) {
-            if (InputManager.mouseScroll != 0.0f) {
+            /*if (InputManager.mouseScroll != 0.0f) {
                 if (gaussianWidth < gaussianWidthMinimum) {
                     gaussianWidth = gaussianWidthMinimum;
                 } else {
@@ -44,6 +48,26 @@ public class EditorMode : MonoBehaviour
             float[,] gaussian = QSystemController.currentQuantumSystem.qMath.Gaussian(InputManager.mousePosition*QSystemController.currentQuantumSystem.xMax, Mathf.Exp(gaussianWidth)*QSystemController.currentQuantumSystem.xMax);
 
             WaveFunction.SetCoefficients(QSystemController.currentQuantumSystem.ProjectFunction(gaussian));
+            WaveFunction.UpdateRender();*/
+            float[,] tmpCoefficients = new float[WaveFunction.NumberOfStates, 2];
+            if (coefficientsActive != null) {
+                for (int i = 0; i < WaveFunction.NumberOfStates; i++) {
+                    tmpCoefficients[i, 0] = coefficientsActive[i, 0];
+                    tmpCoefficients[i, 1] = coefficientsActive[i, 1];
+                }
+            } else {
+                foreach (float[,] element in coefficientsList) {
+                    for (int i = 0; i < WaveFunction.NumberOfStates; i++) {
+                        tmpCoefficients[i, 0] += element[i, 0];
+                        tmpCoefficients[i, 1] += element[i, 1];
+                    }
+                }
+            }
+            float norm2 = QSystemController.currentQuantumSystem.qMath.InnerProductV(tmpCoefficients);
+            if (norm2 > minimumCoefficiantNorm2) {
+                QSystemController.currentQuantumSystem.qMath.NormalizeV(tmpCoefficients);
+            }
+            WaveFunction.SetCoefficients(tmpCoefficients);
             WaveFunction.UpdateRender();
         }
     }
@@ -57,6 +81,8 @@ public class EditorMode : MonoBehaviour
         switch (state) {
             case "Edit":
                 isEditorMode = true;
+                coefficientsList = new List<float[,]>();
+                coefficientsActive = null;
                 editor.SetActive(true);
                 break;
             default:
