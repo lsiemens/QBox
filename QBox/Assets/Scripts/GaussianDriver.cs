@@ -94,9 +94,8 @@ public class GaussianDriver : MonoBehaviour
                 }
             }
 
-            float[,] gaussian1 = QSystemController.currentQuantumSystem.qMath.GaussianCos(gaussianPosition*QSystemController.currentQuantumSystem.xMax, speed*gaussianVelocity*QSystemController.currentQuantumSystem.xMax, width*QSystemController.currentQuantumSystem.xMax);
-            float[,] gaussian2 = QSystemController.currentQuantumSystem.qMath.GaussianSin(gaussianPosition*QSystemController.currentQuantumSystem.xMax, speed*gaussianVelocity*QSystemController.currentQuantumSystem.xMax, width*QSystemController.currentQuantumSystem.xMax);
-            editorMode.coefficientsActive = QSystemController.currentQuantumSystem.ProjectFunction2(gaussian1, gaussian2);
+            float[][,] gaussian = QSystemController.currentQuantumSystem.qMath.GaussianComplex(gaussianPosition*QSystemController.currentQuantumSystem.xMax, speed*gaussianVelocity*QSystemController.currentQuantumSystem.xMax, width*QSystemController.currentQuantumSystem.xMax);
+            editorMode.coefficientsActive = QSystemController.currentQuantumSystem.ProjectFunctionComplex(gaussian);
 
 
 //            float[,] gaussian = QSystemController.currentQuantumSystem.qMath.Gaussian(gaussianPosition*QSystemController.currentQuantumSystem.xMax, width*QSystemController.currentQuantumSystem.xMax);

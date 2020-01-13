@@ -35,6 +35,24 @@ public class QMath
         return value;
     }
 
+    // InnerProduct a complex function, <A|B>, [x, y]
+    public float[] InnerProductFComplex(float[,] A, float[][,] B) {
+        if ((A.GetLength(0) != resolution) || (A.GetLength(1) != resolution)) {
+            Debug.LogError("function A must have dimensions resolution X resolution");
+        }
+        if ((B[0].GetLength(0) != resolution) || (B[0].GetLength(1) != resolution)) {
+            Debug.LogError("function B must have dimensions resolution X resolution");
+        }
+        float[] value = new float[2];
+        for (int i = 0; i < resolution; i++) {
+            for (int j = 0; j < resolution; j++) {
+                value[0] += A[i, j]*B[0][i, j]*dx*dx;
+                value[1] += A[i, j]*B[1][i, j]*dx*dx;
+            }
+        }
+        return value;
+    }
+
     // InnerProduct of a complex vector, [index, real/imaginary]
     public float InnerProductV(float[,] data) {
         if (data.GetLength(1) != 2) {
@@ -84,31 +102,22 @@ public class QMath
         return gaussian;
     }
 
-    public float[,] GaussianCos(Vector2 offset, Vector2 velocity, float width) {
-        float[,] gaussian = new float[resolution, resolution];
+    public float[][,] GaussianComplex(Vector2 offset, Vector2 velocity, float width) {
+        float[][,] gaussian = new float[2][,];
+        gaussian[0] = new float[resolution, resolution];
+        gaussian[1] = new float[resolution, resolution];
+        float cos, sin, exp;
         float x, y;
-        float magnitude = 1.0f; // compute normalization
+        float magnitude = 1.0f/(width*Mathf.PI); // compute normalization
         for (int i = 0; i < resolution; i++) {
             for (int j = 0; j < resolution; j++) {
                 x = (j - resolution/2)*dx - offset.x;
                 y = (i - resolution/2)*dx - offset.y;
-                float cos = Mathf.Cos(x*velocity.x + y*velocity.y);
-                gaussian[i, j] = cos*magnitude*Mathf.Exp(-(x*x + y*y)/(width*width));
-            }
-        }
-        return gaussian;
-    }
-
-    public float[,] GaussianSin(Vector2 offset, Vector2 velocity, float width) {
-        float[,] gaussian = new float[resolution, resolution];
-        float x, y;
-        float magnitude = 1.0f; // compute normalization
-        for (int i = 0; i < resolution; i++) {
-            for (int j = 0; j < resolution; j++) {
-                x = (j - resolution/2)*dx - offset.x;
-                y = (i - resolution/2)*dx - offset.y;
-                float sin = Mathf.Sin(x*velocity.x + y*velocity.y);
-                gaussian[i, j] = sin*magnitude*Mathf.Exp(-(x*x + y*y)/(width*width));
+                cos = Mathf.Cos(x*velocity.x + y*velocity.y);
+                sin = Mathf.Sin(x*velocity.x + y*velocity.y);
+                exp = Mathf.Exp(-(x*x + y*y)/(width*width));
+                gaussian[0][i, j] = cos*magnitude*exp;
+                gaussian[1][i, j] = sin*magnitude*exp;
             }
         }
         return gaussian;
@@ -130,20 +139,22 @@ public class QMath
         return coefficients;
     }
 
-    public float[,] ProjectFunction2(float[][,] states, float[,] function1, float[,] function2) {
-        if ((function1.GetLength(0) != resolution) || (function1.GetLength(1) != resolution)) {
+    public float[,] ProjectFunctionComplex(float[][,] states, float[][,] function) {
+        if ((function[0].GetLength(0) != resolution) || (function[0].GetLength(1) != resolution)) {
             Debug.LogError("function must have dimensions resolution X resolution");
         }
         float[,] coefficients = new float[states.Length, 2];
 
+        float[] value = new float[2];
         for (int k = 0; k < states.Length; k++) {
             if ((states[k].GetLength(0) != resolution) || (states[k].GetLength(1) != resolution)) {
                 Debug.LogError("State[" + k + "] must have dimensions resolution X resolution");
             }
-            coefficients[k, 0] = InnerProductF(states[k], function1);
-            coefficients[k, 1] = InnerProductF(states[k], function2);
+            value = InnerProductFComplex(states[k], function);
+            coefficients[k, 0] = value[0];
+            coefficients[k, 1] = value[1];
         }
-        NormalizeV(coefficients);
+        //NormalizeV(coefficients);
         return coefficients;
     }
 

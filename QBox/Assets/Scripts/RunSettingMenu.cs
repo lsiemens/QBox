@@ -20,5 +20,9 @@ public class RunSettingMenu : MonoBehaviour
         runSpeedLabel.text = "Simulation\nspeed: " + runMode.speed;
     }
 
+    public void ResetSimulation() {
+        runMode.ResetSimulation();
+    }
+
 
 }

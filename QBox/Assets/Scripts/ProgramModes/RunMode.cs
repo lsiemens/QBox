@@ -29,6 +29,13 @@ public class RunMode : MonoBehaviour
         OnStateMachineTransition();
     }
 
+    public void ResetSimulation() {
+        if (isRunMode) {
+            time = 0;
+            WaveFunction.UpdateRender(time);
+        }
+    }
+
     void Update() {
         if (isRunMode) {
             time += speed*Time.deltaTime;
