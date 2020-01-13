@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
+    public RectTransform imageTransform;
     private static InputManager inputManager;
 
     public static Vector2 mousePosition {
@@ -52,6 +53,6 @@ public class InputManager : MonoBehaviour
     }
 
     Vector2 GetMousePosition() {
-        return new Vector2(2*Input.mousePosition.x/Screen.width - 1.0f, 2*Input.mousePosition.y/Screen.height - 1.0f);
+        return 2*(Input.mousePosition - imageTransform.position)/imageTransform.rect.width;
     }
 }

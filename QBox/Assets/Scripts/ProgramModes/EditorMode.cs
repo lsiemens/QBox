@@ -37,18 +37,6 @@ public class EditorMode : MonoBehaviour
 
     void Update() {
         if (isEditorMode) {
-            /*if (InputManager.mouseScroll != 0.0f) {
-                if (gaussianWidth < gaussianWidthMinimum) {
-                    gaussianWidth = gaussianWidthMinimum;
-                } else {
-                    gaussianWidth += gaussianWidthSpeed*Time.deltaTime*InputManager.mouseScroll;
-                }
-            }
-
-            float[,] gaussian = QSystemController.currentQuantumSystem.qMath.Gaussian(InputManager.mousePosition*QSystemController.currentQuantumSystem.xMax, Mathf.Exp(gaussianWidth)*QSystemController.currentQuantumSystem.xMax);
-
-            WaveFunction.SetCoefficients(QSystemController.currentQuantumSystem.ProjectFunction(gaussian));
-            WaveFunction.UpdateRender();*/
             float[,] tmpCoefficients = new float[WaveFunction.NumberOfStates, 2];
             if (coefficientsActive != null) {
                 for (int i = 0; i < WaveFunction.NumberOfStates; i++) {

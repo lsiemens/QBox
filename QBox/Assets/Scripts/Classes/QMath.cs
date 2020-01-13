@@ -84,6 +84,36 @@ public class QMath
         return gaussian;
     }
 
+    public float[,] GaussianCos(Vector2 offset, Vector2 velocity, float width) {
+        float[,] gaussian = new float[resolution, resolution];
+        float x, y;
+        float magnitude = 1.0f; // compute normalization
+        for (int i = 0; i < resolution; i++) {
+            for (int j = 0; j < resolution; j++) {
+                x = (j - resolution/2)*dx - offset.x;
+                y = (i - resolution/2)*dx - offset.y;
+                float cos = Mathf.Cos(x*velocity.x + y*velocity.y);
+                gaussian[i, j] = cos*magnitude*Mathf.Exp(-(x*x + y*y)/(width*width));
+            }
+        }
+        return gaussian;
+    }
+
+    public float[,] GaussianSin(Vector2 offset, Vector2 velocity, float width) {
+        float[,] gaussian = new float[resolution, resolution];
+        float x, y;
+        float magnitude = 1.0f; // compute normalization
+        for (int i = 0; i < resolution; i++) {
+            for (int j = 0; j < resolution; j++) {
+                x = (j - resolution/2)*dx - offset.x;
+                y = (i - resolution/2)*dx - offset.y;
+                float sin = Mathf.Sin(x*velocity.x + y*velocity.y);
+                gaussian[i, j] = sin*magnitude*Mathf.Exp(-(x*x + y*y)/(width*width));
+            }
+        }
+        return gaussian;
+    }
+
     public float[,] ProjectFunction(float[][,] states, float[,] function) {
         if ((function.GetLength(0) != resolution) || (function.GetLength(1) != resolution)) {
             Debug.LogError("function must have dimensions resolution X resolution");
@@ -95,6 +125,23 @@ public class QMath
                 Debug.LogError("State[" + k + "] must have dimensions resolution X resolution");
             }
             coefficients[k, 0] = InnerProductF(states[k], function);
+        }
+        NormalizeV(coefficients);
+        return coefficients;
+    }
+
+    public float[,] ProjectFunction2(float[][,] states, float[,] function1, float[,] function2) {
+        if ((function1.GetLength(0) != resolution) || (function1.GetLength(1) != resolution)) {
+            Debug.LogError("function must have dimensions resolution X resolution");
+        }
+        float[,] coefficients = new float[states.Length, 2];
+
+        for (int k = 0; k < states.Length; k++) {
+            if ((states[k].GetLength(0) != resolution) || (states[k].GetLength(1) != resolution)) {
+                Debug.LogError("State[" + k + "] must have dimensions resolution X resolution");
+            }
+            coefficients[k, 0] = InnerProductF(states[k], function1);
+            coefficients[k, 1] = InnerProductF(states[k], function2);
         }
         NormalizeV(coefficients);
         return coefficients;

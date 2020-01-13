@@ -116,4 +116,8 @@ public class QuantumSystem : ScriptableObject {
         return qMath.ProjectFunction(states, function);
     }
 
+    public float[,] ProjectFunction2(float[,] function1, float[,] function2) {
+        return qMath.ProjectFunction2(states, function1, function2);
+    }
+
 }

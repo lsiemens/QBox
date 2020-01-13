@@ -2,10 +2,8 @@
 {
     Properties
     {
-        //_MainTex ("Texture", 2D) = "white" {}
         width ("Width", Range(0.0, 0.05)) = 0.03
         sharpness ("Sharpness", Range(1, 5)) = 5
-        radius ("Radius", Range(0, 2)) = 1.0
         tint ("Tint", Color) = (0, 0, 0, 0)
     }
     SubShader
