@@ -11,7 +11,6 @@ data = group["states"]
 
 print(resolution, numberOfStates)
 print(type(data), data.shape, data.dtype, data.chunks)
-print(numpy.array(data))
 
 data = numpy.array(data)
 for i in range(numberOfStates):

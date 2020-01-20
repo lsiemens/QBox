@@ -23,6 +23,7 @@ program fqbox
     integer(HSIZE_T), dimension(3) :: ddims = (/numberOfStates, resolution, resolution/)
     integer(HSIZE_T), dimension(1) :: sdims = (/0/)
     integer(HSIZE_T), dimension(3) :: cdims = (/1, resolution, resolution/) ! chunk size
+    integer(HSIZE_T), dimension(3) :: maxdims = (/numberOfStates, resolution, resolution/)
     integer :: drank=3
 
     integer :: error ! Error flag
@@ -78,7 +79,8 @@ program fqbox
 
        ! -------------------- Data set
 
-       call h5screate_simple_f(drank, ddims, space_id, error)
+       maxdims(1) = H5S_UNLIMITED_F
+       call h5screate_simple_f(drank, ddims, space_id, error, maxdims)
         call h5pcreate_f(H5P_DATASET_CREATE_F, plist_id, error)
          call h5pset_chunk_f(plist_id, drank, cdims, error)
          call h5dcreate_f(group_id, dset_states, h5kind_to_type(dp, H5_REAL_KIND), space_id, dset_id, error, dcpl_id=plist_id)
