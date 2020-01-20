@@ -15,14 +15,12 @@ program fqbox
     integer(HID_T) :: attr_id
     integer(HID_T) :: space_id
     integer(HID_T) :: dset_id
-    integer(HID_T) :: plist_id ! Property list
 
     integer, parameter :: resolution=64, numberOfStates=3, iterations=10000
 
     real(dp), dimension(numberOfStates, resolution, resolution) :: data
     integer(HSIZE_T), dimension(3) :: ddims = (/numberOfStates, resolution, resolution/)
     integer(HSIZE_T), dimension(1) :: sdims = (/0/)
-    integer(HSIZE_T), dimension(3) :: cdims = (/1, resolution, resolution/) ! chunk size
     integer :: drank=3
 
     integer :: error ! Error flag
@@ -65,8 +63,6 @@ program fqbox
      call h5fcreate_f(filename, H5F_ACC_TRUNC_F, file_id, error)
       call h5gcreate_f(file_id, group_run0, group_id, error)
 
-       ! --------------------- Attributes
-
        call h5screate_f(H5S_SCALAR_F, space_id, error)
         call h5acreate_f(group_id, attr_resolution, H5T_NATIVE_INTEGER, space_id, attr_id, error)
          call h5awrite_f(attr_id, H5T_NATIVE_INTEGER, resolution, sdims, error)
@@ -76,15 +72,10 @@ program fqbox
         call h5aclose_f(attr_id, error)
        call h5sclose_f(space_id, error)
 
-       ! -------------------- Data set
-
        call h5screate_simple_f(drank, ddims, space_id, error)
-        call h5pcreate_f(H5P_DATASET_CREATE_F, plist_id, error)
-         call h5pset_chunk_f(plist_id, drank, cdims, error)
-         call h5dcreate_f(group_id, dset_states, h5kind_to_type(dp, H5_REAL_KIND), space_id, dset_id, error, dcpl_id=plist_id)
-          call h5dwrite_f(dset_id, h5kind_to_type(dp, H5_REAL_KIND), data, ddims, error)
-         call h5dclose_f(dset_id, error)
-        call h5pclose_f(plist_id, error)
+        call h5dcreate_f(group_id, dset_states, h5kind_to_type(dp, H5_REAL_KIND), space_id, dset_id, error)
+         call h5dwrite_f(dset_id, h5kind_to_type(dp, H5_REAL_KIND), data, ddims, error)
+        call h5dclose_f(dset_id, error)
        call h5sclose_f(space_id, error)
        
       call h5gclose_f(group_id, error)

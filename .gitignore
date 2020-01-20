@@ -15,4 +15,8 @@
 POC/tmp/*
 __pycache__*
 
+# Ignore hdf5 data
+*.h5
+
+
 # Extra rules in QBox/.gitignore
