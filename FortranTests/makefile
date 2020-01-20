@@ -10,8 +10,8 @@ QBHD.o:
 TEST.out: QBHD.o
 	h5fc TEST.F03 QBHD.o -o TEST.out
 
-CTest.out:
-	h5fc CTest.F03 -o CTest.out
+CTest.out: QBHD.o
+	h5fc CTest.F03 QBHD.o -o CTest.out
 
 data.h5: CTest.out
 	./CTest.out

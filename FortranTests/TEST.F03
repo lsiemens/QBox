@@ -40,6 +40,8 @@ program fqbox
     call readRunAttribute(attr_resolution, resolution, error)
     call readRunAttribute(attr_numberOfStates, numberOfStates, error)
 
+    call readPotential(V, resolution, error)
+
        ! --------------------- Attributes
 
         print *, resolution, numberOfStates
@@ -75,9 +77,6 @@ program fqbox
     allocate(grad(resolution, resolution))
     grad = 0.0_dp
 
-    allocate(V(resolution, resolution))
-    V = 0.0_dp
-
 
     phi(1, :) = 0.0_dp
     phi(resolution, :) = 0.0_dp
@@ -111,6 +110,8 @@ program fqbox
     call openRun(group_run0, error)
     call writeRunAttribute(attr_resolution, resolution, error)
     call writeRunAttribute(attr_numberOfStates, numberOfStates, error)
+
+    call writePotential(V, resolution, error)
 
        ! --------------------- Attributes
 

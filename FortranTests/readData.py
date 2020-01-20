@@ -12,6 +12,9 @@ data = group["states"]
 print(resolution, numberOfStates)
 print(type(data), data.shape, data.dtype, data.chunks)
 
+pyplot.imshow(group["potential"])
+pyplot.show()
+
 data = numpy.array(data)
 for i in range(numberOfStates):
     pyplot.imshow(data[:,:,i])
