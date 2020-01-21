@@ -390,5 +390,37 @@ module QBHD
             call h5dwrite_f(data_id, h5kind_to_type(dp, H5_REAL_KIND), buffer_pointer, error)
             call h5dclose_f(data_id, error)
         end subroutine writeStates
+
+        subroutine appendState(value, numberOfStates, resolution, error)
+            implicit none
+            real(dp), dimension(:, :), intent(IN) :: value
+            integer, intent(IN) :: numberOfStates, resolution
+            integer, intent(OUT) :: error
+
+            integer(HID_T) :: dset_id
+            integer(HSIZE_T), dimension(3) :: size
+            real(dp), dimension(:, :, :), allocatable :: data, data_temp
+            
+            if (.not. run_is_open) then
+                print *, "ERROR: There is no open run"
+                error = -1
+                return
+            end if
+
+            call readStates(data, numberOfStates, resolution, error)
+
+            allocate(data_temp(numberOfStates + 1, resolution, resolution))
+            data_temp(:numberOfStates, :, :) = data(:, :, :)
+            data_temp(numberOfStates + 1, :, :) = value(:, :)
+            call move_alloc(data_temp, data)
+
+            call h5dopen_f(run_id, "states", dset_id, error)
+            size = (/numberOfStates + 1, resolution, resolution/)
+            call h5dset_extent_f(dset_id, size, error)
+            call h5dclose_f(dset_id, error)
+
+            call writeStates(data, numberOfStates + 1, resolution, error)
+
+        end subroutine appendState
                 
 end module QBHD

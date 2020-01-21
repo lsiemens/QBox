@@ -1,5 +1,3 @@
-
-
 program fqbox
     use HDF5
     use QBHD
@@ -76,7 +74,6 @@ program fqbox
 
     ! ---------------------- PHYSICS END -----------------
 
-
     call openFile(filename, error)
     call openRun(group_run0, error)
 
@@ -84,12 +81,9 @@ program fqbox
     call writeRunAttribute(attr_numberOfStates, numberOfStates, error)
     call writePotential(V, resolution, error)
 
-    call h5dopen_f(run_id, "states", dset_id, error)
-    size = (/numberOfStates, resolution, resolution/)
-    call h5dset_extent_f(dset_id, size, error)
-    call h5dclose_f(dset_id, error)
-
-    call writeStates(data, numberOfStates, resolution, error)
+    call appendState(data(numberOfStates - 2, :, :), numberOfStates - 3, resolution, error)
+    call appendState(data(numberOfStates - 1, :, :), numberOfStates - 2, resolution, error)
+    call appendState(data(numberOfStates, :, :), numberOfStates - 1, resolution, error)
 
     call closeRun(error)
     call closeFile(error)
