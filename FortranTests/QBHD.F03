@@ -227,42 +227,6 @@ module QBHD
             end if
         end subroutine writeRunAttribute
         
-        subroutine writePotential(value, resolution, error)
-            implicit none
-            character(len=*), parameter :: potential_name = "potential"
-            real(dp), dimension(:, :), target, intent(IN) :: value
-            integer, intent(IN) :: resolution
-            integer, intent(OUT) :: error
-
-            type(C_PTR) :: buffer_pointer
-            integer(HID_T) :: data_id, space_id
-            integer(HSIZE_T), dimension(2) :: shape
-
-            if (.not. run_is_open) then
-                print *, "ERROR: There is no open run"
-                error = -1
-                return
-            end if
-
-            call h5dopen_f(run_id, potential_name, data_id, error)
-            if (error /= NOERROR) then
-                shape = (/resolution, resolution/)
-                call h5screate_simple_f(rank(value), shape, space_id, error)
-                call h5dcreate_f(run_id, potential_name, h5kind_to_type(dp, H5_REAL_KIND), space_id, data_id, error)
-                if (error /= NOERROR) then
-                    print *, "ERROR: Failed to create new data set"
-                    return
-                else
-                    print *, "WARNING: New data set was created after opening failed"
-                end if
-
-                call h5sclose_f(space_id, error)
-            end if
-            buffer_pointer = C_LOC(value)
-            call h5dwrite_f(data_id, h5kind_to_type(dp, H5_REAL_KIND), buffer_pointer, error)
-            call h5dclose_f(data_id, error)
-        end subroutine writePotential
-        
         subroutine readPotential(value, resolution, error)
             implicit none
             character(len=*), parameter :: potential_name = "potential"
@@ -299,5 +263,132 @@ module QBHD
             call h5dread_f(data_id, h5kind_to_type(dp, H5_REAL_KIND), buffer_pointer, error)
             call h5dclose_f(data_id, error)
         end subroutine readPotential
-        
+
+        subroutine writePotential(value, resolution, error)
+            implicit none
+            character(len=*), parameter :: potential_name = "potential"
+            real(dp), dimension(:, :), target, intent(IN) :: value
+            integer, intent(IN) :: resolution
+            integer, intent(OUT) :: error
+
+            type(C_PTR) :: buffer_pointer
+            integer(HID_T) :: data_id, space_id
+            integer(HSIZE_T), dimension(2) :: shape
+
+            if (.not. run_is_open) then
+                print *, "ERROR: There is no open run"
+                error = -1
+                return
+            end if
+
+            call h5dopen_f(run_id, potential_name, data_id, error)
+            if (error /= NOERROR) then
+                shape = (/resolution, resolution/)
+                call h5screate_simple_f(rank(value), shape, space_id, error)
+                call h5dcreate_f(run_id, potential_name, h5kind_to_type(dp, H5_REAL_KIND), space_id, data_id, error)
+                if (error /= NOERROR) then
+                    print *, "ERROR: Failed to create new data set"
+                    return
+                else
+                    print *, "WARNING: New data set was created after opening failed"
+                end if
+
+                call h5sclose_f(space_id, error)
+            end if
+            buffer_pointer = C_LOC(value)
+            call h5dwrite_f(data_id, h5kind_to_type(dp, H5_REAL_KIND), buffer_pointer, error)
+            call h5dclose_f(data_id, error)
+        end subroutine writePotential
+
+        subroutine readStates(value, numberOfStates, resolution, error)
+            implicit none
+            character(len=*), parameter :: states_name = "states"
+            real(dp), dimension(:, :, :), allocatable, target, intent(OUT) :: value
+            integer, intent(IN) :: numberOfStates, resolution
+            integer, intent(OUT) :: error
+
+            type(C_PTR) :: buffer_pointer
+            integer(HID_T) :: data_id, space_id, property_id
+            integer(HSIZE_T), dimension(3) :: shape, chunk_size, max_size
+
+            if (.not. run_is_open) then
+                print *, "ERROR: There is no open run"
+                error = -1
+                return
+            end if
+
+            call h5dopen_f(run_id, states_name, data_id, error)
+            if (error /= NOERROR) then
+                shape = (/numberOfStates, resolution, resolution/)
+                chunk_size = (/1, resolution, resolution/)
+                max_size = chunk_size
+                max_size(1) = H5S_UNLIMITED_F
+                call h5screate_simple_f(rank(value), shape, space_id, error, max_size)
+                call h5pcreate_f(H5P_DATASET_CREATE_F, property_id, error)
+                call h5pset_chunk_f(property_id, rank(value), chunk_size, error)
+
+                call h5dcreate_f(run_id, states_name, h5kind_to_type(dp, H5_REAL_KIND), space_id, &
+                                 data_id, error, dcpl_id=property_id)
+                if (error /= NOERROR) then
+                    print *, "ERROR: Failed to create new data set"
+                    return
+                else
+                    print *, "WARNING: New data set was created after opening failed"
+                end if
+
+                call h5pclose_f(property_id, error)
+                call h5sclose_f(space_id, error)
+            end if
+
+            allocate(value(numberOfStates, resolution, resolution))
+            buffer_pointer = C_LOC(value)
+            call h5dread_f(data_id, h5kind_to_type(dp, H5_REAL_KIND), buffer_pointer, error)
+            call h5dclose_f(data_id, error)
+        end subroutine readStates
+
+        subroutine writeStates(value, numberOfStates, resolution, error)
+            implicit none
+            character(len=*), parameter :: states_name = "states"
+            real(dp), dimension(:, :, :), target, intent(IN) :: value
+            integer, intent(IN) :: numberOfStates, resolution
+            integer, intent(OUT) :: error
+
+            type(C_PTR) :: buffer_pointer
+            integer(HID_T) :: data_id, space_id, property_id
+            integer(HSIZE_T), dimension(3) :: shape, chunk_size, max_size
+
+            if (.not. run_is_open) then
+                print *, "ERROR: There is no open run"
+                error = -1
+                return
+            end if
+
+            call h5dopen_f(run_id, states_name, data_id, error)
+            if (error /= NOERROR) then
+                shape = (/numberOfStates, resolution, resolution/)
+                chunk_size = (/1, resolution, resolution/)
+                max_size = chunk_size
+                max_size(1) = H5S_UNLIMITED_F
+                call h5screate_simple_f(rank(value), shape, space_id, error, max_size)
+                call h5pcreate_f(H5P_DATASET_CREATE_F, property_id, error)
+                call h5pset_chunk_f(property_id, rank(value), chunk_size, error)
+
+                call h5dcreate_f(run_id, states_name, h5kind_to_type(dp, H5_REAL_KIND), space_id, &
+                                 data_id, error, dcpl_id=property_id)
+                if (error /= NOERROR) then
+                    print *, "ERROR: Failed to create new data set"
+                    return
+                else
+                    print *, "WARNING: New data set was created after opening failed"
+                end if
+
+                call h5pclose_f(property_id, error)
+                call h5sclose_f(space_id, error)
+            end if
+
+            buffer_pointer = C_LOC(value)
+            call h5dwrite_f(data_id, h5kind_to_type(dp, H5_REAL_KIND), buffer_pointer, error)
+            call h5dclose_f(data_id, error)
+        end subroutine writeStates
+                
 end module QBHD

@@ -6,29 +6,19 @@ program fqbox
     use ISO_C_BINDING, only: C_PTR, C_LOC
     implicit none
 
-    character(len=7), parameter :: filename = "data.h5"
-    character(len=4), parameter :: group_run0 = "Run0"
-    character(len=10), parameter ::  attr_resolution = "resolution"
-    character(len=14), parameter ::  attr_numberOfStates = "numberOfStates"
-    character(len=6), parameter :: dset_states = "states"
+    character(len=*), parameter :: filename = "data.h5"
+    character(len=*), parameter :: group_run0 = "Run0"
+    character(len=*), parameter ::  attr_resolution = "resolution"
+    character(len=*), parameter ::  attr_numberOfStates = "numberOfStates"
 
-    integer(HID_T) :: space_id, memory_id
     integer(HID_T) :: dset_id
-    integer(HID_T) :: plist_id ! Property list
 
     integer :: resolution, numberOfStates, iterations=10000
 
-    real(dp), dimension(:, :, :), allocatable :: data
-    integer(HSIZE_T), dimension(3) :: ddims ! = (/numberOfStates, resolution, resolution/)
-    integer(HSIZE_T), dimension(1) :: sdims ! = (/0/)
-    integer(HSIZE_T), dimension(3) :: cdims ! = (/1, resolution, resolution/) ! chunk size
-    integer(HSIZE_T), dimension(3) :: size, offset, count
-    integer :: drank=3
+    real(dp), dimension(:, :, :), allocatable :: data, data_temp
+    integer(HSIZE_T), dimension(3) :: size
 
     integer :: error ! Error flag
-
-    TYPE(C_PTR) :: bufferPtr
-    real(dp), dimension(:, :, :), allocatable, target :: bufferArray
 
     real(dp) :: dt=0.1_dp
     real(dp), dimension(:, :), allocatable :: phi, grad, V
@@ -37,37 +27,18 @@ program fqbox
 
     call openFile(filename, error)
     call openRun(group_run0, error)
+
     call readRunAttribute(attr_resolution, resolution, error)
     call readRunAttribute(attr_numberOfStates, numberOfStates, error)
-
     call readPotential(V, resolution, error)
+    call readStates(data, numberOfStates, resolution, error)
 
-       ! --------------------- Attributes
-
-        print *, resolution, numberOfStates
-        allocate(bufferArray(numberOfStates, resolution, resolution))
-        allocate(data(numberOfStates + 3, resolution, resolution))
-
-
-       ! -------------------- Data set
-
-!       call h5screate_simple_f(drank, ddims, space_id, error)
-!        call h5pcreate_f(H5P_DATASET_CREATE_F, plist_id, error)
-!         call h5pset_chunk_f(plist_id, drank, cdims, error)
-         call h5dopen_f(run_id, dset_states, dset_id, error)
-          bufferPtr = C_LOC(bufferArray)
-          call h5dread_f(dset_id, h5kind_to_type(dp, H5_REAL_KIND), bufferPtr, error)
-          data(:numberOfStates, :, :) = bufferArray
-          deallocate(bufferArray)
-          
-         call h5dclose_f(dset_id, error)
-!        call h5pclose_f(plist_id, error)
-!       call h5sclose_f(space_id, error)
-       
     call closeRun(error)
     call closeFile(error)
 
-
+    allocate(data_temp(numberOfStates + 3, resolution, resolution))
+    data_temp(:numberOfStates, :, :) = data(:, :, :)
+    call move_alloc(data_temp, data)
 
     ! -------------------- PHYSICS --------------------
 
@@ -108,33 +79,18 @@ program fqbox
 
     call openFile(filename, error)
     call openRun(group_run0, error)
+
     call writeRunAttribute(attr_resolution, resolution, error)
     call writeRunAttribute(attr_numberOfStates, numberOfStates, error)
-
     call writePotential(V, resolution, error)
 
-       ! --------------------- Attributes
+    call h5dopen_f(run_id, "states", dset_id, error)
+    size = (/numberOfStates, resolution, resolution/)
+    call h5dset_extent_f(dset_id, size, error)
+    call h5dclose_f(dset_id, error)
 
+    call writeStates(data, numberOfStates, resolution, error)
 
-       ! -------------------- Data set
-
-!       call h5screate_simple_f(drank, ddims, space_id, error)
-!        call h5pcreate_f(H5P_DATASET_CREATE_F, plist_id, error)
-!         call h5pset_chunk_f(plist_id, drank, cdims, error)
-         call h5dopen_f(run_id, dset_states, dset_id, error)
-
-          size = (/numberOfStates, resolution, resolution/)
-          call h5dset_extent_f(dset_id, size, error)
-          allocate(bufferArray(numberOfStates, resolution, resolution))
-          bufferArray = data
-          bufferPtr = C_LOC(bufferArray)
-          call h5dwrite_f(dset_id, h5kind_to_type(dp, H5_REAL_KIND), bufferPtr, error)
-          deallocate(bufferArray)
-! ---------- TODO get slicing working so i dont need to rewrite the whole array
-          
-         call h5dclose_f(dset_id, error)
-!        call h5pclose_f(plist_id, error)
-!       call h5sclose_f(space_id, error)       
     call closeRun(error)
     call closeFile(error)
     

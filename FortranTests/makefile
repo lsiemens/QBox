@@ -1,14 +1,11 @@
-main: TEST.out
-	echo ""
+TEST.out: QBHD.o
+	h5fc TEST.F03 QBHD.o -o TEST.out
 
 gfortran:
-	gfortran FTest.F03 -I/usr/include/hdf5/serial -L/usr/lib/x86_64-linux-gnu/hdf5/serial -lhdf5_fortran -o FTest.out
+	gfortran -c QBHD.F03 -I/usr/include/hdf5/serial -L/usr/lib/x86_64-linux-gnu/hdf5/serial -lhdf5_fortran
 
 QBHD.o:
 	h5fc -c QBHD.F03
-
-TEST.out: QBHD.o
-	h5fc TEST.F03 QBHD.o -o TEST.out
 
 CTest.out: QBHD.o
 	h5fc CTest.F03 QBHD.o -o CTest.out

@@ -3,30 +3,16 @@ program fqbox
     use QBHD
     use, intrinsic :: iso_fortran_env
     implicit none
-!    integer, parameter  :: dp=kind(0.d0)
 
-    character(len=7), parameter :: filename = "data.h5"
-    character(len=4), parameter :: group_run0 = "Run0"
-    character(len=10), parameter ::  attr_resolution = "resolution"
-    character(len=14), parameter ::  attr_numberOfStates = "numberOfStates"
-    character(len=6), parameter :: dset_states = "states"
-
-!    integer(HID_T) :: file_id
-!    integer(HID_T) :: group_id
-!    integer(HID_T) :: attr_id
-    integer(HID_T) :: space_id
-    integer(HID_T) :: dset_id
-    integer(HID_T) :: plist_id ! Property list
+    character(len=*), parameter :: filename = "data.h5"
+    character(len=*), parameter :: group_run0 = "Run0"
+    character(len=*), parameter ::  attr_resolution = "resolution"
+    character(len=*), parameter ::  attr_numberOfStates = "numberOfStates"
 
     integer, parameter :: resolution=64, numberOfStates=3, iterations=10000
 
     real(dp), dimension(numberOfStates, resolution, resolution) :: data
-    integer(HSIZE_T), dimension(3) :: ddims = (/numberOfStates, resolution, resolution/)
-    integer(HSIZE_T), dimension(1) :: sdims = (/0/)
-    integer(HSIZE_T), dimension(3) :: cdims = (/1, resolution, resolution/) ! chunk size
-    integer(HSIZE_T), dimension(3) :: maxdims = (/numberOfStates, resolution, resolution/)
-    integer :: drank=3
-
+    
     integer :: error ! Error flag
 
     ! -------------------- PHYSICS --------------------
@@ -70,42 +56,15 @@ program fqbox
     end do
 
     ! ---------------------- PHYSICS END -----------------
+
     call openFile(filename, error)
     call openRun(group_run0, error)
     call writeRunAttribute(attr_resolution, resolution, error)
     call writeRunAttribute(attr_numberOfStates, numberOfStates, error)
     call writePotential(V, resolution, error)
-
-!    call h5open_f(error)
-!     call h5fcreate_f(filename, H5F_ACC_TRUNC_F, file_id, error)
-!      call h5gcreate_f(file_id, group_run0, group_id, error)
-
-       ! --------------------- Attributes
-
-!       call h5screate_f(H5S_SCALAR_F, space_id, error)
-!        call h5acreate_f(group_id, attr_resolution, H5T_NATIVE_INTEGER, space_id, attr_id, error)
-!         call h5awrite_f(attr_id, H5T_NATIVE_INTEGER, resolution, sdims, error)
-!        call h5aclose_f(attr_id, error)
-!        call h5acreate_f(group_id, attr_numberOfStates, H5T_NATIVE_INTEGER, space_id, attr_id, error)
-!         call h5awrite_f(attr_id, H5T_NATIVE_INTEGER, numberOfStates, sdims, error)
-!        call h5aclose_f(attr_id, error)
-!       call h5sclose_f(space_id, error)
-
-       ! -------------------- Data set
-
-       maxdims(1) = H5S_UNLIMITED_F
-       call h5screate_simple_f(drank, ddims, space_id, error, maxdims)
-        call h5pcreate_f(H5P_DATASET_CREATE_F, plist_id, error)
-         call h5pset_chunk_f(plist_id, drank, cdims, error)
-         call h5dcreate_f(run_id, dset_states, h5kind_to_type(dp, H5_REAL_KIND), space_id, dset_id, error, dcpl_id=plist_id)
-          call h5dwrite_f(dset_id, h5kind_to_type(dp, H5_REAL_KIND), data, ddims, error)
-         call h5dclose_f(dset_id, error)
-        call h5pclose_f(plist_id, error)
-       call h5sclose_f(space_id, error)
-
+    call writeStates(data, numberOfStates, resolution, error)
     call closeRun(error)
     call closeFile(error)
-!      call h5gclose_f(group_id, error)
-!     call h5fclose_f(file_id, error)
-!    call h5close_f(error)
+
 end program fqbox
+
