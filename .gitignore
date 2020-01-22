@@ -18,5 +18,6 @@ __pycache__*
 # Ignore hdf5 data
 *.h5
 *.mod
+*.smod
 stop.msg
 # Extra rules in QBox/.gitignore

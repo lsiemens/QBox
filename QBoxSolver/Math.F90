@@ -15,6 +15,7 @@ module Math
         procedure :: initalize
         procedure, public :: boundryCondition, laplacian
         procedure, public :: expectationValue, normalize, orthogonalize
+        procedure, public :: innerProduct
     end type BraKet
 contains
     function braketConstructor(resolution, dx)
@@ -76,7 +77,7 @@ contains
         integer :: i
 
         do i = 1, numberOfStates
-            phi = phi - sum(phi*states(i, :, :))*self%dx**2*states(i, :, :)
+            phi = phi - self%innerProduct(phi, states(i, :, :))*states(i, :, :)
         end do
         call self%normalize(phi)
     end subroutine orthogonalize
@@ -88,6 +89,16 @@ contains
 
         real(rp) :: expectationValue
 
-        expectationValue = sum(phi**2)*self%dx**2        
+!        expectationValue = sum(phi**2)*self%dx**2
+        expectationValue = self%innerproduct(phi, phi)
     end function expectationValue
+
+    function innerProduct(self, phi, psi)
+        implicit none
+        real(rp), dimension(:, :), intent(IN) :: phi, psi
+        class(BraKet) :: self
+        real(rp) :: innerProduct
+
+        innerProduct = sum(phi*psi)*self%dx**2
+    end function innerProduct
 end module Math

@@ -14,18 +14,23 @@ program QBoxSolver
     integer :: numberOfStates, resolution, maxNumberOfStates
 
     ! ---------------- Physical parameters -----------
+    real(rp) :: length, mass
     real(rp), dimension(:, :), allocatable :: potential
     real(rp), dimension(:, :, :), allocatable :: states
+    real(rp), dimension(:), allocatable :: energyLevels
 
     ! ---------------- Assorted parameter ------------
     logical :: stopSolver = .false.
     real(rp), dimension(:, :), allocatable :: phi
 
+    ! ---------------- Measurements ------------------
+    real(rp) :: energy
+
     ! ---------------- Initalize solver --------------
     type(Grid) :: solver
 
     call initalize()
-    solver = gridConstructor(numberOfStates, resolution, 2.0_rp, 1.0_rp, potential, states)
+    solver = gridConstructor(numberOfStates, resolution, length, mass, potential, states)
 
     deallocate(potential)
     deallocate(states)
@@ -48,9 +53,12 @@ program QBoxSolver
         call random_number(phi) ! initalize to random field
         call solver%findState(phi)
 
+        energy = solver%ket%innerProduct(phi, solver%energyOperator(phi))
+
         call openFile(file_name, error)
         call openRun(run_name, error)
           call appendState(phi, numberOfStates, resolution, error)
+          call appendEnergyLevel(energy, numberOfStates, error)
           call writeNumberOfStates(numberOfStates + 1, error)
           numberOfStates = numberOfStates + 1
         call closeRun(error)
@@ -64,18 +72,14 @@ contains
     subroutine initalize()
         implicit none
         integer :: default_resolution = 64
+        real(rp) :: default_length = 2.0_rp, default_mass = 1.0_rp
 
         call openFile(file_name, error)
         call openRun(run_name, error)
 
-        call readResolution(resolution, error)
         call readMaxNumberOfStates(maxNumberOfStates, error)
         call readNumberOfStates(numberOfStates, error)
-
-        ! ---------------- TEMPORARY --------------------
-        maxNumberOfStates = 10
-        call writeMaxNumberOfStates(maxNumberOfStates, error)
-
+        call readResolution(resolution, error)
         if (resolution == 0) then
             print *, "WARNING: resolution cannot be zero!"
             print *, "    Setting resolution to the defalt of ", default_resolution
@@ -83,8 +87,27 @@ contains
             call writeResolution(resolution, error)
         end if
         
+        call readLength(length, error)
+        if (length == 0.0_rp) then
+            print *, "WARNING: length cannot be zero!"
+            print *, "    Setting length to the defalt of ", default_length
+            length = default_length
+            call writeLength(length, error)
+            print *, error
+        end if
+
+        call readMass(mass, error)
+        if (mass == 0.0_rp) then
+            print *, "WARNING: mass cannot be zero!"
+            print *, "    Setting mass to the defalt of ", default_mass
+            mass = default_mass
+            call writeMass(mass, error)
+            print *, error
+        end if
+
         call readPotential(potential, resolution, error)
         call readStates(states, numberOfStates, resolution, error)
+        call readEnergyLevels(energyLevels, numberOfStates, error)
         
         call closeRun(error)
         call closeFile(error)

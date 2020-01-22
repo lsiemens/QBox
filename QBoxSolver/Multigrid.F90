@@ -8,7 +8,7 @@ module Multigrid
     
     type Grid
         private
-        type(BraKet) :: ket
+        type(BraKet), public :: ket
         integer :: numberOfStates, resolution
         real(rp) :: dx, dt, mass
         real(rp), dimension(:, :), allocatable :: potential
@@ -16,6 +16,7 @@ module Multigrid
     contains
         procedure :: initalize
         procedure, public :: findState
+        procedure :: energyOperator
     end type Grid
 contains
     function gridConstructor(numberOfStates, resolution, length, mass, potential, states)
@@ -82,8 +83,17 @@ contains
             call self%ket%normalize(phi)
         end do
 
-        call appendState(phi, self%states, self%numberOfStates, self%resolution)        
+        ! this is odd. I removed append states but the ennergy kept increasing
+        call appendState(phi, self%states, self%numberOfStates, self%resolution)
     end subroutine findState
+
+    function energyOperator(self, phi)
+        real(rp), dimension(:, :), intent(IN) :: phi
+        real(rp), dimension(:, :), allocatable :: energyOperator
+        class(Grid) :: self
+
+        energyOperator = -self%ket%laplacian(phi)/(2*self%mass) + self%potential*phi
+    end function energyOperator
 
     ! ------------------- Other subroutines and functions -------------
 
