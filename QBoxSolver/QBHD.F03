@@ -14,6 +14,7 @@ module QBHD
     logical :: file_is_open=.false., run_is_open=.false.
 
     public :: openFile, closeFile, openRun, closeRun
+    public :: readMaxNumberOfStates, writeMaxNumberOfStates
     public :: readNumberOfStates, writeNumberOfStates
     public :: readResolution, writeResolution
     public :: readPotential, writePotential
@@ -133,6 +134,26 @@ module QBHD
             end if
             run_is_open = .false.
         end subroutine closeRun
+
+        subroutine readMaxNumberOfStates(value, error)
+            implicit none
+
+            character(len=*), parameter :: attribute_name = "maxNumberOfStates"
+            integer, target, intent(OUT) :: value
+            integer, intent(OUT) :: error
+
+            call readRunAttribute(attribute_name, value, error)
+        end subroutine readMaxNumberOfStates
+
+        subroutine writeMaxNumberOfStates(value, error)
+            implicit none
+
+            character(len=*), parameter :: attribute_name = "maxNumberOfStates"
+            integer, target, intent(IN) :: value
+            integer, intent(OUT) :: error
+
+            call writeRunAttribute(attribute_name, value, error)
+        end subroutine writeMaxNumberOfStates
 
         subroutine readNumberOfStates(value, error)
             implicit none
