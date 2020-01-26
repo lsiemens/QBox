@@ -15,6 +15,7 @@ module QBHD
     public :: readMaxNumberOfStates, writeMaxNumberOfStates
     public :: readNumberOfStates, writeNumberOfStates
     public :: readResolution, writeResolution
+    public :: readTargetEvolutionTime, writeTargetEvolutionTime
     public :: readLength, writeLength
     public :: readMass, writeMass
     public :: readPotential, writePotential
@@ -273,6 +274,26 @@ contains
 
         call writeRunAttributeInteger(attribute_name, value, error)
     end subroutine writeResolution
+
+    subroutine readTargetEvolutionTime(value, error)
+        implicit none
+
+        character(len=*), parameter :: attribute_name = "targetEvolutionTime"
+        real(rp), target, intent(OUT) :: value
+        integer, intent(OUT) :: error
+
+        call readRunAttributeReal(attribute_name, value, error)
+    end subroutine readTargetEvolutionTime
+
+    subroutine writeTargetEvolutionTime(value, error)
+        implicit none
+
+        character(len=*), parameter :: attribute_name = "targetEvolutionTime"
+        real(rp), target, intent(IN) :: value
+        integer, intent(OUT) :: error
+
+        call writeRunAttributeReal(attribute_name, value, error)
+    end subroutine writeTargetEvolutionTime
 
     subroutine readLength(value, error)
         implicit none

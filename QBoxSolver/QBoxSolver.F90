@@ -1,5 +1,5 @@
 program QBoxSolver
-    use Types, only: rp
+    use Types, only: rp, PI
     use QBHD
     use Multigrid, only: Grid, gridConstructor
     implicit none
@@ -12,6 +12,7 @@ program QBoxSolver
 
     ! ---------------- Run parameters ----------------
     integer :: numberOfStates, resolution, maxNumberOfStates
+    real(rp) :: targetEvolutionTime
 
     ! ---------------- Physical parameters -----------
     real(rp) :: length, mass
@@ -50,8 +51,9 @@ program QBoxSolver
             end if
         end if
 
+        ! ----------------------- TODO set random seed ---------------
         call random_number(phi) ! initalize to random field
-        call solver%findState(phi)
+        call solver%findState(phi, targetEvolutionTime)
 
         energy = solver%ket%innerProduct(phi, solver%energyOperator(phi))
 
@@ -80,7 +82,7 @@ contains
         call readMaxNumberOfStates(maxNumberOfStates, error)
         call readNumberOfStates(numberOfStates, error)
         call readResolution(resolution, error)
-        if (resolution == 0) then
+        if (resolution <= 0) then
             print *, "WARNING: resolution cannot be zero!"
             print *, "    Setting resolution to the defalt of ", default_resolution
             resolution = default_resolution
@@ -88,21 +90,28 @@ contains
         end if
         
         call readLength(length, error)
-        if (length == 0.0_rp) then
+        if (length <= 0.0_rp) then
             print *, "WARNING: length cannot be zero!"
             print *, "    Setting length to the defalt of ", default_length
             length = default_length
             call writeLength(length, error)
-            print *, error
         end if
 
         call readMass(mass, error)
-        if (mass == 0.0_rp) then
+        if (mass <= 0.0_rp) then
             print *, "WARNING: mass cannot be zero!"
             print *, "    Setting mass to the defalt of ", default_mass
             mass = default_mass
             call writeMass(mass, error)
-            print *, error
+        end if
+
+        call readTargetEvolutionTime(targetEvolutionTime, error)
+        if (targetEvolutionTime <= 0.0_rp) then
+            targetEvolutionTime = 8*log(2.0_rp)*mass*length**2/(PI**2) ! delta E of square well target ratio of e^-3
+            print *, "WARNING: targetEvolutionTime cannot be zero!"
+            print *, "    Setting targetEvolutionTime to the defalt of ", targetEvolutionTime
+            print *, "    the default targetEvolutionTime is a function mass and length."
+            call writeTargetEvolutionTime(targetEvolutionTime, error)
         end if
 
         call readPotential(potential, resolution, error)

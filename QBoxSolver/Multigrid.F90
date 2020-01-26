@@ -55,23 +55,31 @@ contains
         print *, numberOfStates, resolution,"dx", dx, "mass", mass, rank(potential), rank(states)
     end subroutine initalize
 
-    subroutine findState(self, phi)
+    subroutine findState(self, phi, targetEvolutionTime)
         implicit none
         real(rp), dimension(:, :), intent(INOUT) :: phi
+        real(rp), intent(IN) :: targetEvolutionTime
         class(Grid) :: self
 
+        real(rp) :: time
         real(rp) :: inv2mass
         real(rp), dimension(:, :), allocatable :: phi_dt
         integer :: i
 
-        real(rp) :: dt=0.1, r_max = 0.4_rp, r_min = 0.1_rp
-        integer :: swaps = 0, swaps_max = 10
+        real(rp) :: dt, r_max, r_min
+        integer :: swaps, swaps_max
 
+        dt = 0.1_rp
+        r_max = 0.4_rp
+        r_min = 0.1_rp
+        swaps = 0
+        swaps_max = 10
+        
+        time = 0.0_rp
         inv2mass = 1.0_rp/(2*self%mass)
         call self%ket%normalize(phi)
 
-        ! any change can propagate by one cell per step so total steps should be n*resolution where n > 1
-        do i = 1, 50*1000
+        do while(time < targetEvolutionTime)
             call self%ket%boundryCondition(phi)
             call self%ket%orthogonalize(phi, self%states, self%numberOfStates)
             phi_dt = inv2mass*self%ket%laplacian(phi) - self%potential*phi
@@ -80,10 +88,10 @@ contains
             call modify_dt_POC(phi, phi_dt, dt, r_max, r_min, swaps, swaps_max)
 
             phi = phi + dt*phi_dt
+            time = time + dt
             call self%ket%normalize(phi)
         end do
 
-        ! this is odd. I removed append states but the ennergy kept increasing
         call appendState(phi, self%states, self%numberOfStates, self%resolution)
     end subroutine findState
 
