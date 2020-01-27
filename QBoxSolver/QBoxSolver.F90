@@ -28,14 +28,24 @@ program QBoxSolver
     real(rp) :: energy
 
     ! ---------------- Initalize solver --------------
-    type(Grid) :: solver
+    type(Grid) :: solver(3)
+
+    call random_seed()
 
     call initalize()
-    solver = gridConstructor(numberOfStates, resolution, length, mass, potential, states)
+    solver(3) = gridConstructor(numberOfStates, resolution, length, mass, potential, states)
+    call halfStatesResolution(states, numberOfStates, resolution)
+    call halfStateResolution(potential, resolution)
+    solver(2) = gridConstructor(numberOfStates, resolution/2, length, mass, potential, states)
+    call halfStatesResolution(states, numberOfStates, resolution/2)
+    call halfStateResolution(potential, resolution/2)
+    solver(1) = gridConstructor(numberOfStates, resolution/4, length, mass, potential, states)
 
+    print *, "1"
     deallocate(potential)
     deallocate(states)
-    allocate(phi(resolution, resolution))
+    allocate(phi(resolution/4, resolution/4))
+    print *, "2"
 
     do while (.true.)
         if (maxNumberOfStates > 0) then
@@ -51,12 +61,22 @@ program QBoxSolver
             end if
         end if
 
-        ! ----------------------- TODO set random seed ---------------
+        print *, "3"
         call random_number(phi) ! initalize to random field
-        call solver%findState(phi, targetEvolutionTime)
+        print *, "4"
+        call solver(1)%findState(phi, targetEvolutionTime)
 
-        energy = solver%ket%innerProduct(phi, solver%energyOperator(phi))
+        call doubleStateResolution(phi, resolution/4)
+        call solver(2)%findState(phi, targetIterations=100)
 
+        call doubleStateResolution(phi, resolution/2)
+        call solver(3)%findState(phi, targetIterations=100)
+
+        print *, "5"
+        energy = solver(3)%ket%innerProduct(phi, solver(3)%energyOperator(phi))
+
+
+        print *, "6"
         call openFile(file_name, error)
         call openRun(run_name, error)
           call appendState(phi, numberOfStates, resolution, error)
@@ -66,6 +86,8 @@ program QBoxSolver
         call closeRun(error)
         call closeFile(error)
 
+        call halfStateResolution(phi, resolution)
+        call halfStateResolution(phi, resolution/2)
         print *, "Found state:", numberOfStates
     end do
 
@@ -121,4 +143,37 @@ contains
         call closeRun(error)
         call closeFile(error)
     end subroutine initalize
+
+    subroutine doubleStateResolution(phi, resolution)
+        real(rp), dimension(:, :), allocatable, intent(INOUT) :: phi
+        integer :: resolution
+        real(rp), dimension(:, :), allocatable :: phi_temp
+
+        allocate(phi_temp(resolution*2, resolution*2))
+        phi_temp(::2, ::2) = phi
+        phi_temp(::2, 2::2) = phi
+        phi_temp(2::2, ::2) = phi
+        phi_temp(2::2, 2::2) = phi
+        call move_alloc(phi_temp, phi)
+    end subroutine doubleStateResolution
+
+    subroutine halfStateResolution(state, resolution)
+        real(rp), dimension(:, :), allocatable, intent(INOUT) :: state
+        integer, intent(IN) :: resolution
+        real(rp), dimension(:, :), allocatable :: state_temp
+
+        allocate(state_temp(resolution/2, resolution/2))
+        state_temp = 0.25_rp*(state(::2, ::2) + state(::2, 2::2) + state(2::2, ::2) + state(2::2, 2::2))
+        call move_alloc(state_temp, state)
+    end subroutine halfStateResolution
+
+    subroutine halfStatesResolution(states, numberOfStates, resolution)
+        real(rp), dimension(:, :, :), allocatable, intent(INOUT) :: states
+        integer, intent(IN) :: numberOfStates, resolution
+        real(rp), dimension(:, :, :), allocatable :: states_temp
+
+        allocate(states_temp(numberOfStates, resolution/2, resolution/2))
+        states_temp = 0.25_rp*(states(:, ::2, ::2) + states(:, ::2, 2::2) + states(:, 2::2, ::2) + states(:, 2::2, 2::2))
+        call move_alloc(states_temp, states)
+    end subroutine halfStatesResolution
 end program QBoxSolver

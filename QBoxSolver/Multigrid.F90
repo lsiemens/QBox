@@ -50,15 +50,16 @@ contains
         self%states = states
 
         self%ket = braketConstructor(self%resolution, self%dx)
-        self%dt = self%mass*self%dx**2/2 ! TODO select dt using Von Neumann stability analysis
+        self%dt = self%mass*self%dx**2/16 ! TODO select dt using Von Neumann stability analysis
 
         print *, numberOfStates, resolution,"dx", dx, "mass", mass, rank(potential), rank(states)
     end subroutine initalize
 
-    subroutine findState(self, phi, targetEvolutionTime)
+    subroutine findState(self, phi, targetEvolutionTime, targetIterations)
         implicit none
         real(rp), dimension(:, :), intent(INOUT) :: phi
-        real(rp), intent(IN) :: targetEvolutionTime
+        real(rp), intent(IN), optional :: targetEvolutionTime
+        integer, intent(IN), optional :: targetIterations
         class(Grid) :: self
 
         real(rp) :: time
@@ -66,30 +67,33 @@ contains
         real(rp), dimension(:, :), allocatable :: phi_dt
         integer :: i
 
-        real(rp) :: dt, r_max, r_min
-        integer :: swaps, swaps_max
-
-        dt = 0.1_rp
-        r_max = 0.4_rp
-        r_min = 0.1_rp
-        swaps = 0
-        swaps_max = 10
-        
-        time = 0.0_rp
         inv2mass = 1.0_rp/(2*self%mass)
         call self%ket%normalize(phi)
-
-        do while(time < targetEvolutionTime)
+        
+        i = 1
+        time = 0.0_rp
+        do while(.true.)
+            if (present(targetEvolutionTime)) then
+                if (time > targetEvolutionTime) then
+                    exit
+                end if
+            else if (present(targetIterations)) then
+                if (i > targetIterations) then
+                    exit
+                end if
+            else
+                print *, "WARNING: targetEvolutionTime and targetIterations are not set."
+                exit
+            end if
             call self%ket%boundryCondition(phi)
             call self%ket%orthogonalize(phi, self%states, self%numberOfStates)
             phi_dt = inv2mass*self%ket%laplacian(phi) - self%potential*phi
 
-            ! dynamicaly adjust dt
-            call modify_dt_POC(phi, phi_dt, dt, r_max, r_min, swaps, swaps_max)
-
-            phi = phi + dt*phi_dt
-            time = time + dt
+            phi = phi + self%dt*phi_dt
             call self%ket%normalize(phi)
+
+            time = time + self%dt
+            i = i + 1
         end do
 
         call appendState(phi, self%states, self%numberOfStates, self%resolution)

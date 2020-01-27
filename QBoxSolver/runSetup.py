@@ -6,10 +6,10 @@ def evolutionTimeCalculator(deltaE, halfLives):
     return halfLives*numpy.log(2)/deltaE
 
 fname = "data.h5"
-resolution = 64
+resolution = 128
 maxNumberOfStates = -1
-targetEvolutionTime = -1 #evolutionTimeCalculator(1, 16)
-length = 2.0
+targetEvolutionTime = evolutionTimeCalculator(1.4, 32)
+length = 10.0
 mass = 1.0
 hdf5 = h5py.File(fname, "w")
 
@@ -27,7 +27,7 @@ y = numpy.linspace(-length/2, length/2, resolution)
 dx = numpy.mean(x[1:] - x[:-1])
 X, Y = numpy.meshgrid(x, y)
 
-potential = 0.0*(X**2 + Y**2)
+potential = (X**2 + Y**2)
 
 run0_potential = run0.create_dataset("potential", (resolution, resolution), dtype=numpy.float64)
 run0_potential[:, :] = potential[:, :]
