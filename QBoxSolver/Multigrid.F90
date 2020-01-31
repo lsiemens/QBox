@@ -50,9 +50,9 @@ contains
         self%states = states
 
         self%ket = braketConstructor(self%resolution, self%dx)
-        self%dt = self%mass*self%dx**2/16 ! TODO select dt using Von Neumann stability analysis
+        self%dt = 2*self%mass*self%dx**2/(4 + self%mass*self%dx**2*maxval(self%potential))
 
-        print *, numberOfStates, resolution,"dx", dx, "mass", mass, rank(potential), rank(states)
+        print *, numberOfStates, resolution,"dx", dx, "dt", self%dt, "mass", mass
     end subroutine initalize
 
     subroutine findState(self, phi, targetEvolutionTime, targetIterations)
@@ -96,6 +96,7 @@ contains
             i = i + 1
         end do
 
+        print *, "partial state found,", i, " iterations."
         call appendState(phi, self%states, self%numberOfStates, self%resolution)
     end subroutine findState
 

@@ -41,11 +41,9 @@ program QBoxSolver
     call halfStateResolution(potential, resolution/2)
     solver(1) = gridConstructor(numberOfStates, resolution/4, length, mass, potential, states)
 
-    print *, "1"
     deallocate(potential)
     deallocate(states)
     allocate(phi(resolution/4, resolution/4))
-    print *, "2"
 
     do while (.true.)
         if (maxNumberOfStates > 0) then
@@ -61,22 +59,18 @@ program QBoxSolver
             end if
         end if
 
-        print *, "3"
         call random_number(phi) ! initalize to random field
-        print *, "4"
         call solver(1)%findState(phi, targetEvolutionTime)
 
         call doubleStateResolution(phi, resolution/4)
-        call solver(2)%findState(phi, targetIterations=100)
+        call solver(2)%findState(phi, targetIterations=10)
 
         call doubleStateResolution(phi, resolution/2)
-        call solver(3)%findState(phi, targetIterations=100)
+        call solver(3)%findState(phi, targetIterations=10)
 
-        print *, "5"
         energy = solver(3)%ket%innerProduct(phi, solver(3)%energyOperator(phi))
 
 
-        print *, "6"
         call openFile(file_name, error)
         call openRun(run_name, error)
           call appendState(phi, numberOfStates, resolution, error)
