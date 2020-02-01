@@ -15,6 +15,7 @@ module QBHD
     public :: readMaxNumberOfStates, writeMaxNumberOfStates
     public :: readNumberOfStates, writeNumberOfStates
     public :: readResolution, writeResolution
+    public :: readNumberOfGrids, writeNumberOfGrids
     public :: readTargetEvolutionTime, writeTargetEvolutionTime
     public :: readLength, writeLength
     public :: readMass, writeMass
@@ -274,6 +275,26 @@ contains
 
         call writeRunAttributeInteger(attribute_name, value, error)
     end subroutine writeResolution
+
+    subroutine readNumberOfGrids(value, error)
+        implicit none
+
+        character(len=*), parameter :: attribute_name = "numberOfGrids"
+        integer, target, intent(OUT) :: value
+        integer, intent(OUT) :: error
+
+        call readRunAttributeInteger(attribute_name, value, error)
+    end subroutine readNumberOfGrids
+
+    subroutine writeNumberOfGrids(value, error)
+        implicit none
+
+        character(len=*), parameter :: attribute_name = "numberOfGrids"
+        integer, target, intent(IN) :: value
+        integer, intent(OUT) :: error
+
+        call writeRunAttributeInteger(attribute_name, value, error)
+    end subroutine writeNumberOfGrids
 
     subroutine readTargetEvolutionTime(value, error)
         implicit none

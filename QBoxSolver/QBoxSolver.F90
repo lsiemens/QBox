@@ -11,7 +11,7 @@ program QBoxSolver
     integer :: error
 
     ! ---------------- Run parameters ----------------
-    integer :: numberOfStates, resolution, maxNumberOfStates
+    integer :: numberOfStates, resolution, maxNumberOfStates, numberOfGrids
     real(rp) :: targetEvolutionTime
 
     ! ---------------- Physical parameters -----------
@@ -28,22 +28,24 @@ program QBoxSolver
     real(rp) :: energy
 
     ! ---------------- Initalize solver --------------
-    type(Grid) :: solver(3)
+    type(Grid), dimension(:), allocatable :: solver
+
+    integer :: i
 
     call random_seed()
 
     call initalize()
-    solver(3) = gridConstructor(numberOfStates, resolution, length, mass, potential, states)
-    call halfStatesResolution(states, numberOfStates, resolution)
-    call halfStateResolution(potential, resolution)
-    solver(2) = gridConstructor(numberOfStates, resolution/2, length, mass, potential, states)
-    call halfStatesResolution(states, numberOfStates, resolution/2)
-    call halfStateResolution(potential, resolution/2)
-    solver(1) = gridConstructor(numberOfStates, resolution/4, length, mass, potential, states)
+
+    allocate(solver(numberOfGrids))
+    do i = 1, numberOfGrids
+        solver(i) = gridConstructor(numberOfStates, resolution/(2**(i - 1)), length, mass, potential, states)
+        call halfStatesResolution(states, numberOfStates, resolution/(2**(i - 1)))
+        call halfStateResolution(potential, resolution/(2**(i - 1)))
+    end do
 
     deallocate(potential)
     deallocate(states)
-    allocate(phi(resolution/4, resolution/4))
+    allocate(phi(resolution/(2**(numberOfGrids - 1)), resolution/(2**(numberOfGrids - 1))))
 
     do while (.true.)
         if (maxNumberOfStates > 0) then
@@ -60,16 +62,17 @@ program QBoxSolver
         end if
 
         call random_number(phi) ! initalize to random field
-        call solver(1)%findState(phi, targetEvolutionTime)
+        do i = numberOfGrids, 1, -1
+            if (i == numberOfGrids) then
+                call solver(i)%findState(phi, targetEvolutionTime)
+            else
+                call doubleStateResolution(phi, resolution/2**i)
+                call solver(i)%findState(phi, 16*log(2.0_rp)/((PI*resolution/2**i)**2/(mass*length**2)))
+!                call solver(i)%findState(phi, targetIterations=10)
+            end if
+        end do
 
-        call doubleStateResolution(phi, resolution/4)
-        call solver(2)%findState(phi, targetIterations=10)
-
-        call doubleStateResolution(phi, resolution/2)
-        call solver(3)%findState(phi, targetIterations=10)
-
-        energy = solver(3)%ket%innerProduct(phi, solver(3)%energyOperator(phi))
-
+        energy = solver(1)%ket%innerProduct(phi, solver(1)%energyOperator(phi))
 
         call openFile(file_name, error)
         call openRun(run_name, error)
@@ -80,8 +83,9 @@ program QBoxSolver
         call closeRun(error)
         call closeFile(error)
 
-        call halfStateResolution(phi, resolution)
-        call halfStateResolution(phi, resolution/2)
+        do i = 1, numberOfGrids - 1
+            call halfStateResolution(phi, resolution/(2**(i - 1)))
+        end do
         print *, "Found state:", numberOfStates
     end do
 
@@ -89,7 +93,7 @@ program QBoxSolver
 contains
     subroutine initalize()
         implicit none
-        integer :: default_resolution = 64
+        integer :: default_resolution = 64, default_numberOfGrids = 1
         real(rp) :: default_length = 2.0_rp, default_mass = 1.0_rp
 
         call openFile(file_name, error)
@@ -103,6 +107,14 @@ contains
             print *, "    Setting resolution to the defalt of ", default_resolution
             resolution = default_resolution
             call writeResolution(resolution, error)
+        end if
+
+        call readNumberOfGrids(numberOfGrids, error)
+        if (numberOfGrids <= 0) then
+            print *, "WARNING: numberOfGrids cannot be zero!"
+            print *, "    Setting numberOfGrids to the defalt of ", default_numberOfGrids
+            numberOfGrids = default_numberOfGrids
+            call writeNumberOfGrids(numberOfGrids, error)
         end if
         
         call readLength(length, error)

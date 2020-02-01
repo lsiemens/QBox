@@ -7,6 +7,7 @@ def evolutionTimeCalculator(deltaE, halfLives):
 
 fname = "data.h5"
 resolution = 128
+numberOfGrids = 3
 maxNumberOfStates = -1
 targetEvolutionTime = evolutionTimeCalculator(1.4, 32)
 length = 10.0
@@ -17,6 +18,7 @@ run0 = hdf5.create_group("Run0")
 run0.attrs["numberOfStates"] = 0
 run0.attrs["maxNumberOfStates"] = maxNumberOfStates
 run0.attrs["resolution"] = resolution
+run0.attrs["numberOfGrids"] = numberOfGrids
 run0.attrs["length"] = length
 run0.attrs["mass"] = mass
 run0.attrs["targetEvolutionTime"] = targetEvolutionTime

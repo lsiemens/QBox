@@ -10,7 +10,7 @@ module Multigrid
         private
         type(BraKet), public :: ket
         integer :: numberOfStates, resolution
-        real(rp) :: dx, dt, mass
+        real(rp) :: dx, dtMax, mass
         real(rp), dimension(:, :), allocatable :: potential
         real(rp), dimension(:, :, :), allocatable :: states
     contains
@@ -50,9 +50,8 @@ contains
         self%states = states
 
         self%ket = braketConstructor(self%resolution, self%dx)
-        self%dt = 2*self%mass*self%dx**2/(4 + self%mass*self%dx**2*maxval(self%potential))
-
-        print *, numberOfStates, resolution,"dx", dx, "dt", self%dt, "mass", mass
+        self%dtMax = 2*self%mass*self%dx**2/(4 + self%mass*self%dx**2*maxval(self%potential))
+        print *, numberOfStates, resolution,"dx", dx, "dt Max", self%dtMax, "mass", mass
     end subroutine initalize
 
     subroutine findState(self, phi, targetEvolutionTime, targetIterations)
@@ -62,12 +61,17 @@ contains
         integer, intent(IN), optional :: targetIterations
         class(Grid) :: self
 
-        real(rp) :: time
-        real(rp) :: inv2mass
+        real(rp) :: time, dt
+        real(rp) :: inv2mass, mdx2, potentialMax
         real(rp), dimension(:, :), allocatable :: phi_dt
         integer :: i
+        real(rp) :: N
 
         inv2mass = 1.0_rp/(2*self%mass)
+        mdx2 = self%mass*self%dx**2
+        potentialMax = maxval(self%potential)
+        N = 0.0
+
         call self%ket%normalize(phi)
         
         i = 1
@@ -89,10 +93,11 @@ contains
             call self%ket%orthogonalize(phi, self%states, self%numberOfStates)
             phi_dt = inv2mass*self%ket%laplacian(phi) - self%potential*phi
 
-            phi = phi + self%dt*phi_dt
-            call self%ket%normalize(phi)
+            dt = self%dtMax - self%dtMax*mdx2*N/(4 + mdx2*(potentialMax + N))
 
-            time = time + self%dt
+            phi = phi + dt*phi_dt
+            N = (1 - sqrt(self%ket%expectationValue(phi)))/dt
+            time = time + dt
             i = i + 1
         end do
 
