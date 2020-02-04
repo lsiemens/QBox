@@ -70,7 +70,8 @@ contains
         inv2mass = 1.0_rp/(2*self%mass)
         mdx2 = self%mass*self%dx**2
         potentialMax = maxval(self%potential)
-        N = 0.0
+        N = 0.0 ! TODO clean up normalization and such
+        ! TODO make boundry conditions adjustable, barrior or periodic
 
         call self%ket%normalize(phi)
         
@@ -100,6 +101,9 @@ contains
             time = time + dt
             i = i + 1
         end do
+
+        call self%ket%boundryCondition(phi)
+        call self%ket%orthogonalize(phi, self%states, self%numberOfStates)
 
         print *, "partial state found,", i, " iterations."
         call appendState(phi, self%states, self%numberOfStates, self%resolution)
