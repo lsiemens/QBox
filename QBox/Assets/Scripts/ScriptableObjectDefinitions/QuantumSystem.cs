@@ -13,7 +13,7 @@ public class QuantumSystem : ScriptableObject {
     [System.NonSerialized] public int stateChannels;
     [System.NonSerialized] public int maxTextureLayer;
     [System.NonSerialized] public int numberOfStates;
-    [System.NonSerialized] public float xMax;
+    [System.NonSerialized] public float length;
     int resolution;
     float dx;
     float[][,] states; // states[level, i, j]
@@ -33,11 +33,11 @@ public class QuantumSystem : ScriptableObject {
             energyLevels[i] = (float)importData.energyLevels[i];
         }
         resolution = importData.resolution;
-        xMax = (float)importData.xMax;
-        dx = 2*xMax/(resolution - 1);
+        length = (float)importData.length;
+        dx = length/(resolution - 1);
         stateChannels = importData.statesAtlasChannels;
 
-        qMath = new QMath(resolution, xMax);
+        qMath = new QMath(resolution, length);
 
         // ------------------- POTENTAL ----------------------------
         potentialTexture = new Texture2D(resolution, resolution, TextureFormat.RFloat, false);

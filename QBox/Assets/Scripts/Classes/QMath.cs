@@ -5,17 +5,17 @@ using UnityEngine;
 public class QMath
 {
     public int resolution;
-    public float xMax;
+    public float length;
     float dx;
 
     // all functions are assumed to be in the form |F>
     // complex function [index, x, y]
     // coefficients [index, real/imaginary]
 
-    public QMath(int Resolution, float XMax) {
+    public QMath(int Resolution, float Length) {
         resolution = Resolution;
-        xMax = XMax;
-        dx = 2*xMax/(resolution - 1);
+        length = Length;
+        dx = length/(resolution - 1);
     }
 
     // InnerProduct a real function, <A|B>, [x, y]

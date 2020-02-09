@@ -9,7 +9,7 @@
     "statesAtlasChannels": 3,
     "numberOfStates": 39,
     "resolution": 256,
-    "xMax": 2.0,
+    "length": 2.0,
     "energyLevels": [
         17.31609089965336,
         19.710505930612737,

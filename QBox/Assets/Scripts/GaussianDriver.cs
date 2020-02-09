@@ -94,11 +94,11 @@ public class GaussianDriver : MonoBehaviour
                 }
             }
 
-            float[][,] gaussian = QSystemController.currentQuantumSystem.qMath.GaussianComplex(gaussianPosition*QSystemController.currentQuantumSystem.xMax, speed*gaussianVelocity*QSystemController.currentQuantumSystem.xMax, width*QSystemController.currentQuantumSystem.xMax);
+            float[][,] gaussian = QSystemController.currentQuantumSystem.qMath.GaussianComplex(gaussianPosition*QSystemController.currentQuantumSystem.length/2.0f, speed*gaussianVelocity*QSystemController.currentQuantumSystem.length/2.0f, width*QSystemController.currentQuantumSystem.length/2.0f);
             editorMode.coefficientsActive = QSystemController.currentQuantumSystem.ProjectFunctionComplex(gaussian);
 
 
-//            float[,] gaussian = QSystemController.currentQuantumSystem.qMath.Gaussian(gaussianPosition*QSystemController.currentQuantumSystem.xMax, width*QSystemController.currentQuantumSystem.xMax);
+//            float[,] gaussian = QSystemController.currentQuantumSystem.qMath.Gaussian(gaussianPosition*QSystemController.currentQuantumSystem.length/2.0, width*QSystemController.currentQuantumSystem.length/2.0);
 //            editorMode.coefficientsActive = QSystemController.currentQuantumSystem.ProjectFunction(gaussian);
         }
     }

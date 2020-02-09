@@ -9,7 +9,7 @@ public struct ImportData
     public int statesAtlasResolution, statesAtlasGrid, statesAtlasChannels;
 
     public int numberOfStates, resolution;
-    public double xMax;
+    public double length;
     public bool isLinear;
     public double[] energyLevels;
 }
