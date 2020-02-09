@@ -53,12 +53,11 @@ program QBoxSolver
                 print *, numberOfStates, "states have been found. This solver will now stop."
                 exit
             end if
-        else
-            inquire(file=stop_msg, exist=stopSolver)
-            if (stopSolver) then
-                print *, "File stop.msg detected. This solver will now stop."
-                exit
-            end if
+        end if
+        inquire(file=stop_msg, exist=stopSolver)
+        if (stopSolver) then
+            print *, "File stop.msg detected. This solver will now stop."
+            exit
         end if
 
         call random_number(phi) ! initalize to random field
