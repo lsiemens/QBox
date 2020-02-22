@@ -1,4 +1,6 @@
-!e QBox Hierarchical Data back end
+! QBox Hierarchical Data back end
+!
+! Defines a submodule of QBHD that contains subroutines for reading and writeing HDF primetives
 
 submodule (QBHD) QBHDBackEnd
     implicit none
@@ -207,12 +209,6 @@ contains
         end if
     end subroutine writeRunAttributeReal
 
-
-
-
-
-
-
     subroutine readDatasetReal(dataset_name, value, numberOfReals, error)
         implicit none
         character(len=*), intent(IN) :: dataset_name
@@ -335,10 +331,6 @@ contains
 
         call writeDatasetReal(dataset_name, data, numberOfReals + 1, error)
     end subroutine appendDatasetReal
-
-
-
-
 
     subroutine readDatasetField(dataset_name, value, numberOfFields, resolution, error)
         implicit none

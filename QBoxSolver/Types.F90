@@ -1,3 +1,7 @@
+! Types
+!
+! contains the definition of rp (real prescision) the prescision of all real variables in QBox
+
 module Types
     implicit none
     integer, parameter :: rp=kind(0.d0)

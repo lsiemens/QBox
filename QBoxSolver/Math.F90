@@ -1,4 +1,6 @@
-!implement math functions for Multigrid and QBoxSolver
+! Math
+!
+! implement the type BraKet and math functions for Multigrid and QBoxSolver
 
 module Math
     use Types, only: rp
@@ -27,6 +29,7 @@ contains
         call braketConstructor%initalize(resolution, dx)
     end function braketConstructor
 
+    ! initaliz an instance of type BraKet
     subroutine initalize(self, resolution, dx)
         implicit none
         integer, intent(IN) :: resolution
@@ -37,6 +40,7 @@ contains
         self%dx = dx
     end subroutine initalize
 
+    ! apply the boundry condition that phi is zero at the border
     subroutine boundryCondition(self, phi)
         implicit none
         real(rp), dimension(:, :), intent(INOUT) :: phi

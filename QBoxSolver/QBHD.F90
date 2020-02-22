@@ -1,4 +1,20 @@
 ! QBox Hierarchical Data
+!
+! Defines subroutines for reading and writing QBox data to HDF5 files.
+! 
+! The HDF5 created by these routines should have the folowing structure
+
+!
+! file_name : file
+!     |
+!     run_name : HDF5 Group
+!        |
+!        maxNumberOfStates, numberOfStates : Integer HDF5 Attribute
+!        resolution, numberOfGrids : Integer HDF5 Attribute
+!        length, mass, targetEvolutionTime : Real HDF5 Attribute
+!        states : 3D HDF5 Dataset
+!        potential : 2D HDF5 Dataset
+!        energyLevels : 1D HDF5 Dataset
 
 module QBHD
     use HDF5
