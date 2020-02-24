@@ -32,10 +32,13 @@ program QBoxSolver
 
     integer :: i
 
+    ! intalize the random seed: WARNING: the random seed is not set to a unique value on all systems
     call random_seed()
 
+    ! read from HDF5 data file, or initalise it if the file is missing
     call initalize()
 
+    ! initalize multigrid solvers for each grid level
     allocate(solver(numberOfGrids))
     do i = 1, numberOfGrids
         solver(i) = gridConstructor(numberOfStates, resolution/(2**(i - 1)), length, mass, potential, states)
@@ -47,7 +50,10 @@ program QBoxSolver
     deallocate(states)
     allocate(phi(resolution/(2**(numberOfGrids - 1)), resolution/(2**(numberOfGrids - 1))))
 
+    ! start finding steady states
     do while (.true.)
+        ! stop looking for steady states if the number of states
+        ! exceedes maxNumberOfStates or if the file "stop.msg" found.
         if (maxNumberOfStates > 0) then
             if (numberOfStates >= maxNumberOfStates) then
                 print *, numberOfStates, "states have been found. This solver will now stop."
@@ -60,19 +66,30 @@ program QBoxSolver
             exit
         end if
 
-        call random_number(phi) ! initalize to random field
+        ! initalize phi to a random field. Given this each steady state solution,
+        ! both known and unknown, are expected to have some nonzero component of phi,
+        ! which is required for the algorith to successfully find the next steady state solution.
+        call random_number(phi)
+
+        ! find steady state solutions on each grid level using the solution
+        ! from the previous grid level as an initial guess.
         do i = numberOfGrids, 1, -1
             if (i == numberOfGrids) then
+                ! phi is initaliased with a random field
                 call solver(i)%findState(phi, targetEvolutionTime)
             else
+                ! phi is initalized with the solution from the previous grid level.
                 call doubleStateResolution(phi, resolution/2**i)
+
                 call solver(i)%findState(phi, 16*log(2.0_rp)/((PI*resolution/2**i)**2/(mass*length**2)))
 !                call solver(i)%findState(phi, targetIterations=10)
             end if
         end do
 
+        ! calculate the expected energy of the steady state solution.
         energy = solver(1)%ket%innerProduct(phi, solver(1)%energyOperator(phi))
 
+        ! save the state and its energy to the HDF5 file
         call openFile(file_name, error)
         call openRun(run_name, error)
           call appendState(phi, numberOfStates, resolution, error)
@@ -82,11 +99,13 @@ program QBoxSolver
         call closeRun(error)
         call closeFile(error)
 
+        ! resize phi for the next iteration
         do i = 1, numberOfGrids - 1
             call halfStateResolution(phi, resolution/(2**(i - 1)))
         end do
         print *, "Found state:", numberOfStates
     end do
+    ! stop finding steady states
 
 ! ---------------- Subprograms -------------------
 contains

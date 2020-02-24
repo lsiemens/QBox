@@ -1,3 +1,8 @@
+! Multigrid
+!
+! Defines the type Grid that contains the data and subroutines to solve
+! for the steady states of the Shrodinger equation on a given subgrid.
+
 module Multigrid
     use Types, only: rp
     use Math
@@ -29,11 +34,13 @@ contains
 
         real(rp) :: dx
 
+        ! the distance betwean grid points
         dx = length/(resolution - 1)
 
         call gridConstructor%initalize(numberOfStates, resolution, dx, mass, potential, states)
     end function gridConstructor
 
+    ! initalize an instance of the type Grid
     subroutine initalize(self, numberOfStates, resolution, dx, mass, potential, states)
         implicit none
         integer, intent(IN) :: numberOfStates, resolution
@@ -50,7 +57,10 @@ contains
         self%states = states
 
         self%ket = braketConstructor(self%resolution, self%dx)
+
+        ! the maximum stable time step determined using Von Neumann stability analysis as a huristic
         self%dtMax = 2*self%mass*self%dx**2/(4 + self%mass*self%dx**2*maxval(self%potential))
+
         print *, numberOfStates, resolution,"dx", dx, "dt Max", self%dtMax, "mass", mass
     end subroutine initalize
 
@@ -74,10 +84,14 @@ contains
         ! TODO make boundry conditions adjustable, barrior or periodic
 
         call self%ket%normalize(phi)
-        
+
+        ! start of algorithm for finding steady state solutions
         i = 1
         time = 0.0_rp
         do while(.true.)
+            ! check if simulation termination conditions are satisfied the
+            ! algorithm will terminate if the number of iterations exceed
+            ! targetIterations or if the time simulated exceedes targetEvolutionTime
             if (present(targetEvolutionTime)) then
                 if (time > targetEvolutionTime) then
                     exit
@@ -90,17 +104,29 @@ contains
                 print *, "WARNING: targetEvolutionTime and targetIterations are not set."
                 exit
             end if
+
+            ! ensure that the new solution satisfies the boundry conditions and
+            ! that it forms an orthonormal set with the other steady state solutions
             call self%ket%boundryCondition(phi)
             call self%ket%orthogonalize(phi, self%states, self%numberOfStates)
+
+            ! calculate the finite difference aproximation of the time derivative of phi
             phi_dt = inv2mass*self%ket%laplacian(phi) - self%potential*phi
 
+            ! the current time step determined using Von Neumann stability analysis as a huristic
             dt = self%dtMax - self%dtMax*mdx2*N/(4 + mdx2*(potentialMax + N))
 
+            ! the new solution according to the forward Euler method
             phi = phi + dt*phi_dt
+
+            ! N: a measure of the change in phi over time, which is an estemate of
+            ! the states expected energy
             N = (1 - sqrt(self%ket%expectationValue(phi)))/dt
+
             time = time + dt
             i = i + 1
         end do
+        ! end of algorithm for finding steady state solutions
 
         call self%ket%boundryCondition(phi)
         call self%ket%orthogonalize(phi, self%states, self%numberOfStates)
@@ -118,35 +144,6 @@ contains
     end function energyOperator
 
     ! ------------------- Other subroutines and functions -------------
-
-    ! the dt tweaking mothod used in POC
-    ! it attempts to limit the change in phi
-    subroutine modify_dt_POC(phi, phi_dt, dt, r_max, r_min, swaps, swaps_max)
-        implicit none
-        real(rp), dimension(:, :), intent(IN) :: phi, phi_dt
-        real(rp), intent(INOUT) :: dt
-        real(rp), intent(INOUT) :: r_max, r_min
-        integer, intent(INOUT) :: swaps
-        integer, intent(IN) :: swaps_max
-
-        real(rp) :: r
-
-        r = dt*maxval(abs(phi_dt)) / maxval(abs(phi))
-        if (r > r_max) then
-            dt = dt*0.5_rp
-            swaps = swaps + 1
-        else if (r < r_min) then
-            dt = dt*2.0_rp
-            swaps = swaps + 1
-        end if
-
-        if (swaps > swaps_max) then
-            swaps = 0
-            r_max = r_max*0.5_rp
-            r_min = r_min*0.5_rp
-        end if
-    end subroutine modify_dt_POC
-
     subroutine appendState(newState, states, numberOfStates, resolution)
         implicit none
         real(rp), dimension(:, :), intent(IN) :: newState
