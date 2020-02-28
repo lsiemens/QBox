@@ -7213,6 +7213,11 @@ PrefabInstance:
       propertyPath: m_fontColor32.rgba
       value: 4278191579
       objectReference: {fileID: 0}
+    - target: {fileID: 1407859001489060283, guid: ffd6be4f62ccd2e4384937a6dfa21fb6,
+        type: 3}
+      propertyPath: m_firstOverflowCharacterIndex
+      value: -1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ffd6be4f62ccd2e4384937a6dfa21fb6, type: 3}
 --- !u!1 &6404106615793274246 stripped
