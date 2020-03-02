@@ -273,9 +273,29 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3974466313532299872, guid: 96648634cfa72864e81e9b5a35f3a711,
         type: 3}
+      propertyPath: shaders.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3974466313532299872, guid: 96648634cfa72864e81e9b5a35f3a711,
+        type: 3}
       propertyPath: screen
       value: 
       objectReference: {fileID: 2018495951}
+    - target: {fileID: 3974466313532299872, guid: 96648634cfa72864e81e9b5a35f3a711,
+        type: 3}
+      propertyPath: shaderMaxReservedIndex
+      value: 31
+      objectReference: {fileID: 0}
+    - target: {fileID: 3974466313532299872, guid: 96648634cfa72864e81e9b5a35f3a711,
+        type: 3}
+      propertyPath: shaders.Array.data[0]
+      value: 
+      objectReference: {fileID: 4800000, guid: 0423258bb6baf994b82bba998069492b, type: 3}
+    - target: {fileID: 3974466313532299872, guid: 96648634cfa72864e81e9b5a35f3a711,
+        type: 3}
+      propertyPath: shaders.Array.data[1]
+      value: 
+      objectReference: {fileID: 4800000, guid: 8e0879224513b724b847c59cbff01923, type: 3}
     - target: {fileID: 3974466313532299873, guid: 96648634cfa72864e81e9b5a35f3a711,
         type: 3}
       propertyPath: quantumSystems.Array.size

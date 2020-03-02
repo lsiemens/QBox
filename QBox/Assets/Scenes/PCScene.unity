@@ -193,6 +193,11 @@ PrefabInstance:
       propertyPath: screen
       value: 
       objectReference: {fileID: 336536623}
+    - target: {fileID: 3974466313532299872, guid: 96648634cfa72864e81e9b5a35f3a711,
+        type: 3}
+      propertyPath: shaderMaxReservedIndex
+      value: 1023
+      objectReference: {fileID: 0}
     - target: {fileID: 3974466313532299873, guid: 96648634cfa72864e81e9b5a35f3a711,
         type: 3}
       propertyPath: quantumSystems.Array.size
