@@ -12,6 +12,7 @@
 !        maxNumberOfStates, numberOfStates : Integer HDF5 Attribute
 !        resolution, numberOfGrids : Integer HDF5 Attribute
 !        length, mass, targetEvolutionTime : Real HDF5 Attribute
+!        isPeriodicBoundary : Logical HDF5 Attribute
 !        states : 3D HDF5 Dataset
 !        potential : 2D HDF5 Dataset
 !        energyLevels : 1D HDF5 Dataset
@@ -33,6 +34,7 @@ module QBHD
     public :: readResolution, writeResolution
     public :: readNumberOfGrids, writeNumberOfGrids
     public :: readTargetEvolutionTime, writeTargetEvolutionTime
+    public :: readIsPeriodicBoundary, writeIsPeriodicBoundary
     public :: readLength, writeLength
     public :: readMass, writeMass
     public :: readPotential, writePotential
@@ -46,7 +48,7 @@ module QBHD
             integer, target, intent(OUT) :: value
             integer, intent(OUT) :: error
         end subroutine readRunAttributeInteger
-        
+
         module subroutine writeRunAttributeInteger(attribute_name, value, error)
             implicit none
             character(len=*), intent(IN) :: attribute_name
@@ -54,13 +56,27 @@ module QBHD
             integer, intent(OUT) :: error
         end subroutine writeRunAttributeInteger
 
+        module subroutine readRunAttributeLogical(attribute_name, value, error)
+            implicit none
+            character(len=*), intent(IN) :: attribute_name
+            logical, intent(OUT) :: value
+            integer, intent(OUT) :: error
+        end subroutine readRunAttributeLogical
+
+        module subroutine writeRunAttributeLogical(attribute_name, value, error)
+            implicit none
+            character(len=*), intent(IN) :: attribute_name
+            logical, intent(IN) :: value
+            integer, intent(OUT) :: error
+        end subroutine writeRunAttributeLogical
+
         module subroutine readRunAttributeReal(attribute_name, value, error)
             implicit none
             character(len=*), intent(IN) :: attribute_name
             real(rp), target, intent(OUT) :: value
             integer, intent(OUT) :: error
         end subroutine readRunAttributeReal
-        
+
         module subroutine writeRunAttributeReal(attribute_name, value, error)
             implicit none
             character(len=*), intent(IN) :: attribute_name
@@ -75,7 +91,7 @@ module QBHD
             integer, intent(IN) :: numberOfReals
             integer, intent(OUT) :: error
         end subroutine readDatasetReal
-        
+
         module subroutine writeDatasetReal(dataset_name, value, numberOfReals, error)
             implicit none
             character(len=*), intent(IN) :: dataset_name
@@ -91,7 +107,7 @@ module QBHD
             integer, intent(IN) :: numberOfReals
             integer, intent(OUT) :: error
         end subroutine appendDatasetReal
-        
+
         module subroutine readDatasetField(dataset_name, value, numberOfFields, resolution, error)
             implicit none
             character(len=*), intent(IN) :: dataset_name
@@ -331,6 +347,32 @@ contains
 
         call writeRunAttributeReal(attribute_name, value, error)
     end subroutine writeTargetEvolutionTime
+
+
+
+
+    subroutine readIsPeriodicBoundary(value, error)
+        implicit none
+
+        character(len=*), parameter :: attribute_name = "isPeriodicBoundary"
+        logical, intent(OUT) :: value
+        integer, intent(OUT) :: error
+
+        call readRunAttributeLogical(attribute_name, value, error)
+    end subroutine readIsPeriodicBoundary
+
+    subroutine writeIsPeriodicBoundary(value, error)
+        implicit none
+
+        character(len=*), parameter :: attribute_name = "isPeriodicBoundary"
+        logical, intent(IN) :: value
+        integer, intent(OUT) :: error
+
+        call writeRunAttributeLogical(attribute_name, value, error)
+    end subroutine writeIsPeriodicBoundary
+
+
+
 
     subroutine readLength(value, error)
         implicit none

@@ -12,45 +12,55 @@ module Math
     type BraKet
         private
         integer :: resolution
+        logical :: isPeriodicBoundary
         real(rp) :: dx
     contains
         procedure :: initalize
-        procedure, public :: boundryCondition, laplacian
+        procedure, public :: boundaryCondition, laplacian
         procedure, public :: expectationValue, normalize, orthogonalize
         procedure, public :: innerProduct
     end type BraKet
 contains
-    function braketConstructor(resolution, dx)
+    function braketConstructor(resolution, isPeriodicBoundary, dx)
         implicit none
         integer, intent(IN) :: resolution
+        logical, intent(IN) :: isPeriodicBoundary
         real(rp), intent(IN) :: dx
         type(BraKet) :: braketConstructor
 
-        call braketConstructor%initalize(resolution, dx)
+        call braketConstructor%initalize(resolution, isPeriodicBoundary, dx)
     end function braketConstructor
 
     ! initaliz an instance of type BraKet
-    subroutine initalize(self, resolution, dx)
+    subroutine initalize(self, resolution, isPeriodicBoundary, dx)
         implicit none
         integer, intent(IN) :: resolution
+        logical, intent(IN) :: isPeriodicBoundary
         real(rp), intent(IN) :: dx
         class(BraKet) :: self
 
         self%resolution = resolution
+        self%isPeriodicBoundary = isPeriodicBoundary
         self%dx = dx
     end subroutine initalize
 
-    ! apply the boundry condition that phi is zero at the border
-    subroutine boundryCondition(self, phi)
+    ! apply the boundary condition to phi. If isPeriodicBoundary is false,
+    ! then apply the condition that phi is zero at the border, if it is
+    ! not false then do not change phi. When phi is left unchanged the use
+    ! of the function "cshift" (cyclic shift) in the implementation of the
+    ! laplacian will lead to a natural periodic boundary condition.
+    subroutine boundaryCondition(self, phi)
         implicit none
         real(rp), dimension(:, :), intent(INOUT) :: phi
         class(BraKet) :: self
 
-        phi(:, 1) = 0.0_rp
-        phi(:, self%resolution) = 0.0_rp
-        phi(1, :) = 0.0_rp
-        phi(self%resolution, :) = 0.0_rp
-    end subroutine boundryCondition
+        if (.not. self%isPeriodicBoundary) then
+            phi(:, 1) = 0.0_rp
+            phi(:, self%resolution) = 0.0_rp
+            phi(1, :) = 0.0_rp
+            phi(self%resolution, :) = 0.0_rp
+        end if
+    end subroutine boundaryCondition
 
     function laplacian(self, phi)
         implicit none

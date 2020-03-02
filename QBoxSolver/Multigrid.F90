@@ -15,6 +15,7 @@ module Multigrid
         private
         type(BraKet), public :: ket
         integer :: numberOfStates, resolution
+        logical :: isPeriodicBoundary
         real(rp) :: dx, dtMax, mass
         real(rp), dimension(:, :), allocatable :: potential
         real(rp), dimension(:, :, :), allocatable :: states
@@ -24,9 +25,10 @@ module Multigrid
         procedure :: energyOperator
     end type Grid
 contains
-    function gridConstructor(numberOfStates, resolution, length, mass, potential, states)
+    function gridConstructor(numberOfStates, resolution, isPeriodicBoundary, length, mass, potential, states)
         implicit none
         integer, intent(IN) :: numberOfStates, resolution
+        logical, intent(IN) :: isPeriodicBoundary
         real(rp), intent(IN) :: length, mass
         real(rp), dimension(:, :), intent(IN) :: potential
         real(rp), dimension(:, :, :), intent(IN) :: states
@@ -37,13 +39,14 @@ contains
         ! the distance betwean grid points
         dx = length/(resolution - 1)
 
-        call gridConstructor%initalize(numberOfStates, resolution, dx, mass, potential, states)
+        call gridConstructor%initalize(numberOfStates, resolution, isPeriodicBoundary, dx, mass, potential, states)
     end function gridConstructor
 
     ! initalize an instance of the type Grid
-    subroutine initalize(self, numberOfStates, resolution, dx, mass, potential, states)
+    subroutine initalize(self, numberOfStates, resolution, isPeriodicBoundary, dx, mass, potential, states)
         implicit none
         integer, intent(IN) :: numberOfStates, resolution
+        logical, intent(IN) :: isPeriodicBoundary
         real(rp), intent(IN) :: dx, mass
         real(rp), dimension(:, :), intent(IN) :: potential
         real(rp), dimension(:, :, :), intent(IN) :: states
@@ -51,17 +54,19 @@ contains
 
         self%numberOfStates = numberOfStates
         self%resolution = resolution
+        self%isPeriodicBoundary = isPeriodicBoundary
         self%dx = dx
         self%mass = mass
         self%potential = potential
         self%states = states
 
-        self%ket = braketConstructor(self%resolution, self%dx)
+        self%ket = braketConstructor(self%resolution, self%isPeriodicBoundary, self%dx)
 
         ! the maximum stable time step determined using Von Neumann stability analysis as a huristic
         self%dtMax = 2*self%mass*self%dx**2/(4 + self%mass*self%dx**2*maxval(self%potential))
 
-        print *, numberOfStates, resolution,"dx", dx, "dt Max", self%dtMax, "mass", mass
+        print *, "number of states:", numberOfStates, "resolution:", resolution, "is periodic boundary:", isPeriodicBoundary
+        print *, "dx:", dx, "dt max:", self%dtMax, "mass:", mass
     end subroutine initalize
 
     subroutine findState(self, phi, targetEvolutionTime, targetIterations)
@@ -81,7 +86,6 @@ contains
         mdx2 = self%mass*self%dx**2
         potentialMax = maxval(self%potential)
         N = 0.0 ! TODO clean up normalization and such
-        ! TODO make boundry conditions adjustable, barrior or periodic
 
         call self%ket%normalize(phi)
 
@@ -105,9 +109,9 @@ contains
                 exit
             end if
 
-            ! ensure that the new solution satisfies the boundry conditions and
+            ! ensure that the new solution satisfies the boundary conditions and
             ! that it forms an orthonormal set with the other steady state solutions
-            call self%ket%boundryCondition(phi)
+            call self%ket%boundaryCondition(phi)
             call self%ket%orthogonalize(phi, self%states, self%numberOfStates)
 
             ! calculate the finite difference aproximation of the time derivative of phi
@@ -128,7 +132,7 @@ contains
         end do
         ! end of algorithm for finding steady state solutions
 
-        call self%ket%boundryCondition(phi)
+        call self%ket%boundaryCondition(phi)
         call self%ket%orthogonalize(phi, self%states, self%numberOfStates)
 
         print *, "partial state found,", i, " iterations."

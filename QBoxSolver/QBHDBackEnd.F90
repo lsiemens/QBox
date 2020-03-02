@@ -107,6 +107,38 @@ contains
         end if
     end subroutine writeRunAttributeInteger
 
+    subroutine readRunAttributeLogical(attribute_name, value, error)
+        implicit none
+        character(len=*), intent(IN) :: attribute_name
+        logical, intent(OUT) :: value
+        integer, target :: buffer
+        integer, intent(OUT) :: error
+
+        call readRunAttributeInteger(attribute_name, buffer, error)
+
+        if (buffer == 0) then
+            value = .false.
+        else
+            value = .true.
+        end if
+    end subroutine readRunAttributeLogical
+
+    subroutine writeRunAttributeLogical(attribute_name, value, error)
+        implicit none
+        character(len=*), intent(IN) :: attribute_name
+        logical, intent(IN) :: value
+        integer, target :: buffer
+        integer, intent(OUT) :: error
+
+        if (value) then
+            buffer = 1
+        else
+            buffer = 0
+        end if
+
+        call writeRunAttributeInteger(attribute_name, buffer, error)
+    end subroutine writeRunAttributeLogical
+
     subroutine readRunAttributeReal(attribute_name, value, error)
         implicit none
         character(len=*), intent(IN) :: attribute_name

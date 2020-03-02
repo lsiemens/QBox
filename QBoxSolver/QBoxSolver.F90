@@ -15,6 +15,7 @@ program QBoxSolver
     real(rp) :: targetEvolutionTime
 
     ! ---------------- Physical parameters -----------
+    logical :: isPeriodicBoundary
     real(rp) :: length, mass
     real(rp), dimension(:, :), allocatable :: potential
     real(rp), dimension(:, :, :), allocatable :: states
@@ -41,7 +42,7 @@ program QBoxSolver
     ! initalize multigrid solvers for each grid level
     allocate(solver(numberOfGrids))
     do i = 1, numberOfGrids
-        solver(i) = gridConstructor(numberOfStates, resolution/(2**(i - 1)), length, mass, potential, states)
+        solver(i) = gridConstructor(numberOfStates, resolution/(2**(i - 1)), isPeriodicBoundary, length, mass, potential, states)
         call halfStatesResolution(states, numberOfStates, resolution/(2**(i - 1)))
         call halfStateResolution(potential, resolution/(2**(i - 1)))
     end do
@@ -135,6 +136,7 @@ contains
             call writeNumberOfGrids(numberOfGrids, error)
         end if
         
+        call readIsPeriodicBoundary(isPeriodicBoundary, error)
         call readLength(length, error)
         if (length <= 0.0_rp) then
             print *, "WARNING: length cannot be zero!"

@@ -8,6 +8,7 @@ group = hdf5["Run0"]
 numberOfStates = group.attrs["numberOfStates"]
 maxNumberOfStates = group.attrs["maxNumberOfStates"]
 resolution = group.attrs["resolution"]
+isPeriodicBoundary = bool(group.attrs["isPeriodicBoundary"])
 length = group.attrs["length"]
 mass = group.attrs["mass"]
 data = group["states"]
