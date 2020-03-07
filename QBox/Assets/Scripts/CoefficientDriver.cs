@@ -10,8 +10,8 @@ public class CoefficientDriver : MonoBehaviour
     [System.NonSerialized] public int NumberOfStates;
     public EditorMode editorMode;
     public TextMeshProUGUI remainingStatesLabel;
+    public RectTransform imageRect;
 
-    private RectTransform imageRect;
     private Material material;
     private float halfSize;
 
@@ -23,8 +23,7 @@ public class CoefficientDriver : MonoBehaviour
         NumberOfStates = WaveFunction.NumberOfStates;
         index = 0;
         editorMode.coefficientsActive = new float[NumberOfStates, 2];
-		imageRect =  GetComponent<RectTransform>();
-        halfSize = imageRect.sizeDelta.x/2;
+        halfSize = imageRect.rect.width/2;
         material = GetComponent<Image>().material;
         active = 1.0f;
         probability = 0.0f;
@@ -38,6 +37,8 @@ public class CoefficientDriver : MonoBehaviour
     }
 
     public void OnClick() {
+        halfSize = imageRect.rect.width/2; // reset halfSize to account for any dynamic changes in the widget
+
         if (index < NumberOfStates) {
             if (Vector2.Distance(imageRect.position, Input.mousePosition)/halfSize < active) {
                 Vector2 coefficient = (imageRect.position - Input.mousePosition)/halfSize;

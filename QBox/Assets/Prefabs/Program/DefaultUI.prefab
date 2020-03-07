@@ -1424,6 +1424,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   editorMode: {fileID: 5428611356596789898}
   remainingStatesLabel: {fileID: 5428611355714221398}
+  imageRect: {fileID: 5428611356011275845}
 --- !u!114 &5428611356011275870
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7201,7 +7202,7 @@ PrefabInstance:
     - target: {fileID: 1407859001489060283, guid: ffd6be4f62ccd2e4384937a6dfa21fb6,
         type: 3}
       propertyPath: m_firstOverflowCharacterIndex
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ffd6be4f62ccd2e4384937a6dfa21fb6, type: 3}
@@ -7748,31 +7749,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SizeDelta.x
       value: -135.89
-      objectReference: {fileID: 0}
-    - target: {fileID: 1846414136256240211, guid: a8376879c197c264ca5a30d6a48bd213,
-        type: 3}
-      propertyPath: m_textInfo.characterCount
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1846414136256240211, guid: a8376879c197c264ca5a30d6a48bd213,
-        type: 3}
-      propertyPath: m_textInfo.wordCount
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1846414136256240211, guid: a8376879c197c264ca5a30d6a48bd213,
-        type: 3}
-      propertyPath: m_textInfo.lineCount
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1846414136256240211, guid: a8376879c197c264ca5a30d6a48bd213,
-        type: 3}
-      propertyPath: m_textInfo.pageCount
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1846414136256240211, guid: a8376879c197c264ca5a30d6a48bd213,
-        type: 3}
-      propertyPath: m_firstOverflowCharacterIndex
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2813085020844724524, guid: a8376879c197c264ca5a30d6a48bd213,
         type: 3}
