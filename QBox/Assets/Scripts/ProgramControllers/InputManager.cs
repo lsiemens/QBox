@@ -31,6 +31,14 @@ public class InputManager : MonoBehaviour
         }
     }
 
+    public void TriggerRaiseState() {
+        EventManager.TriggerEvent("Raise State");
+    }
+
+    public void TriggerLowerState() {
+        EventManager.TriggerEvent("Lower State");
+    }
+
     void Update()
     {
         if (Input.GetButtonDown("Edit Mode")) {
@@ -41,10 +49,10 @@ public class InputManager : MonoBehaviour
         }
 
         if (Input.GetButtonDown("Raise State")) {
-            EventManager.TriggerEvent("Raise State");
+            TriggerRaiseState();
         }
         if (Input.GetButtonDown("Lower State")) {
-            EventManager.TriggerEvent("Lower State");
+            TriggerLowerState();
         }
 
         if (Input.GetButtonDown("Cycle Shader")) {

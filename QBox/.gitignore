@@ -60,3 +60,6 @@ crashlytics-build.properties
 
 # Ignore TextMesh Pro assets
 /[Aa]ssets/TextMesh Pro/*
+
+# Ignore Lean assets
+/[Aa]ssets/Lean/*
