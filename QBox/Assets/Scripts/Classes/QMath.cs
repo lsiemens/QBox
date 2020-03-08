@@ -36,18 +36,21 @@ public class QMath
     }
 
     // InnerProduct a complex function, <A|B>, [x, y]
-    public float[] InnerProductFComplex(float[,] A, float[][,] B) {
+    public float[] InnerProductFComplex(float[,] A, float[][,] B, int stride=1) {
         if ((A.GetLength(0) != resolution) || (A.GetLength(1) != resolution)) {
             Debug.LogError("function A must have dimensions resolution X resolution");
         }
         if ((B[0].GetLength(0) != resolution) || (B[0].GetLength(1) != resolution)) {
             Debug.LogError("function B must have dimensions resolution X resolution");
         }
+        if (stride < 1) {
+            Debug.LogError("stride must be >= 1");
+        }
         float[] value = new float[2];
-        for (int i = 0; i < resolution; i++) {
-            for (int j = 0; j < resolution; j++) {
-                value[0] += A[i, j]*B[0][i, j]*dx*dx;
-                value[1] += A[i, j]*B[1][i, j]*dx*dx;
+        for (int i = 0; i < resolution/stride; i++) {
+            for (int j = 0; j < resolution/stride; j++) {
+                value[0] += A[i*stride, j*stride]*B[0][i*stride, j*stride]*dx*dx;
+                value[1] += A[i*stride, j*stride]*B[1][i*stride, j*stride]*dx*dx;
             }
         }
         return value;
@@ -139,7 +142,7 @@ public class QMath
         return coefficients;
     }
 
-    public float[,] ProjectFunctionComplex(float[][,] states, float[][,] function) {
+    public float[,] ProjectFunctionComplex(float[][,] states, float[][,] function, int stride=1) {
         if ((function[0].GetLength(0) != resolution) || (function[0].GetLength(1) != resolution)) {
             Debug.LogError("function must have dimensions resolution X resolution");
         }
@@ -150,7 +153,7 @@ public class QMath
             if ((states[k].GetLength(0) != resolution) || (states[k].GetLength(1) != resolution)) {
                 Debug.LogError("State[" + k + "] must have dimensions resolution X resolution");
             }
-            value = InnerProductFComplex(states[k], function);
+            value = InnerProductFComplex(states[k], function, stride);
             coefficients[k, 0] = value[0];
             coefficients[k, 1] = value[1];
         }

@@ -18,6 +18,8 @@ public class GaussianDriver : MonoBehaviour
     public float maxSpeedSlider;
     public float defaultSpeed;
 
+    public int renderDelayMaximum;
+
     private float width;
     private float speed;
 
@@ -27,7 +29,10 @@ public class GaussianDriver : MonoBehaviour
     private Vector2 gaussianPosition;
     private Vector2 gaussianVelocity;
 
+    private float[][,] gaussian;
+
     private bool isActive;
+    private int renderDelay;
 
     void OnEnable() {
         isActive = false;
@@ -49,12 +54,15 @@ public class GaussianDriver : MonoBehaviour
         speedSlider.minValue = 0.0f;
         speedSlider.value = speed;
         editorMode.coefficientsActive = new float[WaveFunction.NumberOfStates, 2];
+        gaussian = QSystemController.currentQuantumSystem.qMath.GaussianComplex(gaussianPosition*QSystemController.currentQuantumSystem.length/2.0f, speed*gaussianVelocity*QSystemController.currentQuantumSystem.length/2.0f, width*QSystemController.currentQuantumSystem.length/2.0f);
         isActive = true;
+        renderDelay = renderDelayMaximum;
     }
 
     public void Close() {
         getPosition = false;
         getSpeed = false;
+        renderGaussian();
         editorMode.coefficientsList.Add(editorMode.coefficientsActive);
         isActive = false;
         editorMode.coefficientsActive = null;
@@ -63,11 +71,13 @@ public class GaussianDriver : MonoBehaviour
     public void OnWidthSliderChange() {
         width = widthSlider.value;
         widthLabel.text = "Width: " + width;
+        renderPreview();
     }
 
     public void OnSpeedSliderChange() {
         speed = speedSlider.value;
         speedLabel.text = "Speed: " + speed;
+        renderPreview();
     }
 
     public void GetMouseInput() {
@@ -76,10 +86,22 @@ public class GaussianDriver : MonoBehaviour
         gaussianVelocity = Vector2.zero;
     }
 
+    void renderPreview() {
+        renderGaussian(8);
+        renderDelay = renderDelayMaximum;
+    }
+
+    void renderGaussian(int stride=1) {
+        gaussian = QSystemController.currentQuantumSystem.qMath.GaussianComplex(gaussianPosition*QSystemController.currentQuantumSystem.length/2.0f, speed*gaussianVelocity*QSystemController.currentQuantumSystem.length/2.0f, width*QSystemController.currentQuantumSystem.length/2.0f);
+        editorMode.coefficientsActive = QSystemController.currentQuantumSystem.ProjectFunctionComplex(gaussian, stride);
+        Debug.Log("render gaussian: " + stride);
+    }
+
     void Update() {
         if (isActive) {
             if (getPosition) {
                 gaussianPosition = InputManager.mousePosition;
+                renderPreview();
                 if (Input.GetButtonDown("Mouse Click")) {
                     getPosition = false;
                     getSpeed = true;
@@ -88,18 +110,20 @@ public class GaussianDriver : MonoBehaviour
 
             if (getSpeed) {
                 gaussianVelocity = (InputManager.mousePosition - gaussianPosition);
+                renderPreview();
                 if (Input.GetButtonUp("Mouse Click")) {
                     getPosition = false;
                     getSpeed = false;
                 }
             }
 
-            float[][,] gaussian = QSystemController.currentQuantumSystem.qMath.GaussianComplex(gaussianPosition*QSystemController.currentQuantumSystem.length/2.0f, speed*gaussianVelocity*QSystemController.currentQuantumSystem.length/2.0f, width*QSystemController.currentQuantumSystem.length/2.0f);
-            editorMode.coefficientsActive = QSystemController.currentQuantumSystem.ProjectFunctionComplex(gaussian);
+            if (renderDelay >= 0) {
+                renderDelay -= 1;
+            }
+            if (renderDelay == 0){
+                renderGaussian();
+            }
 
-
-//            float[,] gaussian = QSystemController.currentQuantumSystem.qMath.Gaussian(gaussianPosition*QSystemController.currentQuantumSystem.length/2.0, width*QSystemController.currentQuantumSystem.length/2.0);
-//            editorMode.coefficientsActive = QSystemController.currentQuantumSystem.ProjectFunction(gaussian);
         }
     }
 
