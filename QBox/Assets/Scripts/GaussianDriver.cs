@@ -18,6 +18,7 @@ public class GaussianDriver : MonoBehaviour
     public float maxSpeedSlider;
     public float defaultSpeed;
 
+    public int previewScaling;
     public int renderDelayMaximum;
 
     private float width;
@@ -45,14 +46,17 @@ public class GaussianDriver : MonoBehaviour
         getSpeed = false;
         width = defaultWidth;
         speed = defaultSpeed;
+
         widthLabel.text = "Width: " + width;
         speedLabel.text = "Speed: " + speed;
+
         widthSlider.maxValue = maxWidthSlider;
         widthSlider.minValue = minWidthSlider;
         widthSlider.value = width;
         speedSlider.maxValue = maxSpeedSlider;
         speedSlider.minValue = 0.0f;
         speedSlider.value = speed;
+
         editorMode.coefficientsActive = new float[WaveFunction.NumberOfStates, 2];
         gaussian = QSystemController.currentQuantumSystem.qMath.GaussianComplex(gaussianPosition*QSystemController.currentQuantumSystem.length/2.0f, speed*gaussianVelocity*QSystemController.currentQuantumSystem.length/2.0f, width*QSystemController.currentQuantumSystem.length/2.0f);
         isActive = true;
@@ -87,7 +91,7 @@ public class GaussianDriver : MonoBehaviour
     }
 
     void renderPreview() {
-        renderGaussian(8);
+        renderGaussian(previewScaling);
         renderDelay = renderDelayMaximum;
     }
 
