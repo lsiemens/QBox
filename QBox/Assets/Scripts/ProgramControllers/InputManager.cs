@@ -39,6 +39,10 @@ public abstract class InputManager : MonoBehaviour
         EventManager.TriggerEvent("Lower State");
     }
 
+    public void TriggerCycleShader() {
+        EventManager.TriggerEvent("Cycle Shader");
+    }
+
     void Update()
     {
         if (Input.GetButtonDown("Edit Mode")) {
@@ -56,7 +60,7 @@ public abstract class InputManager : MonoBehaviour
         }
 
         if (Input.GetButtonDown("Cycle Shader")) {
-            EventManager.TriggerEvent("Cycle Shader");
+            TriggerCycleShader();
         }
 
         DetectMouseClick();

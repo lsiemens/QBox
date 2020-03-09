@@ -74,7 +74,7 @@ public class GaussianDriver : MonoBehaviour
         speedSlider.value = speed;
 
         editorMode.coefficientsActive = new float[WaveFunction.NumberOfStates, 2];
-        gaussian = QSystemController.currentQuantumSystem.qMath.GaussianComplex(gaussianPosition*QSystemController.currentQuantumSystem.length/2.0f, speed*gaussianVelocity*QSystemController.currentQuantumSystem.length/2.0f, width*QSystemController.currentQuantumSystem.length/2.0f);
+        renderPreview();
         isActive = true;
         renderDelay = renderDelayMaximum;
     }
@@ -104,7 +104,6 @@ public class GaussianDriver : MonoBehaviour
         getPosition = true;
         getSpeed = false;
         gaussianVelocity = Vector2.zero;
-	Debug.Log("start selecting position");
     }
 
     void renderPreview() {
@@ -142,17 +141,17 @@ public class GaussianDriver : MonoBehaviour
 
     void OnMouseClickUp() {
         if (getSpeed) {
+            gaussianVelocity = (InputManager.mousePosition - gaussianPosition);
             getPosition = false;
             getSpeed = false;
-            Debug.Log("UP");
         }
     }
 
     void OnMouseClickDown(){
         if (getPosition) {
+            gaussianPosition = InputManager.mousePosition;
             getPosition = false;
             getSpeed = true;
-            Debug.Log("DOWN");
         }
     }
 

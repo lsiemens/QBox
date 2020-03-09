@@ -4,17 +4,39 @@ using UnityEngine;
 
 public class InputManagerTouch : InputManager
 {
-    protected override void DetectMouseClick() {
-        if (Input.GetButtonUp("Mouse Click")) {
-            EventManager.TriggerEvent("Mouse Click Up");
-        }
+    private Vector2 lastTouchLocation;
 
-        if (Input.GetButtonDown("Mouse Click")) {
-            EventManager.TriggerEvent("Mouse Click Down");
-        }
+    void OnEnable() {
+        Lean.Touch.LeanTouch.OnFingerUp += HandleFingerUp;
+        Lean.Touch.LeanTouch.OnFingerSet += HandleFingerSet;
+        Lean.Touch.LeanTouch.OnFingerDown += HandleFingerDown;
+        lastTouchLocation = Vector2.zero;
+    }
+
+    void OnDisable() {
+        Lean.Touch.LeanTouch.OnFingerUp -= HandleFingerUp;
+        Lean.Touch.LeanTouch.OnFingerSet -= HandleFingerSet;
+        Lean.Touch.LeanTouch.OnFingerDown -= HandleFingerDown;
+    }
+
+    void HandleFingerUp(Lean.Touch.LeanFinger finger) {
+        lastTouchLocation = finger.ScreenPosition;
+        EventManager.TriggerEvent("Mouse Click Up");
+    }
+
+    void HandleFingerSet(Lean.Touch.LeanFinger finger) {
+        lastTouchLocation = finger.ScreenPosition;
+    }
+
+    void HandleFingerDown(Lean.Touch.LeanFinger finger) {
+        lastTouchLocation = finger.ScreenPosition;
+        EventManager.TriggerEvent("Mouse Click Down");
+    }
+
+    protected override void DetectMouseClick() {
     }
 
    protected override Vector2 GetMousePosition() {
-        return 2*(Input.mousePosition - imageTransform.position)/imageTransform.rect.width;
+        return 2*(new Vector3(lastTouchLocation.x, lastTouchLocation.y, 0) - imageTransform.position)/imageTransform.rect.width;
     }
 }
