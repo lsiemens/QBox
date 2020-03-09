@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InputManager : MonoBehaviour
+public abstract class InputManager : MonoBehaviour
 {
     public RectTransform imageTransform;
     private static InputManager inputManager;
@@ -58,9 +58,11 @@ public class InputManager : MonoBehaviour
         if (Input.GetButtonDown("Cycle Shader")) {
             EventManager.TriggerEvent("Cycle Shader");
         }
+
+        DetectMouseClick();
     }
 
-    Vector2 GetMousePosition() {
-        return 2*(Input.mousePosition - imageTransform.position)/imageTransform.rect.width;
-    }
+    protected abstract void DetectMouseClick();
+
+    protected abstract Vector2 GetMousePosition();
 }

@@ -41,7 +41,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3974466313532299874}
   - component: {fileID: 3974466313532299876}
-  - component: {fileID: 3974466313532299879}
+  - component: {fileID: 7112140116993291389}
   - component: {fileID: 3974466313532299875}
   - component: {fileID: 3974466313532299872}
   - component: {fileID: 3974466313532299873}
@@ -79,7 +79,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a36512ef8f9c5f4f835abdcf4c07a30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &3974466313532299879
+--- !u!114 &7112140116993291389
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -88,7 +88,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3974466313532299870}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a3504bb0952beae48bf719c40581e6ee, type: 3}
+  m_Script: {fileID: 11500000, guid: 3cdbcfd235f1fa32797f451fa7c57315, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   imageTransform: {fileID: 0}

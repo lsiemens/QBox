@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 using TMPro;
 
 public class GaussianDriver : MonoBehaviour
@@ -35,8 +36,23 @@ public class GaussianDriver : MonoBehaviour
     private bool isActive;
     private int renderDelay;
 
+    private UnityAction OnMouseClickUpAction;
+    private UnityAction OnMouseClickDownAction;
+
+    void Awake() {
+        OnMouseClickUpAction = new UnityAction(OnMouseClickUp);
+        OnMouseClickDownAction = new UnityAction(OnMouseClickDown);
+    }
+
     void OnEnable() {
         isActive = false;
+        EventManager.RegisterListener("Mouse Click Up", OnMouseClickUpAction);
+        EventManager.RegisterListener("Mouse Click Down", OnMouseClickDownAction);
+    }
+
+    void OnDisable() {
+        EventManager.DeregisterListener("Mouse Click Up", OnMouseClickUpAction);
+        EventManager.DeregisterListener("Mouse Click Down", OnMouseClickDownAction);
     }
 
     public void Initalize() {
@@ -88,6 +104,7 @@ public class GaussianDriver : MonoBehaviour
         getPosition = true;
         getSpeed = false;
         gaussianVelocity = Vector2.zero;
+	Debug.Log("start selecting position");
     }
 
     void renderPreview() {
@@ -106,19 +123,11 @@ public class GaussianDriver : MonoBehaviour
             if (getPosition) {
                 gaussianPosition = InputManager.mousePosition;
                 renderPreview();
-                if (Input.GetButtonDown("Mouse Click")) {
-                    getPosition = false;
-                    getSpeed = true;
-                }
             }
 
             if (getSpeed) {
                 gaussianVelocity = (InputManager.mousePosition - gaussianPosition);
                 renderPreview();
-                if (Input.GetButtonUp("Mouse Click")) {
-                    getPosition = false;
-                    getSpeed = false;
-                }
             }
 
             if (renderDelay >= 0) {
@@ -128,6 +137,22 @@ public class GaussianDriver : MonoBehaviour
                 renderGaussian();
             }
 
+        }
+    }
+
+    void OnMouseClickUp() {
+        if (getSpeed) {
+            getPosition = false;
+            getSpeed = false;
+            Debug.Log("UP");
+        }
+    }
+
+    void OnMouseClickDown(){
+        if (getPosition) {
+            getPosition = false;
+            getSpeed = true;
+            Debug.Log("DOWN");
         }
     }
 
