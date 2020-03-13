@@ -19,6 +19,7 @@
             #pragma fragment frag
 
             #include "UnityCG.cginc"
+            #include "debug.cginc"
 
             struct appdata
             {
@@ -49,6 +50,7 @@
 
             float4 RealValue, ImaginaryValue;
             float2 Phi;
+            float4 temp;
 
             fixed4 frag (v2f i) : SV_Target
             {
@@ -62,7 +64,8 @@
                 Phi.y = ImaginaryValue.r + ImaginaryValue.g + ImaginaryValue.b;
 
                 float pot = tex2D(_MainTex, i.uv);
-                return float4((Phi.x*Phi.x + Phi.y*Phi.y)*exp(_Scale), 0.0, 0.0, 0.0) + pot/10;
+                temp = float4((Phi.x*Phi.x + Phi.y*Phi.y)*exp(_Scale), 0.0, 0.0, 0.0) + pot/10;
+                return DebugSCI(temp, i.uv, _MaxIndex, 3, 1);
                 //return (Phi.x*Phi.x + Phi.y*Phi.y)*exp(_Scale);
             }
             ENDCG
