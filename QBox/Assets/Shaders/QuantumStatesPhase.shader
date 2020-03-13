@@ -5,7 +5,7 @@
         _States ("States", 2DArray) = "" {}
         // _Potential texture slot called _MainTex to keep unity from raising errors about missing _MainTex
         _MainTex ("Potential", 2D) = "white" {}
-        _MaxIndex ("Maximum Index", Range(0, 1023)) = 0
+        // _MaxIndex ("Maximum Index", Range(0, 1023)) = 0
     }
     SubShader
     {
@@ -20,6 +20,30 @@
 
             #include "UnityCG.cginc"
             #include "colorSpace.cginc"
+            #include "debug.cginc"
+
+            #define NMAX 16
+            #pragma multi_compile T64 T128 T256 T512
+
+            #ifdef T64
+                #undef NMAX
+                #define NMAX 64
+            #endif
+
+            #ifdef T128
+                #undef NMAX
+                #define NMAX 128
+            #endif
+
+            #ifdef T256
+                #undef NMAX
+                #define NMAX 256
+            #endif
+
+            #ifdef T512
+                #undef NMAX
+                #define NMAX 512
+            #endif
 
             struct appdata
             {
@@ -43,13 +67,14 @@
 
             float _Scale;
             int _MaxIndex;
-            float4 _RealCoefficients[1023];
-            float4 _ImaginaryCoefficients[1023];
+            float4 _RealCoefficients[NMAX];
+            float4 _ImaginaryCoefficients[NMAX];
             sampler2D _MainTex;
             UNITY_DECLARE_TEX2DARRAY(_States);
 
             float4 RealValue, ImaginaryValue;
             float2 Phi;
+            float4 temp;
 
             fixed4 frag (v2f i) : SV_Target
             {
@@ -66,9 +91,10 @@
 
                 float dist = Phi.x*Phi.x + Phi.y*Phi.y;
                 float hue = 0.5 + atan2(Phi.x, Phi.y)/(2*pi);
-                return float4(hsl2rgb(float3(hue, 0.8, sqrt(dist)*exp(_Scale))), 1) + pot/10;
-
-                return float4((Phi.x*Phi.x + Phi.y*Phi.y)*exp(_Scale), 0.0, 0.0, 0.0) + pot/10;
+                temp = float4(hsl2rgb(float3(hue, 0.8, sqrt(dist)*exp(_Scale))), 1) + pot/10;
+                temp = DebugSCI(temp, i.uv, NMAX, 3, 0);
+                temp = DebugSCI(temp, i.uv, _MaxIndex, 3, 1);
+                return temp;
             }
             ENDCG
         }

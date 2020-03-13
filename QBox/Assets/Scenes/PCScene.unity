@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.12731725, g: 0.13414747, b: 0.121078715, a: 1}
+  m_IndirectSpecularColor: {r: 0.12731713, g: 0.13414736, b: 0.12107852, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -196,18 +196,36 @@ PrefabInstance:
     - target: {fileID: 3974466313532299872, guid: 96648634cfa72864e81e9b5a35f3a711,
         type: 3}
       propertyPath: shaderMaxReservedIndex
-      value: 1023
+      value: 1024
       objectReference: {fileID: 0}
     - target: {fileID: 3974466313532299873, guid: 96648634cfa72864e81e9b5a35f3a711,
         type: 3}
       propertyPath: quantumSystems.Array.size
-      value: 1
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3974466313532299873, guid: 96648634cfa72864e81e9b5a35f3a711,
         type: 3}
       propertyPath: quantumSystems.Array.data[0]
       value: 
+      objectReference: {fileID: 11400000, guid: 6239936a3b9348b45b9b913c1acfca66,
+        type: 2}
+    - target: {fileID: 3974466313532299873, guid: 96648634cfa72864e81e9b5a35f3a711,
+        type: 3}
+      propertyPath: quantumSystems.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: 4984733c96800c44492f65a5d25effe3,
+        type: 2}
+    - target: {fileID: 3974466313532299873, guid: 96648634cfa72864e81e9b5a35f3a711,
+        type: 3}
+      propertyPath: quantumSystems.Array.data[2]
+      value: 
       objectReference: {fileID: 11400000, guid: 45a5d3804caf8e244af7ef99b31341ee,
+        type: 2}
+    - target: {fileID: 3974466313532299873, guid: 96648634cfa72864e81e9b5a35f3a711,
+        type: 3}
+      propertyPath: quantumSystems.Array.data[3]
+      value: 
+      objectReference: {fileID: 11400000, guid: 957a4809675c205498d8accd0f61b990,
         type: 2}
     - target: {fileID: 3974466313532299879, guid: 96648634cfa72864e81e9b5a35f3a711,
         type: 3}

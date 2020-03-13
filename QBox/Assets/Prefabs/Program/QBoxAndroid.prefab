@@ -80,6 +80,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: QBoxAndroid
       objectReference: {fileID: 0}
+    - target: {fileID: 3974466313532299872, guid: 96648634cfa72864e81e9b5a35f3a711,
+        type: 3}
+      propertyPath: shaders.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3974466313532299872, guid: 96648634cfa72864e81e9b5a35f3a711,
+        type: 3}
+      propertyPath: shaderMaxReservedIndex
+      value: 64
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 7112140116993291389, guid: 96648634cfa72864e81e9b5a35f3a711, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 96648634cfa72864e81e9b5a35f3a711, type: 3}

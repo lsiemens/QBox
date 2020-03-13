@@ -9,7 +9,7 @@ public class MaterialController : MonoBehaviour
     public RawImage screen;
     public Shader[] shaders;
     [Tooltip("Maximum array size to reserve in the shader.")]
-    public int shaderMaxReservedIndex=1023;
+    public int shaderMaxReservedIndex=1024;
 
     private int shaderIndex;
     private UnityAction OnCycleShaderAction;
@@ -70,6 +70,8 @@ public class MaterialController : MonoBehaviour
         } else {
             Debug.LogError("MaterialController has not been assigned any shaders.");
         }
+        material.EnableKeyword("T" + shaderMaxReservedIndex);
+        Debug.Log("set Keyword: T" + shaderMaxReservedIndex);
         screen.material = material;
     }
 
@@ -90,6 +92,10 @@ public class MaterialController : MonoBehaviour
         }
 
         material.shader = shaders[shaderIndex];
+
+        material.SetInt("_MaxIndex", QSystemController.currentQuantumSystem.maxTextureLayer);
+        Debug.Log("set _MaxIndex:" + QSystemController.currentQuantumSystem.maxTextureLayer);
+
         currentMaterial.SetFloat("_Scale", shaderScale);
         WaveFunction.UpdateRender();
     }

@@ -36,6 +36,7 @@ public class QuantumSystem : ScriptableObject {
         length = (float)importData.length;
         dx = length/(resolution - 1);
         stateChannels = importData.statesAtlasChannels;
+        numberOfStates = Mathf.Min(numberOfStates, stateChannels*MaterialController.instance.shaderMaxReservedIndex);
 
         qMath = new QMath(resolution, length);
 
