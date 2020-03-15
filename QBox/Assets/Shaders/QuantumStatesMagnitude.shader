@@ -22,7 +22,12 @@
             #include "debug.cginc"
 
             #define NMAX 16
-            #pragma multi_compile T64 T128 T256 T512
+            #pragma multi_compile T32 T64 T128 T256 T512 T1024 T2048
+
+            #ifdef T32
+                #undef NMAX
+                #define NMAX 32
+            #endif
 
             #ifdef T64
                 #undef NMAX
@@ -42,6 +47,16 @@
             #ifdef T512
                 #undef NMAX
                 #define NMAX 512
+            #endif
+
+            #ifdef T1024
+                #undef NMAX
+                #define NMAX 1024
+            #endif
+
+            #ifdef T2048
+                #undef NMAX
+                #define NMAX 2048
             #endif
 
             struct appdata
@@ -89,7 +104,7 @@
                 float pot = tex2D(_MainTex, i.uv);
                 temp = float4((Phi.x*Phi.x + Phi.y*Phi.y)*exp(_Scale), 0.0, 0.0, 0.0) + pot/10;
                 temp = DebugSCI(temp, i.uv, NMAX, 3, 0);
-                temp = DebugSCI(temp, i.uv, _MaxIndex, 3, 1);
+                //temp = DebugSCI(temp, i.uv, _MaxIndex, 3, 1);
                 return temp;
                 //return (Phi.x*Phi.x + Phi.y*Phi.y)*exp(_Scale);
             }

@@ -23,6 +23,4 @@ public class RunSettingMenu : MonoBehaviour
     public void ResetSimulation() {
         runMode.ResetSimulation();
     }
-
-
 }

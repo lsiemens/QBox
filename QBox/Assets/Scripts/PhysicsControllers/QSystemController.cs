@@ -28,7 +28,11 @@ public class QSystemController : MonoBehaviour
         }
     }
 
-    public static void LoadState(int index) {
+    public static void LoadState(int index=-1) {
+        if (index==-1) {
+            index = instance.quantumSystemIndex;
+        }
+        
         if ((index < 0) || (index >= instance.quantumSystems.Length)) {
             Debug.LogError("Can not load state " + index + " index is out of bounds.");
         }

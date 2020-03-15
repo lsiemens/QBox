@@ -8,8 +8,7 @@ public class MaterialController : MonoBehaviour
 {
     public RawImage screen;
     public Shader[] shaders;
-    [Tooltip("Maximum array size to reserve in the shader.")]
-    public int shaderMaxReservedIndex=1024;
+    [System.NonSerialized] public int shaderMaxReservedIndex;
 
     private int shaderIndex;
     private UnityAction OnCycleShaderAction;
