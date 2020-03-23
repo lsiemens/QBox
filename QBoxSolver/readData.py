@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import h5py
 import numpy
 from matplotlib import pyplot
@@ -11,17 +13,22 @@ resolution = group.attrs["resolution"]
 isPeriodicBoundary = bool(group.attrs["isPeriodicBoundary"])
 length = group.attrs["length"]
 mass = group.attrs["mass"]
+biasEnergy = group.attrs["biasEnergy"]
 data = group["states"]
 energyLevels = group["energyLevels"]
 
 print(numberOfStates, maxNumberOfStates, resolution, length, mass)
 print(type(data), data.shape, data.dtype, data.chunks)
 
-pyplot.imshow(group["potential"])
+pyplot.imshow(group["potential"] + biasEnergy)
 pyplot.show()
 
 data = numpy.array(data)
-energyLevels = numpy.array(energyLevels)
+energyLevels = numpy.array(energyLevels) + biasEnergy
+
+pyplot.bar(range(numberOfStates), energyLevels)
+pyplot.show()
+
 for i in range(numberOfStates):
     print("Energy:", energyLevels[i])
     pyplot.plot(data[:, resolution//2, i])

@@ -13,6 +13,7 @@ targetEvolutionTime = evolutionTimeCalculator(1.4, 32)
 isPeriodicBoundary = False
 length = 10.0
 mass = 1.0
+biasEnergy = 0.0 # use for negative potentials
 hdf5 = h5py.File(fname, "w")
 
 run0 = hdf5.create_group("Run0")
@@ -23,6 +24,7 @@ run0.attrs["numberOfGrids"] = numberOfGrids
 run0.attrs["isPeriodicBoundary"] = int(isPeriodicBoundary)
 run0.attrs["length"] = length
 run0.attrs["mass"] = mass
+run0.attrs["biasEnergy"] = biasEnergy
 run0.attrs["targetEvolutionTime"] = targetEvolutionTime
 
 potential = numpy.zeros(shape=(resolution, resolution), dtype=numpy.float64)

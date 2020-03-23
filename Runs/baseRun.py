@@ -1,13 +1,14 @@
 import h5py
 import numpy
 import shutil
+from pathlib import Path
 import subprocess
 from matplotlib import pyplot
 
 class baseRun:
     def __init__(self, solverPath, path="./"):
-        self.path = path
-        self.solverPath = solverPath
+        self.path = path + "/"
+        self.solverPath = solverPath + "/"
         self.fname = "data.h5"
 
         self.resolution = 128
@@ -15,11 +16,12 @@ class baseRun:
         self.maxNumberOfStates = -1
 
         self.targetEvolutionTime = None
-        self.isPeriodicBoundary = None
-        self.length = None
-        self.mass = None
+        self.isPeriodicBoundary = False
+        self.length = 1.0
+        self.mass = 1.0
+        self.biasEnergy = 0.0
 
-        # initalise targetEvolutionTime isPeriodicBoundary, length, mass
+        # initalise targetEvolutionTime, isPeriodicBoundary, length, mass
         self.initalize()
 
         self.potential = numpy.zeros(shape=(self.resolution, self.resolution), dtype=numpy.float64)
@@ -29,6 +31,7 @@ class baseRun:
         self.X, self.Y = numpy.meshgrid(self.x, self.y)
 
     def run(self):
+        Path(self.path).mkdir(parents=True, exist_ok=True)
         hdf5 = h5py.File(self.path + self.fname, "w")
         run0 = hdf5.create_group("Run0")
 
@@ -41,12 +44,15 @@ class baseRun:
         run0.attrs["mass"] = self.mass
         run0.attrs["targetEvolutionTime"] = self.targetEvolutionTime
 
+        # initalize potential, biasEnergy
         self.initalizePotential()
+        run0.attrs["biasEnergy"] = self.biasEnergy
 
         run0_potential = run0.create_dataset("potential", (self.resolution, self.resolution), dtype=numpy.float64)
         run0_potential[:, :] = self.potential[:, :]
 
-        shutil.copy2(self.solverPath, self.path + "QBoxSolver.out")
+        shutil.copy2(self.solverPath + "QBoxSolver.out", self.path + "QBoxSolver.out")
+        shutil.copy2(self.solverPath + "readData.py", self.path + "readData.py")
 
     def initalize(self):
         self.length = 10.0

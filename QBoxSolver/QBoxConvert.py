@@ -59,13 +59,13 @@ class QBoxConvert:
         self.config_data["resolution"] = int(self.h5data.attrs["resolution"])
         self.config_data["length"] = self.h5data.attrs["length"]
         self.config_data["mass"] = self.h5data.attrs["mass"]
-        self.config_data["energyLevels"] = list(self.h5data["energyLevels"])
+        self.config_data["energyLevels"] = list(self.h5data["energyLevels"] + self.h5data.attrs["biasEnergy"])
         self.config_data["isLinear"] = self.isLinearMode
         with open(self.path_data + "/" + self.title + "_config.json", "w") as fout:
             json.dump(self.config_data, fout, indent=4)
 
     def _save_potential(self):
-        data = numpy.reshape(self.h5data["potential"], (1,) + self.h5data["potential"].shape)
+        data = numpy.reshape(self.h5data["potential"] + self.h5data.attrs["biasEnergy"], (1,) + self.h5data["potential"].shape)
         data_max, data_min = numpy.max(data), numpy.min(data)
         data = data - data_min
         data = data/(data_max - data_min)
