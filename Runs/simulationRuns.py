@@ -3,13 +3,19 @@
 import numpy
 import baseRun
 
-wallWidth = 30
-wallHeight = 50
+length = 20.0 # hartree length units
+mass = 1 # hartree mass units
+omega = 1
+wallHeight = 50 # hartree energy units
+wallThick = 0.075 # percentage of simulation
+wallThin = 0.01 # percentage of simulation
+slitWidth = 0.10 # percentage of simulation
+isPeriodicPotential = True
 
 class box(baseRun.baseRun):
     def initalize(self):
-        self.length = 10.0
-        self.mass = 1.0
+        self.length = length
+        self.mass = mass
         self.isPeriodicBoundary = False
         self.targetEvolutionTime = self.evolutionTimeCalculator(0.1, 32)
 
@@ -18,100 +24,100 @@ class box(baseRun.baseRun):
 
 class space(baseRun.baseRun):
     def initalize(self):
-        self.length = 60.0
-        self.mass = 1.0
+        self.length = length
+        self.mass = mass
         self.isPeriodicBoundary = True
-        self.targetEvolutionTime = self.evolutionTimeCalculator(0.002, 32)
+        self.targetEvolutionTime = self.evolutionTimeCalculator(0.2, 32)
 
     def initalizePotential(self):
         self.potential = 0*self.X
 
 class harmonic(baseRun.baseRun):
     def initalize(self):
-        self.length = 10.0
-        self.mass = 1.0
+        self.length = length
+        self.mass = mass
         self.isPeriodicBoundary = False
         self.targetEvolutionTime = self.evolutionTimeCalculator(1.4, 32)
 
     def initalizePotential(self):
-        self.potential = (self.X**2 + self.Y**2)
+        self.potential = (1/2)*self.mass*omega**2*(self.X**2 + self.Y**2)
 
 class harmonicWall(baseRun.baseRun):
     def initalize(self):
-        self.length = 10.0
-        self.mass = 1.0
+        self.length = length
+        self.mass = mass
         self.isPeriodicBoundary = False
         self.targetEvolutionTime = self.evolutionTimeCalculator(0.1, 32)
 
     def initalizePotential(self):
-        self.potential = (self.X**2 + self.Y**2)
-        self.potential[self.resolution//2 - self.resolution//wallWidth:self.resolution//2 + self.resolution//wallWidth, :] += wallHeight
+        self.potential = (1/2)*self.mass*omega**2*(self.X**2 + self.Y**2)
+        self.potential[self.resolution//2 - int(numpy.ceil(self.resolution*wallThin/2)):self.resolution//2 + int(numpy.ceil(self.resolution*wallThin/2)), :] += wallHeight
 
 class wall(baseRun.baseRun):
     def initalize(self):
-        self.length = 10.0
-        self.mass = 1.0
-        self.isPeriodicBoundary = True
+        self.length = length
+        self.mass = mass
+        self.isPeriodicBoundary = isPeriodicPotential
         self.targetEvolutionTime = self.evolutionTimeCalculator(0.1, 32)
 
     def initalizePotential(self):
         self.potential = 0*self.X
-        self.potential[self.resolution//2 - self.resolution//wallWidth:self.resolution//2 + self.resolution//wallWidth, :] += wallHeight
+        self.potential[self.resolution//2 - int(numpy.ceil(self.resolution*wallThin/2)):self.resolution//2 + int(numpy.ceil(self.resolution*wallThin/2)), :] += wallHeight
 
 class harmonicSingleSlit(baseRun.baseRun):
     def initalize(self):
-        self.length = 10.0
-        self.mass = 1.0
+        self.length = length
+        self.mass = mass
         self.isPeriodicBoundary = False
-        self.targetEvolutionTime = self.evolutionTimeCalculator(0.5, 32)
+        self.targetEvolutionTime = self.evolutionTimeCalculator(0.05, 32)
 
     def initalizePotential(self):
-        self.potential = (self.X**2 + self.Y**2)
-        self.potential[self.resolution//2 - self.resolution//wallWidth:self.resolution//2 + self.resolution//wallWidth, :self.resolution//2 - self.resolution//30] += wallHeight
-        self.potential[self.resolution//2 - self.resolution//wallWidth:self.resolution//2 + self.resolution//wallWidth, self.resolution//2 + self.resolution//30:] += wallHeight
+        self.potential = (1/2)*self.mass*omega**2*(self.X**2 + self.Y**2)
+        self.potential[self.resolution//2 - int(numpy.ceil(self.resolution*wallThick//2)):self.resolution//2 + int(numpy.ceil(self.resolution*wallThick/2)), :self.resolution//2 - int(numpy.ceil(self.resolution*slitWidth//2))] += wallHeight
+        self.potential[self.resolution//2 - int(numpy.ceil(self.resolution*wallThick//2)):self.resolution//2 + int(numpy.ceil(self.resolution*wallThick/2)), self.resolution//2 + int(numpy.ceil(self.resolution*slitWidth//2)):] += wallHeight
 
 class singleSlit(baseRun.baseRun):
     def initalize(self):
-        self.length = 10.0
-        self.mass = 1.0
-        self.isPeriodicBoundary = True
-        self.targetEvolutionTime = self.evolutionTimeCalculator(0.2, 32)
+        self.length = length
+        self.mass = mass
+        self.isPeriodicBoundary = isPeriodicPotential
+        self.targetEvolutionTime = self.evolutionTimeCalculator(0.1, 32)
 
     def initalizePotential(self):
         self.potential = 0*self.X
-        self.potential[self.resolution//2 - self.resolution//wallWidth:self.resolution//2 + self.resolution//wallWidth, :self.resolution//2 - self.resolution//30] += wallHeight
-        self.potential[self.resolution//2 - self.resolution//wallWidth:self.resolution//2 + self.resolution//wallWidth, self.resolution//2 + self.resolution//30:] += wallHeight
+        self.potential[self.resolution//2 - int(numpy.ceil(self.resolution*wallThick//2)):self.resolution//2 + int(numpy.ceil(self.resolution*wallThick/2)), :self.resolution//2 - int(numpy.ceil(self.resolution*slitWidth//2))] += wallHeight
+        self.potential[self.resolution//2 - int(numpy.ceil(self.resolution*wallThick//2)):self.resolution//2 + int(numpy.ceil(self.resolution*wallThick/2)), self.resolution//2 + int(numpy.ceil(self.resolution*slitWidth//2)):] += wallHeight
 
 class harmonicDoubleSlit(baseRun.baseRun):
     def initalize(self):
-        self.length = 10.0
-        self.mass = 1.0
+        self.length = length
+        self.mass = mass
         self.isPeriodicBoundary = False
         self.targetEvolutionTime = self.evolutionTimeCalculator(0.5, 64)
 
     def initalizePotential(self):
-        self.potential = (self.X**2 + self.Y**2)
-        self.potential[self.resolution//2 - self.resolution//wallWidth:self.resolution//2 + self.resolution//wallWidth, :self.resolution//2 - 3*self.resolution//30] += wallHeight
-        self.potential[self.resolution//2 - self.resolution//wallWidth:self.resolution//2 + self.resolution//wallWidth, self.resolution//2 - self.resolution//30:self.resolution//2 + self.resolution//30] += wallHeight
-        self.potential[self.resolution//2 - self.resolution//wallWidth:self.resolution//2 + self.resolution//wallWidth, self.resolution//2 + 3*self.resolution//30:] += wallHeight
+        self.potential = (1/2)*self.mass*omega**2*(self.X**2 + self.Y**2)
+        self.potential[self.resolution//2 - int(numpy.ceil(self.resolution*wallThick/2)):self.resolution//2 + int(numpy.ceil(self.resolution*wallThick/2)), :self.resolution//2 - 3*int(numpy.ceil(self.resolution*slitWidth/2))] += wallHeight
+        self.potential[self.resolution//2 - int(numpy.ceil(self.resolution*wallThick/2)):self.resolution//2 + int(numpy.ceil(self.resolution*wallThick/2)), self.resolution//2 - int(numpy.ceil(self.resolution*slitWidth/2)):self.resolution//2 + int(numpy.ceil(self.resolution*slitWidth/2))] += wallHeight
+        self.potential[self.resolution//2 - int(numpy.ceil(self.resolution*wallThick/2)):self.resolution//2 + int(numpy.ceil(self.resolution*wallThick/2)), self.resolution//2 + 3*int(numpy.ceil(self.resolution*slitWidth/2)):] += wallHeight
 
 class doubleSlit(baseRun.baseRun):
     def initalize(self):
-        self.length = 10.0
-        self.mass = 1.0
-        self.isPeriodicBoundary = True
+        self.length = length
+        self.mass = mass
+        self.isPeriodicBoundary = isPeriodicPotential
         self.targetEvolutionTime = self.evolutionTimeCalculator(0.2, 32)
 
     def initalizePotential(self):
         self.potential = 0*self.X
-        self.potential[self.resolution//2 - self.resolution//wallWidth:self.resolution//2 + self.resolution//wallWidth, :self.resolution//2 - 3*self.resolution//30] += wallHeight
-        self.potential[self.resolution//2 - self.resolution//wallWidth:self.resolution//2 + self.resolution//wallWidth, self.resolution//2 - self.resolution//30:self.resolution//2 + self.resolution//30] += wallHeight
-        self.potential[self.resolution//2 - self.resolution//wallWidth:self.resolution//2 + self.resolution//wallWidth, self.resolution//2 + 3*self.resolution//30:] += wallHeight
+        self.potential[self.resolution//2 - int(numpy.ceil(self.resolution*wallThick/2)):self.resolution//2 + int(numpy.ceil(self.resolution*wallThick/2)), :self.resolution//2 - 3*int(numpy.ceil(self.resolution*slitWidth/2))] += wallHeight
+        self.potential[self.resolution//2 - int(numpy.ceil(self.resolution*wallThick/2)):self.resolution//2 + int(numpy.ceil(self.resolution*wallThick/2)), self.resolution//2 - int(numpy.ceil(self.resolution*slitWidth/2)):self.resolution//2 + int(numpy.ceil(self.resolution*slitWidth/2))] += wallHeight
+        self.potential[self.resolution//2 - int(numpy.ceil(self.resolution*wallThick/2)):self.resolution//2 + int(numpy.ceil(self.resolution*wallThick/2)), self.resolution//2 + 3*int(numpy.ceil(self.resolution*slitWidth/2)):] += wallHeight
 
 class hydrogenAtom(baseRun.baseRun):
     def initalize(self):
-        self.length = 100.0
-        self.mass = 1.0
+        self.length = length
+        self.mass = mass
         self.isPeriodicBoundary = False
         self.targetEvolutionTime = self.evolutionTimeCalculator(0.01, 32)
 
@@ -123,8 +129,8 @@ class hydrogenAtom(baseRun.baseRun):
 
 class hydrogenMolecularIon(baseRun.baseRun):
     def initalize(self):
-        self.length = 25.0
-        self.mass = 1.0
+        self.length = 100.0
+        self.mass = mass
         self.isPeriodicBoundary = False
         self.targetEvolutionTime = self.evolutionTimeCalculator(0.01, 32)
 
@@ -139,29 +145,17 @@ class hydrogenMolecularIon(baseRun.baseRun):
 
 class lattice(baseRun.baseRun):
     def initalize(self):
-        self.length = 10.0
-        self.mass = 1.0
+        self.length = length
+        self.mass = mass
         self.isPeriodicBoundary = True
-        self.targetEvolutionTime = self.evolutionTimeCalculator(0.01, 32)
+        self.targetEvolutionTime = self.evolutionTimeCalculator(1.5, 32)
 
     def initalizePotential(self):
-        n = 5
-        sharp = 64
-        depth = 25
-        self.potential = -depth*(numpy.cos(n*numpy.pi*self.X/self.length)*numpy.cos(n*numpy.pi*self.Y/self.length))**sharp
-
-class lattice2(baseRun.baseRun):
-    def initalize(self):
-        self.length = 60.0
-        self.mass = 1.0
-        self.isPeriodicBoundary = True
-        self.targetEvolutionTime = self.evolutionTimeCalculator(0.001, 32)
-
-    def initalizePotential(self):
-        n = 15
-        sharp = 64
-        depth = 8
-        self.potential = -depth*(numpy.cos(n*numpy.pi*self.X/self.length)*numpy.cos(n*numpy.pi*self.Y/self.length))**sharp
+        n = 3
+        smoothing = 0.2
+        self.potential = -1/numpy.sqrt(numpy.sin(n*numpy.pi*self.X/self.length)**2 + numpy.sin(n*numpy.pi*self.Y/self.length)**2 + smoothing)
+        self.biasEnergy = numpy.min(self.potential)
+        self.potential -= self.biasEnergy
 
 problems = [box,
             space,
@@ -174,8 +168,7 @@ problems = [box,
             doubleSlit,
             hydrogenAtom,
             hydrogenMolecularIon,
-            lattice,
-            lattice2]
+            lattice]
 
 for problem in problems:
     run = problem("../QBoxSolver", "./temp/" + problem.__name__)

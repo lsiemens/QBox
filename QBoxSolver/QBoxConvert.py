@@ -57,8 +57,8 @@ class QBoxConvert:
     def _save_json(self):
         self.config_data["numberOfStates"] = int(self.h5data.attrs["numberOfStates"])
         self.config_data["resolution"] = int(self.h5data.attrs["resolution"])
-        self.config_data["length"] = self.h5data.attrs["length"]
-        self.config_data["mass"] = self.h5data.attrs["mass"]
+        self.config_data["length"] = float(self.h5data.attrs["length"])
+        self.config_data["mass"] = float(self.h5data.attrs["mass"])
         self.config_data["energyLevels"] = list(self.h5data["energyLevels"] + self.h5data.attrs["biasEnergy"])
         self.config_data["isLinear"] = self.isLinearMode
         with open(self.path_data + "/" + self.title + "_config.json", "w") as fout:
