@@ -11,9 +11,9 @@ class baseRun:
         self.solverPath = solverPath + "/"
         self.fname = "data.h5"
 
-        self.resolution = 128
-        self.numberOfGrids = 3
-        self.maxNumberOfStates = -1
+        self.resolution = 512
+        self.numberOfGrids = 5
+        self.maxNumberOfStates = 1024
 
         self.targetEvolutionTime = None
         self.isPeriodicBoundary = False

@@ -10,14 +10,14 @@ wallHeight = 50 # hartree energy units
 wallThick = 0.075 # percentage of simulation
 wallThin = 0.01 # percentage of simulation
 slitWidth = 0.10 # percentage of simulation
-isPeriodicPotential = True
+isPeriodicPotential = False
 
 class box(baseRun.baseRun):
     def initalize(self):
         self.length = length
         self.mass = mass
         self.isPeriodicBoundary = False
-        self.targetEvolutionTime = self.evolutionTimeCalculator(0.1, 32)
+        self.targetEvolutionTime = self.evolutionTimeCalculator(0.002, 32)
 
     def initalizePotential(self):
         self.potential = 0*self.X
@@ -27,7 +27,7 @@ class space(baseRun.baseRun):
         self.length = length
         self.mass = mass
         self.isPeriodicBoundary = True
-        self.targetEvolutionTime = self.evolutionTimeCalculator(0.2, 32)
+        self.targetEvolutionTime = self.evolutionTimeCalculator(0.002, 32)
 
     def initalizePotential(self):
         self.potential = 0*self.X
@@ -37,7 +37,7 @@ class harmonic(baseRun.baseRun):
         self.length = length
         self.mass = mass
         self.isPeriodicBoundary = False
-        self.targetEvolutionTime = self.evolutionTimeCalculator(1.4, 32)
+        self.targetEvolutionTime = self.evolutionTimeCalculator(0.02, 32)
 
     def initalizePotential(self):
         self.potential = (1/2)*self.mass*omega**2*(self.X**2 + self.Y**2)
@@ -47,7 +47,7 @@ class harmonicWall(baseRun.baseRun):
         self.length = length
         self.mass = mass
         self.isPeriodicBoundary = False
-        self.targetEvolutionTime = self.evolutionTimeCalculator(0.1, 32)
+        self.targetEvolutionTime = self.evolutionTimeCalculator(0.02, 32)
 
     def initalizePotential(self):
         self.potential = (1/2)*self.mass*omega**2*(self.X**2 + self.Y**2)
@@ -58,7 +58,7 @@ class wall(baseRun.baseRun):
         self.length = length
         self.mass = mass
         self.isPeriodicBoundary = isPeriodicPotential
-        self.targetEvolutionTime = self.evolutionTimeCalculator(0.1, 32)
+        self.targetEvolutionTime = self.evolutionTimeCalculator(0.004, 32)
 
     def initalizePotential(self):
         self.potential = 0*self.X
@@ -69,7 +69,7 @@ class harmonicSingleSlit(baseRun.baseRun):
         self.length = length
         self.mass = mass
         self.isPeriodicBoundary = False
-        self.targetEvolutionTime = self.evolutionTimeCalculator(0.05, 32)
+        self.targetEvolutionTime = self.evolutionTimeCalculator(0.02, 32)
 
     def initalizePotential(self):
         self.potential = (1/2)*self.mass*omega**2*(self.X**2 + self.Y**2)
@@ -81,7 +81,7 @@ class singleSlit(baseRun.baseRun):
         self.length = length
         self.mass = mass
         self.isPeriodicBoundary = isPeriodicPotential
-        self.targetEvolutionTime = self.evolutionTimeCalculator(0.1, 32)
+        self.targetEvolutionTime = self.evolutionTimeCalculator(0.01, 32)
 
     def initalizePotential(self):
         self.potential = 0*self.X
@@ -93,7 +93,7 @@ class harmonicDoubleSlit(baseRun.baseRun):
         self.length = length
         self.mass = mass
         self.isPeriodicBoundary = False
-        self.targetEvolutionTime = self.evolutionTimeCalculator(0.5, 64)
+        self.targetEvolutionTime = self.evolutionTimeCalculator(0.02, 32)
 
     def initalizePotential(self):
         self.potential = (1/2)*self.mass*omega**2*(self.X**2 + self.Y**2)
@@ -106,7 +106,7 @@ class doubleSlit(baseRun.baseRun):
         self.length = length
         self.mass = mass
         self.isPeriodicBoundary = isPeriodicPotential
-        self.targetEvolutionTime = self.evolutionTimeCalculator(0.2, 32)
+        self.targetEvolutionTime = self.evolutionTimeCalculator(0.01, 32)
 
     def initalizePotential(self):
         self.potential = 0*self.X
@@ -119,7 +119,7 @@ class hydrogenAtom(baseRun.baseRun):
         self.length = length
         self.mass = mass
         self.isPeriodicBoundary = False
-        self.targetEvolutionTime = self.evolutionTimeCalculator(0.01, 32)
+        self.targetEvolutionTime = self.evolutionTimeCalculator(0.015, 32)
 
     def initalizePotential(self):
         self.potential = 0*self.X
@@ -132,7 +132,7 @@ class hydrogenMolecularIon(baseRun.baseRun):
         self.length = 100.0
         self.mass = mass
         self.isPeriodicBoundary = False
-        self.targetEvolutionTime = self.evolutionTimeCalculator(0.01, 32)
+        self.targetEvolutionTime = self.evolutionTimeCalculator(0.005, 32)
 
     def initalizePotential(self):
         bondLength = 0.52
@@ -148,7 +148,7 @@ class lattice(baseRun.baseRun):
         self.length = length
         self.mass = mass
         self.isPeriodicBoundary = True
-        self.targetEvolutionTime = self.evolutionTimeCalculator(1.5, 32)
+        self.targetEvolutionTime = self.evolutionTimeCalculator(0.0025, 32)
 
     def initalizePotential(self):
         n = 3
