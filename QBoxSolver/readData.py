@@ -1,40 +1,26 @@
 #!/usr/bin/env python3
 
-import h5py
-import numpy
+import QBHD
 from matplotlib import pyplot
 
 fname = "data.h5"
-hdf5 = h5py.File(fname, "r")
-group = hdf5["Run0"]
-numberOfStates = group.attrs["numberOfStates"]
-maxNumberOfStates = group.attrs["maxNumberOfStates"]
-resolution = group.attrs["resolution"]
-isPeriodicBoundary = bool(group.attrs["isPeriodicBoundary"])
-length = group.attrs["length"]
-mass = group.attrs["mass"]
-biasEnergy = group.attrs["biasEnergy"]
-data = group["states"]
-energyLevels = group["energyLevels"]
+run = QBHD.load(fname)
 
-print(numberOfStates, maxNumberOfStates, resolution, length, mass)
-print(type(data), data.shape, data.dtype, data.chunks)
+print(run.numberOfStates, run.maxNumberOfStates, run.resolution, run.length, run.mass, run.isPeriodicBoundary)
+print(type(run.states), run.states.shape, run.states.dtype, run.states.chunks)
 
-pyplot.imshow(group["potential"] + biasEnergy)
+pyplot.imshow(run.potential)
 pyplot.show()
 
-data = numpy.array(data)
-energyLevels = numpy.array(energyLevels) + biasEnergy
-
-pyplot.bar(range(numberOfStates), energyLevels)
+pyplot.bar(range(run.numberOfStates), run.energyLevels)
 pyplot.show()
 
-for i in range(numberOfStates):
-    print("Energy:", energyLevels[i])
-    pyplot.plot(data[:, resolution//2, i])
-    pyplot.plot(data[resolution//2, :, i])
-    pyplot.plot(data[:, resolution//3, i])
-    pyplot.plot(data[resolution//3, :, i])
+for i in range(run.numberOfStates):
+    print("State:", i, "Energy:", run.energyLevels[i])
+    pyplot.plot(run.states[:, run.resolution//2, i])
+    pyplot.plot(run.states[run.resolution//2, :, i])
+    pyplot.plot(run.states[:, run.resolution//3, i])
+    pyplot.plot(run.states[run.resolution//3, :, i])
     pyplot.show()
-    pyplot.imshow(data[:,:,i]**2)
+    pyplot.imshow(run.states[:,:,i]**2)
     pyplot.show()
