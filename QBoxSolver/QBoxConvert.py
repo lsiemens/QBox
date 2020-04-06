@@ -26,6 +26,8 @@ import numpy
 import imageio
 import warnings
 
+import QBHD
+
 def _sRGBtoLinearRGB(data):
     warnings.warn("sRGB to linear RGB conversion is using the aproximation gamma=2.2", stacklevel=2)
     return numpy.power(data, 2.2)
@@ -47,7 +49,7 @@ class QBoxConvert:
         if verbose:
             print("WARNING: verbose output not implemented yet.")
 
-        self.h5data = h5py.File(self.path_h5, "r")["Run0"]
+        self.h5data = QBHD.load(self.path_h5)
 
         self.config_data = {}
         self._save_potential()
@@ -55,17 +57,17 @@ class QBoxConvert:
         self._save_json()
 
     def _save_json(self):
-        self.config_data["numberOfStates"] = int(self.h5data.attrs["numberOfStates"])
-        self.config_data["resolution"] = int(self.h5data.attrs["resolution"])
-        self.config_data["length"] = float(self.h5data.attrs["length"])
-        self.config_data["mass"] = float(self.h5data.attrs["mass"])
-        self.config_data["energyLevels"] = list(self.h5data["energyLevels"] + self.h5data.attrs["biasEnergy"])
+        self.config_data["numberOfStates"] = int(self.h5data.numberOfStates)
+        self.config_data["resolution"] = int(self.h5data.resolution)
+        self.config_data["length"] = float(self.h5data.length)
+        self.config_data["mass"] = float(self.h5data.mass)
+        self.config_data["energyLevels"] = list(self.h5data.energyLevels)
         self.config_data["isLinear"] = self.isLinearMode
         with open(self.path_data + "/" + self.title + "_config.json", "w") as fout:
             json.dump(self.config_data, fout, indent=4)
 
     def _save_potential(self):
-        data = numpy.reshape(self.h5data["potential"] + self.h5data.attrs["biasEnergy"], (1,) + self.h5data["potential"].shape)
+        data = numpy.reshape(self.h5data.potential, (1, self.h5data.resolution, self.h5data.resolution))
         data_max, data_min = numpy.max(data), numpy.min(data)
         data = data - data_min
         data = data/(data_max - data_min)
@@ -76,7 +78,7 @@ class QBoxConvert:
         self.config_data["potentialMin"] = data_min
 
     def _save_states(self):
-        states = numpy.transpose(self.h5data["states"], (2, 0, 1)) # reorder indices due to diffrence betwean fortran and C
+        states = numpy.transpose(self.h5data.states, (2, 0, 1)) # reorder indices due to diffrence betwean fortran and C
         self._save_EXR(states, "states", numChannels=self._CHANNELS)
 
     def _save_EXR(self, data, postfix, numChannels=4):
@@ -99,7 +101,7 @@ class QBoxConvert:
 
         # ------------------------ IMPROVE PACKING -----------------------
         num_images = int(numpy.ceil(len(data)/numChannels))
-        resolution = int(self.h5data.attrs["resolution"])
+        resolution = int(self.h5data.resolution)
         image_grid_dimension = int(numpy.ceil(numpy.sqrt(num_images)))
         image_resolution = image_grid_dimension*resolution
 

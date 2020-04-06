@@ -236,6 +236,27 @@ class QBHD:
             group_potential = group.create_dataset("potential", (self.resolution, self.resolution), dtype=numpy.float64)
         group_potential[:, :] = self.potential[:, :]
 
+    def saveAs(self, fname):
+        self._states = numpy.array(self._states)
+        self.hdf5.close()
+        self.fname = fname
+        self.hdf5 = None
+        self.save()
+
+        group = self.hdf5["Run0"]
+
+        shape = (self.resolution, self.resolution, self.numberOfStates)
+        chunk_size = (self.resolution, self.resolution, 1)
+        max_size = (self.resolution, self.resolution, None)
+        group_states = group.create_dataset("states", shape, chunks=chunk_size, maxshape=max_size, dtype=numpy.float64)
+        group_states[:, :, :] = self.states[:, :, :]
+
+        shape = (self.numberOfStates,)
+        chunk_size = (128,)
+        max_size = (None,)
+        group_energyLevels = group.create_dataset("energyLevels", shape, chunks=chunk_size, maxshape=max_size, dtype=numpy.float64)
+        group_energyLevels[:] = self.energyLevels[:]
+
 def load(fname):
     data = QBHD(fname)
     data._load()
