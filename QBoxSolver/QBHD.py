@@ -1,5 +1,6 @@
 import h5py
 import numpy
+import scipy.ndimage
 
 class QBHD:
     _defaultMaxNumberOfStates = -1
@@ -176,10 +177,7 @@ class QBHD:
         self._states = None
         self._energyLevels = None
 
-        self._x = numpy.linspace(-self.length/2, self.length/2, self.resolution)
-        self._y = numpy.linspace(-self.length/2, self.length/2, self.resolution)
-        self._dx = numpy.mean(self.x[1:] - self.x[:-1])
-        self._X, self._Y = numpy.meshgrid(self.x, self.y)
+        self._initalizeGrid()
 
     def _load(self):
         self.hdf5 = h5py.File(self.fname, "a")
@@ -208,10 +206,48 @@ class QBHD:
         else:
             self._energyLevels = None
 
+        self._initalizeGrid()
+
+    def _initalizeGrid(self):
         self._x = numpy.linspace(-self.length/2, self.length/2, self.resolution)
         self._y = numpy.linspace(-self.length/2, self.length/2, self.resolution)
         self._dx = numpy.mean(self.x[1:] - self.x[:-1])
         self._X, self._Y = numpy.meshgrid(self.x, self.y)
+
+    def _rescale(self, scale):
+        self._resolution = int(self.resolution*scale)
+        self._initalizeGrid()
+
+        self._potential = scipy.ndimage.zoom(self.potential, scale)
+        states = numpy.zeros(shape=(self.resolution, self.resolution, self.numberOfStates))
+        for i in range(self.numberOfStates):
+            phi = scipy.ndimage.zoom(self.states[:, :, i], scale)
+            phi = self.boundaryCondition(phi)
+            phi = self.orthogonalize(phi, states)
+            states[:, :, i] = phi
+        self._states = states
+
+    def boundaryCondition(self, phi):
+        if not self.isPeriodicBoundary:
+            phi[:, 0] = 0.0
+            phi[:, -1] = 0.0
+            phi[0, :] = 0.0
+            phi[-1, :] = 0.0
+        return phi
+
+    def orthogonalize(self, phi, states):
+        for i in range(self.numberOfStates):
+            phi -= self.innerProduct(phi, states[:, :, i])*states[:, :, i]
+        return self.normalize(phi)
+
+    def normalize(self, phi):
+        return phi/numpy.sqrt(self.expectationValue(phi))
+
+    def expectationValue(self, phi):
+        return self.innerProduct(phi, phi)
+
+    def innerProduct(self, phi, psi):
+        return numpy.sum(phi*psi)*self.dx**2
 
     def save(self):
         if self.hdf5 is None:
@@ -236,13 +272,16 @@ class QBHD:
             group_potential = group.create_dataset("potential", (self.resolution, self.resolution), dtype=numpy.float64)
         group_potential[:, :] = self.potential[:, :]
 
-    def saveAs(self, fname):
+    def saveAs(self, fname, scale=None):
         self._states = numpy.array(self._states)
         self.hdf5.close()
         self.fname = fname
         self.hdf5 = None
-        self.save()
 
+        if scale is not None:
+            self._rescale(scale)
+
+        self.save()
         group = self.hdf5["Run0"]
 
         shape = (self.resolution, self.resolution, self.numberOfStates)
