@@ -270,7 +270,7 @@ class QBHD:
             group_potential = group["potential"]
         else:
             group_potential = group.create_dataset("potential", (self.resolution, self.resolution), dtype=numpy.float64)
-        group_potential[:, :] = self.potential[:, :]
+        group_potential[:, :] = self._potential[:, :]
 
     def saveAs(self, fname, scale=None):
         self._states = numpy.array(self._states)
