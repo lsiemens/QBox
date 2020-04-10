@@ -198,35 +198,6 @@ PrefabInstance:
       propertyPath: shaderMaxReservedIndex
       value: 1024
       objectReference: {fileID: 0}
-    - target: {fileID: 3974466313532299873, guid: 96648634cfa72864e81e9b5a35f3a711,
-        type: 3}
-      propertyPath: quantumSystems.Array.size
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 3974466313532299873, guid: 96648634cfa72864e81e9b5a35f3a711,
-        type: 3}
-      propertyPath: quantumSystems.Array.data[0]
-      value: 
-      objectReference: {fileID: 11400000, guid: 6239936a3b9348b45b9b913c1acfca66,
-        type: 2}
-    - target: {fileID: 3974466313532299873, guid: 96648634cfa72864e81e9b5a35f3a711,
-        type: 3}
-      propertyPath: quantumSystems.Array.data[1]
-      value: 
-      objectReference: {fileID: 11400000, guid: 4984733c96800c44492f65a5d25effe3,
-        type: 2}
-    - target: {fileID: 3974466313532299873, guid: 96648634cfa72864e81e9b5a35f3a711,
-        type: 3}
-      propertyPath: quantumSystems.Array.data[2]
-      value: 
-      objectReference: {fileID: 11400000, guid: 45a5d3804caf8e244af7ef99b31341ee,
-        type: 2}
-    - target: {fileID: 3974466313532299873, guid: 96648634cfa72864e81e9b5a35f3a711,
-        type: 3}
-      propertyPath: quantumSystems.Array.data[3]
-      value: 
-      objectReference: {fileID: 11400000, guid: 957a4809675c205498d8accd0f61b990,
-        type: 2}
     - target: {fileID: 3974466313532299879, guid: 96648634cfa72864e81e9b5a35f3a711,
         type: 3}
       propertyPath: imageTransform
@@ -450,6 +421,11 @@ PrefabInstance:
     - target: {fileID: 5428611356439869235, guid: 805ca4338fb2c704b97effbd55b88880,
         type: 3}
       propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5428611356439869235, guid: 805ca4338fb2c704b97effbd55b88880,
+        type: 3}
+      propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5965451582606116175, guid: 805ca4338fb2c704b97effbd55b88880,

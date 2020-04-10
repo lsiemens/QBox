@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc6f329e1c69f4a4daac4c155946a3b5, type: 3}
+  m_Name: HarmonicDoubleSlit
+  m_EditorClassIdentifier: 
+  systemConfig: {fileID: 4900000, guid: bdca5a8e76e88d64791e5427173c4dfb, type: 3}
+  potentialTextureEXR: {fileID: 2800000, guid: 6753d1aab9134fd4ea09806cca950776, type: 3}
+  statesTextureEXR: {fileID: 2800000, guid: 22749a0401cb090428b395fd5c94dd64, type: 3}
+  potentialLabel: Harmonic Double Slit

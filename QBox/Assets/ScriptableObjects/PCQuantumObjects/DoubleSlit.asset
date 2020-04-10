@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc6f329e1c69f4a4daac4c155946a3b5, type: 3}
+  m_Name: DoubleSlit
+  m_EditorClassIdentifier: 
+  systemConfig: {fileID: 4900000, guid: d81e82b0e0cc28e4fae99004d3f4cccc, type: 3}
+  potentialTextureEXR: {fileID: 2800000, guid: c073c2c138e999b4eb7a34d6a689c7e4, type: 3}
+  statesTextureEXR: {fileID: 2800000, guid: 9c7dc9e882cbfe54f82299f42d94fefb, type: 3}
+  potentialLabel: Double Slit

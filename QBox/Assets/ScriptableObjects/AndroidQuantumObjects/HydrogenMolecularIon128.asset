@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc6f329e1c69f4a4daac4c155946a3b5, type: 3}
+  m_Name: HydrogenMolecularIon128
+  m_EditorClassIdentifier: 
+  systemConfig: {fileID: 4900000, guid: 9ae23317615ddaa4cb7ceaa981e220f4, type: 3}
+  potentialTextureEXR: {fileID: 2800000, guid: 3a3432e332d989b46978d9332f6135d3, type: 3}
+  statesTextureEXR: {fileID: 2800000, guid: 09f815543e3c8734cb006b27a8eb6c21, type: 3}
+  potentialLabel: Hydrogen Molecular Ion

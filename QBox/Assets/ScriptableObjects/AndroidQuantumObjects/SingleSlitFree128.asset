@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc6f329e1c69f4a4daac4c155946a3b5, type: 3}
+  m_Name: SingleSlitFree128
+  m_EditorClassIdentifier: 
+  systemConfig: {fileID: 4900000, guid: f4b1125874fe91b40b729fd252b632c5, type: 3}
+  potentialTextureEXR: {fileID: 2800000, guid: babd545048f240440a29c57e2f38142c, type: 3}
+  statesTextureEXR: {fileID: 2800000, guid: 3835a84045b528845a734c768da1c798, type: 3}
+  potentialLabel: Single Slit Free

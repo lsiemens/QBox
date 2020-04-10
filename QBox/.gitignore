@@ -63,3 +63,5 @@ crashlytics-build.properties
 
 # Ignore Lean assets
 /[Aa]ssets/Lean/*
+
+# Extra rules in QBox/Assets/Quantum_Data/PCData/.gitignore

@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc6f329e1c69f4a4daac4c155946a3b5, type: 3}
+  m_Name: HydrogenAtom128
+  m_EditorClassIdentifier: 
+  systemConfig: {fileID: 4900000, guid: 1710f852f4a90d944afb00819ac875e8, type: 3}
+  potentialTextureEXR: {fileID: 2800000, guid: 010c4640a6121a346b1a93dc4adf8e5f, type: 3}
+  statesTextureEXR: {fileID: 2800000, guid: 1f00e9acacbf1d24baa37d836648c7fa, type: 3}
+  potentialLabel: Hydrogen Atom
