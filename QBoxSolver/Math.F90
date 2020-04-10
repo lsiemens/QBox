@@ -54,6 +54,9 @@ contains
         real(rp), dimension(:, :), intent(INOUT) :: phi
         class(BraKet) :: self
 
+        ! impose symmetry or anti symmatry for finding solutions to the 1 dimensional 2 particle in a box problem
+        ! phi = 0.5*(phi - transpose(phi))
+
         if (.not. self%isPeriodicBoundary) then
             phi(:, 1) = 0.0_rp
             phi(:, self%resolution) = 0.0_rp
