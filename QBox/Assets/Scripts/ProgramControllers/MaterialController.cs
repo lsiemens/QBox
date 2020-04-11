@@ -12,6 +12,8 @@ public class MaterialController : MonoBehaviour
 
     private int shaderIndex;
     private UnityAction OnCycleShaderAction;
+    private UnityAction OnRaiseShaderScaleAction;
+    private UnityAction OnLowerShaderScaleAction;
 
     [System.NonSerialized] private Material material=null;
     private static MaterialController materialController;
@@ -44,14 +46,20 @@ public class MaterialController : MonoBehaviour
 
     void Awake() {
         OnCycleShaderAction = new UnityAction(OnCycleShader);
+        OnRaiseShaderScaleAction = new UnityAction(OnRaiseShaderScale);
+        OnLowerShaderScaleAction = new UnityAction(OnLowerShaderScale);
     }
 
     void OnEnable() {
         EventManager.RegisterListener("Cycle Shader", OnCycleShaderAction);
+        EventManager.RegisterListener("Raise Shader Scale", OnRaiseShaderScaleAction);
+        EventManager.RegisterListener("Lower Shader Scale", OnLowerShaderScaleAction);
     }
 
     void OnDisable() {
         EventManager.DeregisterListener("Cycle Shader", OnCycleShaderAction);
+        EventManager.DeregisterListener("Raise Shader Scale", OnRaiseShaderScaleAction);
+        EventManager.DeregisterListener("Lower Shader Scale", OnLowerShaderScaleAction);
     }
 
     public static void Reload() {
@@ -97,5 +105,15 @@ public class MaterialController : MonoBehaviour
 
         currentMaterial.SetFloat("_Scale", shaderScale);
         WaveFunction.UpdateRender();
+    }
+
+    void OnRaiseShaderScale() {
+        shaderScale += shaderScaleSpeed*1; // raise for one second
+        currentMaterial.SetFloat("_Scale", shaderScale);
+    }
+
+    void OnLowerShaderScale() {
+        shaderScale -= shaderScaleSpeed*1; // lower for one second
+        currentMaterial.SetFloat("_Scale", shaderScale);
     }
 }

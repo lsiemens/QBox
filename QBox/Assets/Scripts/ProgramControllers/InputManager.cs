@@ -31,6 +31,14 @@ public abstract class InputManager : MonoBehaviour
         }
     }
 
+    public void TriggerRaiseShaderScale() {
+        EventManager.TriggerEvent("Raise Shader Scale");
+    }
+
+    public void TriggerLowerShaderScale() {
+        EventManager.TriggerEvent("Lower Shader Scale");
+    }
+
     public void TriggerRaiseState() {
         EventManager.TriggerEvent("Raise State");
     }
