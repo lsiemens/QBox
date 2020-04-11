@@ -2,7 +2,7 @@
     "potentialAtlasResolution": 512,
     "potentialAtlasGrid": 1,
     "potentialAtlasChannels": 1,
-    "potentialMax": 0.0,
+    "potentialMax": 1.0,
     "potentialMin": 0.0,
     "statesAtlasResolution": 6144,
     "statesAtlasGrid": 12,
