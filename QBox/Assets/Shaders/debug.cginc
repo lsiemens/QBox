@@ -1,7 +1,10 @@
 // Utility for printing basic debug info on the screen
 
+//#define DEBUG
+
 // display a number n (value) in the range [0, 10] by drawing n bands.
 float4 _basicDebug(float4 color, float2 uv, float value, int offsetx, int offsety, float4 tint) {
+    #ifdef DEBUG
     float pi = 3.1415926535;
     float boarder = 0.01;
     float2 size = float2(0.1, 0.05);
@@ -20,11 +23,13 @@ float4 _basicDebug(float4 color, float2 uv, float value, int offsetx, int offset
             }
         }
     }
+    #endif
     return color;
 }
 
 // display a floating point number in scientific notation. the exponent is the last number.
 float4 DebugSCI(float4 color, float2 uv, float value, int significantDigits, int offsety) {
+    #ifdef DEBUG
     bool isPositive = true;
     bool expIsPositive = true;
     if (value < 0) {
@@ -56,4 +61,7 @@ float4 DebugSCI(float4 color, float2 uv, float value, int significantDigits, int
         digit = 10*(digit - floor(digit));
     }
     return _basicDebug(color, uv, exponent, i, offsety, expTint);
+    #else
+    return color;
+    #endif
 }
