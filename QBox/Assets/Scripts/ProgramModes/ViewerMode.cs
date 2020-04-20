@@ -13,7 +13,7 @@ public class ViewerMode : MonoBehaviour
 
     private UnityAction OnStateMachineTransitionAction;
 
-    public GameObject viewer;
+    public DialogeContent controllDialoge;
 
     void Awake() {
         OnStateMachineTransitionAction = new UnityAction(OnStateMachineTransition);
@@ -57,6 +57,7 @@ public class ViewerMode : MonoBehaviour
                 viewStateIndex = 0;
                 isViewMode = true;
                 ViewUpdate();
+                DialogeManager.show(controllDialoge);
                 break;
             default:
                 isViewMode = false;

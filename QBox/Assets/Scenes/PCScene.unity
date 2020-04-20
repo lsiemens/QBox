@@ -208,6 +208,17 @@ PrefabInstance:
       propertyPath: imageTransform
       value: 
       objectReference: {fileID: 336536621}
+    - target: {fileID: 8253155114304782806, guid: 96648634cfa72864e81e9b5a35f3a711,
+        type: 3}
+      propertyPath: dialogePrefab
+      value: 
+      objectReference: {fileID: 5247493407994557746, guid: 07b202102c9761646b187319825f89d2,
+        type: 3}
+    - target: {fileID: 8253155114304782806, guid: 96648634cfa72864e81e9b5a35f3a711,
+        type: 3}
+      propertyPath: dialogeGroup
+      value: 
+      objectReference: {fileID: 5428611356912734607}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 96648634cfa72864e81e9b5a35f3a711, type: 3}
 --- !u!224 &336536621 stripped
@@ -455,3 +466,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 805ca4338fb2c704b97effbd55b88880, type: 3}
+--- !u!4 &5428611356912734607 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1403118902606567730, guid: 805ca4338fb2c704b97effbd55b88880,
+    type: 3}
+  m_PrefabInstance: {fileID: 5428611356912734606}
+  m_PrefabAsset: {fileID: 0}
