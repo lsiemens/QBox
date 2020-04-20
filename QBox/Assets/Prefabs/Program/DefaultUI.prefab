@@ -451,7 +451,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1403118902606567730}
+  - component: {fileID: 4213829129054905033}
   m_Layer: 0
   m_Name: DialogeGroup
   m_TagString: Untagged
@@ -459,8 +459,8 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1403118902606567730
-Transform:
+--- !u!224 &4213829129054905033
+RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -473,6 +473,11 @@ Transform:
   m_Father: {fileID: 5428611355618766595}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &3151310082721188677
 GameObject:
   m_ObjectHideFlags: 0
@@ -1168,7 +1173,7 @@ RectTransform:
   - {fileID: 5428611355422800667}
   - {fileID: 5428611355844983499}
   - {fileID: 5428611357113588584}
-  - {fileID: 1403118902606567730}
+  - {fileID: 4213829129054905033}
   m_Father: {fileID: 1721851316229245989}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2041,6 +2046,7 @@ MonoBehaviour:
   editorMode: {fileID: 5428611356596789898}
   remainingStatesLabel: {fileID: 5428611355714221398}
   imageRect: {fileID: 5428611356011275845}
+  controlDialoge: {fileID: 11400000, guid: 8c61a469f266b6f4aac9dfcb3aebcc5f, type: 2}
 --- !u!114 &5428611356011275870
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2677,6 +2683,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   loading: {fileID: 5428611355844983498}
+  controlDialoge: {fileID: 11400000, guid: 47a79881cb7deb4439cddd2aaa082520, type: 2}
 --- !u!114 &5428611356596789899
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2689,7 +2696,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9b42b7a8c8726c4abc606c9636c6c55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controllDialoge: {fileID: 11400000, guid: 308b2c899a6050740bcaa679abce4319, type: 2}
+  controlDialoge: {fileID: 11400000, guid: 65e441f757c171e44a674f13af9d31b5, type: 2}
 --- !u!114 &5428611356596789898
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2719,7 +2726,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 550cdd97f7ff8ed4286800426d438aa9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0
+  speed: 0.5
   run: {fileID: 5428611357113588587}
 --- !u!1 &5428611356638267284
 GameObject:
@@ -4391,12 +4398,13 @@ MonoBehaviour:
   widthSlider: {fileID: 5428611355561622178}
   speedSlider: {fileID: 5428611356382441644}
   minWidthSlider: 0.01
-  maxWidthSlider: 1
+  maxWidthSlider: 2
   defaultWidth: 0.3
   maxSpeedSlider: 10
   defaultSpeed: 1
   previewScaling: 8
   renderDelayMaximum: 15
+  controlDialoge: {fileID: 11400000, guid: fc5fb4a0b8c4ca1469c77bf5bfdf0370, type: 2}
 --- !u!1 &7880908904404103582
 GameObject:
   m_ObjectHideFlags: 0

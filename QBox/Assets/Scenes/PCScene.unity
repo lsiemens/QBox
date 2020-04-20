@@ -218,7 +218,7 @@ PrefabInstance:
         type: 3}
       propertyPath: dialogeGroup
       value: 
-      objectReference: {fileID: 5428611356912734607}
+      objectReference: {fileID: 1290677795}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 96648634cfa72864e81e9b5a35f3a711, type: 3}
 --- !u!224 &336536621 stripped
@@ -322,6 +322,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!224 &1290677795 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 4213829129054905033, guid: 805ca4338fb2c704b97effbd55b88880,
+    type: 3}
+  m_PrefabInstance: {fileID: 5428611356912734606}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5428611356912734606
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -466,9 +472,3 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 805ca4338fb2c704b97effbd55b88880, type: 3}
---- !u!4 &5428611356912734607 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1403118902606567730, guid: 805ca4338fb2c704b97effbd55b88880,
-    type: 3}
-  m_PrefabInstance: {fileID: 5428611356912734606}
-  m_PrefabAsset: {fileID: 0}

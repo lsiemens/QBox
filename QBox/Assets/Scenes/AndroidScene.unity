@@ -380,9 +380,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 35735ac3ea9e661479250a33f2927a13, type: 3}
---- !u!4 &1021408109 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8964784177500382832, guid: 35735ac3ea9e661479250a33f2927a13,
+--- !u!224 &1379929335 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 6155059251110813067, guid: 35735ac3ea9e661479250a33f2927a13,
     type: 3}
   m_PrefabInstance: {fileID: 1021408108}
   m_PrefabAsset: {fileID: 0}
@@ -841,12 +841,12 @@ PrefabInstance:
         type: 3}
       propertyPath: dialogeGroup
       value: 
-      objectReference: {fileID: 1021408109}
+      objectReference: {fileID: 1379929335}
     - target: {fileID: 9147210735851006109, guid: bb486fb217de45ffd84aea20165c0ce9,
         type: 3}
       propertyPath: dialogePrefab
       value: 
-      objectReference: {fileID: 5247493407994557746, guid: 07b202102c9761646b187319825f89d2,
+      objectReference: {fileID: 40149503415977517, guid: d826597570e8e4d48afe4d2dff373b89,
         type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bb486fb217de45ffd84aea20165c0ce9, type: 3}

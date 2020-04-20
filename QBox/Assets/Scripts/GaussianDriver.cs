@@ -22,6 +22,8 @@ public class GaussianDriver : MonoBehaviour
     public int previewScaling;
     public int renderDelayMaximum;
 
+    public DialogeContent controlDialoge;
+
     private float width;
     private float speed;
 
@@ -48,6 +50,7 @@ public class GaussianDriver : MonoBehaviour
         isActive = false;
         EventManager.RegisterListener("Mouse Click Up", OnMouseClickUpAction);
         EventManager.RegisterListener("Mouse Click Down", OnMouseClickDownAction);
+        InitalizeSliders();
     }
 
     void OnDisable() {
@@ -55,11 +58,7 @@ public class GaussianDriver : MonoBehaviour
         EventManager.DeregisterListener("Mouse Click Down", OnMouseClickDownAction);
     }
 
-    public void Initalize() {
-        gaussianPosition = Vector2.zero;
-        gaussianVelocity = Vector2.zero;
-        getPosition = false;
-        getSpeed = false;
+    void InitalizeSliders() {
         width = defaultWidth;
         speed = defaultSpeed;
 
@@ -72,11 +71,21 @@ public class GaussianDriver : MonoBehaviour
         speedSlider.maxValue = maxSpeedSlider;
         speedSlider.minValue = 0.0f;
         speedSlider.value = speed;
+    }
+
+    public void Initalize() {
+        gaussianPosition = Vector2.zero;
+        gaussianVelocity = Vector2.zero;
+        getPosition = false;
+        getSpeed = false;
+        InitalizeSliders();
 
         editorMode.coefficientsActive = new float[WaveFunction.NumberOfStates, 2];
         renderPreview();
         isActive = true;
         renderDelay = renderDelayMaximum;
+
+        DialogeManager.show(controlDialoge);
     }
 
     public void Close() {
@@ -112,9 +121,11 @@ public class GaussianDriver : MonoBehaviour
     }
 
     void renderGaussian(int stride=1) {
-        gaussian = QSystemController.currentQuantumSystem.qMath.GaussianComplex(gaussianPosition*QSystemController.currentQuantumSystem.length/2.0f, speed*gaussianVelocity*QSystemController.currentQuantumSystem.length/2.0f, width*QSystemController.currentQuantumSystem.length/2.0f);
-        editorMode.coefficientsActive = QSystemController.currentQuantumSystem.ProjectFunctionComplex(gaussian, stride);
-        Debug.Log("render gaussian: " + stride);
+        if (isActive) {
+            gaussian = QSystemController.currentQuantumSystem.qMath.GaussianComplex(gaussianPosition*QSystemController.currentQuantumSystem.length/2.0f, speed*gaussianVelocity*QSystemController.currentQuantumSystem.length/2.0f, width*QSystemController.currentQuantumSystem.length/2.0f);
+            editorMode.coefficientsActive = QSystemController.currentQuantumSystem.ProjectFunctionComplex(gaussian, stride);
+            Debug.Log("render gaussian: " + stride);
+        }
     }
 
     void Update() {

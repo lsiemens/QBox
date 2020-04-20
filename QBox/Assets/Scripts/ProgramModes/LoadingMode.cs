@@ -8,6 +8,7 @@ public class LoadingMode : MonoBehaviour
     private UnityAction OnStateMachineTransitionAction;
 
     public GameObject loading;
+    public DialogeContent controlDialoge;
 
     void Awake() {
         OnStateMachineTransitionAction = new UnityAction(OnStateMachineTransition);
@@ -34,6 +35,9 @@ public class LoadingMode : MonoBehaviour
                 StartCoroutine(LoadingCoroutine());
                 break;
             default:
+                if (loading.activeSelf) {
+                    DialogeManager.show(controlDialoge);
+                }
                 loading.SetActive(false);
                 break;
         }
