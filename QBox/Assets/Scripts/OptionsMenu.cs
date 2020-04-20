@@ -24,4 +24,8 @@ public class OptionsMenu : MonoBehaviour
             Debug.Log("Failed to convert selection \"" + drodownSelection + "\" into an integer.");
         }
     }
+
+    public void ResetDialogePreferences() {
+        DialogeManager.ResetPrefrences();
+    }
 }

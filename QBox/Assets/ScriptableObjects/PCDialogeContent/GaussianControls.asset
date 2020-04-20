@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11cf9d27a6a134c43b8e8a333bd46dff, type: 3}
   m_Name: GaussianControls
   m_EditorClassIdentifier: 
+  id: gaussianDialogeID
   title: Gaussian
   content: After pressing "set position" click to set location of the gaussian, or
     click and drag to set the position and velocity vector.

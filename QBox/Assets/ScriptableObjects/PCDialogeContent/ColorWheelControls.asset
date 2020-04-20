@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11cf9d27a6a134c43b8e8a333bd46dff, type: 3}
   m_Name: ColorWheelControls
   m_EditorClassIdentifier: 
+  id: wheelDialogeID
   title: Color Wheel
   content: Click in the colored section of the color wheel selector to set the probability
     amplitude and phase angle of the current state. The current state will increment

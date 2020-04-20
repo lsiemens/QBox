@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11cf9d27a6a134c43b8e8a333bd46dff, type: 3}
   m_Name: DisplayControlsAndroid
   m_EditorClassIdentifier: 
+  id: displayDialogeID
   title: Display
   content: Double tap to switch display mode. Swipe left or right to adjust wave
     function brightness.

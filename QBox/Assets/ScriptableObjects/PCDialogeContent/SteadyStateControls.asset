@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11cf9d27a6a134c43b8e8a333bd46dff, type: 3}
   m_Name: SteadyStateControls
   m_EditorClassIdentifier: 
+  id: stateDialogeID
   title: Steady State
   content: Use the up arrow key to raise the state, or the down down arrow key to
     lower the state. The default state is the ground state.
-  dontShowAgain: 0

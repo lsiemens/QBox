@@ -83,13 +83,18 @@ PrefabInstance:
     - target: {fileID: 3974466313532299872, guid: 96648634cfa72864e81e9b5a35f3a711,
         type: 3}
       propertyPath: shaders.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3974466313532299872, guid: 96648634cfa72864e81e9b5a35f3a711,
         type: 3}
       propertyPath: shaderMaxReservedIndex
       value: 64
       objectReference: {fileID: 0}
+    - target: {fileID: 3974466313532299872, guid: 96648634cfa72864e81e9b5a35f3a711,
+        type: 3}
+      propertyPath: shaders.Array.data[2]
+      value: 
+      objectReference: {fileID: 4800000, guid: 9653055ced728eb44954da3b4f5ef540, type: 3}
     - target: {fileID: 3974466313532299873, guid: 96648634cfa72864e81e9b5a35f3a711,
         type: 3}
       propertyPath: quantumSystems.Array.data[0]
@@ -179,6 +184,30 @@ PrefabInstance:
       propertyPath: quantumSystems.Array.data[14]
       value: 
       objectReference: {fileID: 11400000, guid: df415a97b4bc54646b295040e0cacabd,
+        type: 2}
+    - target: {fileID: 8253155114304782806, guid: 96648634cfa72864e81e9b5a35f3a711,
+        type: 3}
+      propertyPath: dialogeList.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: b1db8f52b41a70b43acfadfc6c846ca8,
+        type: 2}
+    - target: {fileID: 8253155114304782806, guid: 96648634cfa72864e81e9b5a35f3a711,
+        type: 3}
+      propertyPath: dialogeList.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: 308b2c899a6050740bcaa679abce4319,
+        type: 2}
+    - target: {fileID: 8253155114304782806, guid: 96648634cfa72864e81e9b5a35f3a711,
+        type: 3}
+      propertyPath: dialogeList.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: df060333417acf641bf251e3eb93ee3d,
+        type: 2}
+    - target: {fileID: 8253155114304782806, guid: 96648634cfa72864e81e9b5a35f3a711,
+        type: 3}
+      propertyPath: dialogeList.Array.data[3]
+      value: 
+      objectReference: {fileID: 11400000, guid: 098a82fa143c8e444ace747812e10984,
         type: 2}
     m_RemovedComponents:
     - {fileID: 7112140116993291389, guid: 96648634cfa72864e81e9b5a35f3a711, type: 3}

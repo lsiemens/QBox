@@ -288,6 +288,21 @@ PrefabInstance:
       propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4456351519458059687, guid: 35735ac3ea9e661479250a33f2927a13,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4456351519458059687, guid: 35735ac3ea9e661479250a33f2927a13,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4456351519458059687, guid: 35735ac3ea9e661479250a33f2927a13,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5065829951239810156, guid: 35735ac3ea9e661479250a33f2927a13,
         type: 3}
       propertyPath: m_AnchorMin.y
@@ -832,6 +847,11 @@ PrefabInstance:
       propertyPath: screen
       value: 
       objectReference: {fileID: 2018495951}
+    - target: {fileID: 4274012149514597163, guid: bb486fb217de45ffd84aea20165c0ce9,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8069928838513841520, guid: bb486fb217de45ffd84aea20165c0ce9,
         type: 3}
       propertyPath: imageTransform

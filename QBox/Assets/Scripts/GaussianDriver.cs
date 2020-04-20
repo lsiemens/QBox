@@ -22,8 +22,6 @@ public class GaussianDriver : MonoBehaviour
     public int previewScaling;
     public int renderDelayMaximum;
 
-    public DialogeContent controlDialoge;
-
     private float width;
     private float speed;
 
@@ -85,7 +83,7 @@ public class GaussianDriver : MonoBehaviour
         isActive = true;
         renderDelay = renderDelayMaximum;
 
-        DialogeManager.show(controlDialoge);
+        DialogeManager.Show("gaussianDialogeID");
     }
 
     public void Close() {

@@ -12,8 +12,6 @@ public class CoefficientDriver : MonoBehaviour
     public TextMeshProUGUI remainingStatesLabel;
     public RectTransform imageRect;
 
-    public DialogeContent controlDialoge;
-
     private Material material;
     private float halfSize;
 
@@ -32,7 +30,7 @@ public class CoefficientDriver : MonoBehaviour
         remainingStatesLabel.text = "States Left: " + (NumberOfStates - 1);
         material.SetFloat("radius", active);
 
-        DialogeManager.show(controlDialoge);
+        DialogeManager.Show("wheelDialogeID");
     }
 
     public void Done() {

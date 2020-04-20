@@ -179,3 +179,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogeGroup: {fileID: 0}
   dialogePrefab: {fileID: 0}
+  dialogeList:
+  - {fileID: 11400000, guid: 8c61a469f266b6f4aac9dfcb3aebcc5f, type: 2}
+  - {fileID: 11400000, guid: 47a79881cb7deb4439cddd2aaa082520, type: 2}
+  - {fileID: 11400000, guid: fc5fb4a0b8c4ca1469c77bf5bfdf0370, type: 2}
+  - {fileID: 11400000, guid: 65e441f757c171e44a674f13af9d31b5, type: 2}
