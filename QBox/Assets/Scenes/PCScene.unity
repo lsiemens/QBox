@@ -208,6 +208,16 @@ PrefabInstance:
       propertyPath: imageTransform
       value: 
       objectReference: {fileID: 336536621}
+    - target: {fileID: 7112140116993291389, guid: 96648634cfa72864e81e9b5a35f3a711,
+        type: 3}
+      propertyPath: parentCanvas
+      value: 
+      objectReference: {fileID: 1794233240}
+    - target: {fileID: 7112140116993291389, guid: 96648634cfa72864e81e9b5a35f3a711,
+        type: 3}
+      propertyPath: canvas
+      value: 
+      objectReference: {fileID: 1794233240}
     - target: {fileID: 8253155114304782806, guid: 96648634cfa72864e81e9b5a35f3a711,
         type: 3}
       propertyPath: dialogePrefab
@@ -328,6 +338,12 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 5428611356912734606}
   m_PrefabAsset: {fileID: 0}
+--- !u!223 &1794233240 stripped
+Canvas:
+  m_CorrespondingSourceObject: {fileID: 5428611355618766594, guid: 805ca4338fb2c704b97effbd55b88880,
+    type: 3}
+  m_PrefabInstance: {fileID: 5428611356912734606}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5428611356912734606
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -339,41 +355,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: DefaultUI
-      objectReference: {fileID: 0}
-    - target: {fileID: 1721851316229245989, guid: 805ca4338fb2c704b97effbd55b88880,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1721851316229245989, guid: 805ca4338fb2c704b97effbd55b88880,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1721851316229245989, guid: 805ca4338fb2c704b97effbd55b88880,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1721851316229245989, guid: 805ca4338fb2c704b97effbd55b88880,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1721851316229245989, guid: 805ca4338fb2c704b97effbd55b88880,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1721851316229245989, guid: 805ca4338fb2c704b97effbd55b88880,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1721851316229245989, guid: 805ca4338fb2c704b97effbd55b88880,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1721851316229245989, guid: 805ca4338fb2c704b97effbd55b88880,
         type: 3}

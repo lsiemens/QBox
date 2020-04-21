@@ -36,7 +36,8 @@ public class InputManagerTouch : InputManager
     protected override void DetectMouseClick() {
     }
 
-   protected override Vector2 GetMousePosition() {
+    protected override Vector2 GetMousePosition(RectTransform rectTransform) {
+        Debug.LogError("Need to implement rect transform");
         return 2*(new Vector3(lastTouchLocation.x, lastTouchLocation.y, 0) - imageTransform.position)/imageTransform.rect.width;
     }
 }

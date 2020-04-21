@@ -5,6 +5,7 @@ using UnityEngine;
 public abstract class InputManager : MonoBehaviour
 {
     public RectTransform imageTransform;
+    public Canvas canvas;
     private static InputManager inputManager;
 
     public static Vector2 mousePosition {
@@ -29,6 +30,11 @@ public abstract class InputManager : MonoBehaviour
         get {
             return Input.GetAxis("Shader Scale");
         }
+    }
+
+    public static Vector2 GetMousePositionInUI(RectTransform rectTransform) {
+        Debug.LogError("need to implement a proper instance variable");
+        return inputManager.GetMousePosition(rectTransform);
     }
 
     public void TriggerRaiseShaderScale() {
@@ -76,5 +82,5 @@ public abstract class InputManager : MonoBehaviour
 
     protected abstract void DetectMouseClick();
 
-    protected abstract Vector2 GetMousePosition();
+    protected abstract Vector2 GetMousePosition(RectTransform rectTransform=null);
 }

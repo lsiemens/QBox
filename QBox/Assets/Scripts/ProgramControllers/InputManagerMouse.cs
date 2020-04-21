@@ -14,7 +14,26 @@ public class InputManagerMouse : InputManager
         }
     }
 
-   protected override Vector2 GetMousePosition() {
-        return 2*(Input.mousePosition - imageTransform.position)/imageTransform.rect.width;
+    protected override Vector2 GetMousePosition(RectTransform rectTransform) {
+        Debug.Log((Input.mousePosition - imageTransform.position));
+        Vector2 pos;
+
+        if (rectTransform is null) {
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                canvas.transform as RectTransform, Input.mousePosition,
+                canvas.worldCamera,
+                out pos);
+            Debug.Log(pos + " " + imageTransform.rect.width);
+
+            return 2*(pos)/imageTransform.rect.width;
+        } else {
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                rectTransform, Input.mousePosition,
+                canvas.worldCamera,
+                out pos);
+            Debug.Log(pos + " " + rectTransform.rect.width);
+
+            return 2*(pos)/rectTransform.rect.width;
+        }
     }
 }

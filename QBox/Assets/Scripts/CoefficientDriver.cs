@@ -13,7 +13,6 @@ public class CoefficientDriver : MonoBehaviour
     public RectTransform imageRect;
 
     private Material material;
-    private float halfSize;
 
     private float active;
     private float probability;
@@ -23,7 +22,6 @@ public class CoefficientDriver : MonoBehaviour
         NumberOfStates = WaveFunction.NumberOfStates;
         index = 0;
         editorMode.coefficientsActive = new float[NumberOfStates, 2];
-        halfSize = imageRect.rect.width/2;
         material = GetComponent<Image>().material;
         active = 1.0f;
         probability = 0.0f;
@@ -39,11 +37,12 @@ public class CoefficientDriver : MonoBehaviour
     }
 
     public void OnClick() {
-        halfSize = imageRect.rect.width/2; // reset halfSize to account for any dynamic changes in the widget
-
         if (index < NumberOfStates) {
-            if (Vector2.Distance(imageRect.position, Input.mousePosition)/halfSize < active) {
-                Vector2 coefficient = (imageRect.position - Input.mousePosition)/halfSize;
+
+            Vector2 mousePosition = InputManager.GetMousePositionInUI(imageRect);
+
+            if (mousePosition.magnitude < active) {
+                Vector2 coefficient = mousePosition;
                 if  (index == NumberOfStates - 1) {
                     coefficient = active*coefficient.normalized;
                 }
