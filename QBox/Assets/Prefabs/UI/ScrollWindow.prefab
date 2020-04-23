@@ -388,7 +388,7 @@ MonoBehaviour:
     m_Right: 5
     m_Top: 5
     m_Bottom: 5
-  m_ChildAlignment: 0
+  m_ChildAlignment: 1
   m_Spacing: 5
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 0
@@ -537,7 +537,7 @@ PrefabInstance:
     - target: {fileID: 2813085020844724524, guid: a8376879c197c264ca5a30d6a48bd213,
         type: 3}
       propertyPath: m_Name
-      value: ScrollWindow Variant
+      value: ScrollWindow
       objectReference: {fileID: 0}
     - target: {fileID: 2813085020844724525, guid: a8376879c197c264ca5a30d6a48bd213,
         type: 3}
