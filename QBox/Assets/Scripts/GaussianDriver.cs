@@ -83,7 +83,7 @@ public class GaussianDriver : MonoBehaviour
         isActive = true;
         renderDelay = renderDelayMaximum;
 
-        DialogeManager.Show("gaussianDialogeID");
+        DialogManager.Show("gaussianDialogID");
     }
 
     public void Close() {

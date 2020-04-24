@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "QBox/Dialoge Content")]
-public class DialogeContent : ScriptableObject
+[CreateAssetMenu(menuName = "QBox/Dialog Content")]
+public class DialogContent : ScriptableObject
 {
     public string id;
     public string title;

@@ -12,8 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11cf9d27a6a134c43b8e8a333bd46dff, type: 3}
   m_Name: DisplayControls
   m_EditorClassIdentifier: 
-  id: displayDialogeID
+  id: displayDialogID
   title: Display
   content: Press the Tab key to switch display mode. Use the plus and minus numpad
     keys to adjust wave function brightness.
-  dontShowAgain: 0

@@ -55,7 +55,7 @@ public class ViewerMode : MonoBehaviour
                 viewStateIndex = 0;
                 isViewMode = true;
                 ViewUpdate();
-                DialogeManager.Show("stateDialogeID");
+                DialogManager.Show("stateDialogID");
                 break;
             default:
                 isViewMode = false;

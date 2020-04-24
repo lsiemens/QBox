@@ -35,7 +35,7 @@ public class LoadingMode : MonoBehaviour
                 break;
             default:
                 if (loading.activeSelf) {
-                    DialogeManager.Show("displayDialogeID");
+                    DialogManager.Show("displayDialogID");
                 }
                 loading.SetActive(false);
                 break;

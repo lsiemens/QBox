@@ -5,13 +5,13 @@ using UnityEngine.UI;
 using UnityEngine.Events;
 using TMPro;
 
-public class DialogeDriver : MonoBehaviour
+public class DialogDriver : MonoBehaviour
 {
     public TextMeshProUGUI title;
     public TextMeshProUGUI content;
     public Toggle dontShowAgain;
 
-    private DialogeContent dialogeContent;
+    private DialogContent dialogContent;
     private UnityAction OnStateMachineTransitionAction;
 
     void Awake() {
@@ -26,15 +26,15 @@ public class DialogeDriver : MonoBehaviour
         EventManager.DeregisterListener("OnStateMachineTransition", OnStateMachineTransitionAction);
     }
 
-    public void Initalize(DialogeContent dialoge) {
-        dialogeContent = dialoge;
-        title.text = dialogeContent.title;
-        content.text = dialogeContent.content;
-        dontShowAgain.isOn = dialogeContent.dontShowAgain;
+    public void Initalize(DialogContent dialog) {
+        dialogContent = dialog;
+        title.text = dialogContent.title;
+        content.text = dialogContent.content;
+        dontShowAgain.isOn = dialogContent.dontShowAgain;
     }
 
     public void ToggleValueChanged() {
-        dialogeContent.dontShowAgain = dontShowAgain.isOn;
+        dialogContent.dontShowAgain = dontShowAgain.isOn;
     }
 
     public void closePanel() {

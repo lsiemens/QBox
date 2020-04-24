@@ -25,7 +25,7 @@ public class OptionsMenu : MonoBehaviour
         }
     }
 
-    public void ResetDialogePreferences() {
-        DialogeManager.ResetPrefrences();
+    public void ResetDialogPreferences() {
+        DialogManager.ResetPrefrences();
     }
 }

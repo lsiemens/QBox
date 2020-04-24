@@ -28,7 +28,7 @@ public class CoefficientDriver : MonoBehaviour
         remainingStatesLabel.text = "States Left: " + (NumberOfStates - 1);
         material.SetFloat("radius", active);
 
-        DialogeManager.Show("wheelDialogeID");
+        DialogManager.Show("wheelDialogID");
     }
 
     public void Done() {

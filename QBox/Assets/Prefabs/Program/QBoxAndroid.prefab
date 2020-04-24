@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   imageTransform: {fileID: 0}
+  canvas: {fileID: 0}
 --- !u!1001 &898595025642596683
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -206,6 +207,30 @@ PrefabInstance:
     - target: {fileID: 8253155114304782806, guid: 96648634cfa72864e81e9b5a35f3a711,
         type: 3}
       propertyPath: dialogeList.Array.data[3]
+      value: 
+      objectReference: {fileID: 11400000, guid: 098a82fa143c8e444ace747812e10984,
+        type: 2}
+    - target: {fileID: 8253155114304782806, guid: 96648634cfa72864e81e9b5a35f3a711,
+        type: 3}
+      propertyPath: dialogList.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: b1db8f52b41a70b43acfadfc6c846ca8,
+        type: 2}
+    - target: {fileID: 8253155114304782806, guid: 96648634cfa72864e81e9b5a35f3a711,
+        type: 3}
+      propertyPath: dialogList.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: 308b2c899a6050740bcaa679abce4319,
+        type: 2}
+    - target: {fileID: 8253155114304782806, guid: 96648634cfa72864e81e9b5a35f3a711,
+        type: 3}
+      propertyPath: dialogList.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: df060333417acf641bf251e3eb93ee3d,
+        type: 2}
+    - target: {fileID: 8253155114304782806, guid: 96648634cfa72864e81e9b5a35f3a711,
+        type: 3}
+      propertyPath: dialogList.Array.data[3]
       value: 
       objectReference: {fileID: 11400000, guid: 098a82fa143c8e444ace747812e10984,
         type: 2}

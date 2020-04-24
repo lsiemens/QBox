@@ -229,6 +229,17 @@ PrefabInstance:
       propertyPath: dialogeGroup
       value: 
       objectReference: {fileID: 1290677795}
+    - target: {fileID: 8253155114304782806, guid: 96648634cfa72864e81e9b5a35f3a711,
+        type: 3}
+      propertyPath: dialogGroup
+      value: 
+      objectReference: {fileID: 1290677795}
+    - target: {fileID: 8253155114304782806, guid: 96648634cfa72864e81e9b5a35f3a711,
+        type: 3}
+      propertyPath: dialogPrefab
+      value: 
+      objectReference: {fileID: 5247493407994557746, guid: 07b202102c9761646b187319825f89d2,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 96648634cfa72864e81e9b5a35f3a711, type: 3}
 --- !u!224 &336536621 stripped

@@ -864,6 +864,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 40149503415977517, guid: d826597570e8e4d48afe4d2dff373b89,
         type: 3}
+    - target: {fileID: 9147210735851006109, guid: bb486fb217de45ffd84aea20165c0ce9,
+        type: 3}
+      propertyPath: dialogGroup
+      value: 
+      objectReference: {fileID: 1379929335}
+    - target: {fileID: 9147210735851006109, guid: bb486fb217de45ffd84aea20165c0ce9,
+        type: 3}
+      propertyPath: dialogPrefab
+      value: 
+      objectReference: {fileID: 40149503415977517, guid: d826597570e8e4d48afe4d2dff373b89,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bb486fb217de45ffd84aea20165c0ce9, type: 3}
 --- !u!114 &1909271845 stripped

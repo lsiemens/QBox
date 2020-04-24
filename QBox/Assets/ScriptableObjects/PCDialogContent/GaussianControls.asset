@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 11cf9d27a6a134c43b8e8a333bd46dff, type: 3}
-  m_Name: SteadyStateControls
+  m_Name: GaussianControls
   m_EditorClassIdentifier: 
-  id: stateDialogeID
-  title: Steady State
-  content: Use the up arrow key to raise the state, or the down down arrow key to
-    lower the state. The default state is the ground state.
+  id: gaussianDialogID
+  title: Gaussian
+  content: After pressing "set position" click to set location of the gaussian, or
+    click and drag to set the position and velocity vector.

@@ -453,7 +453,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4213829129054905033}
   m_Layer: 0
-  m_Name: DialogeGroup
+  m_Name: DialogGroup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

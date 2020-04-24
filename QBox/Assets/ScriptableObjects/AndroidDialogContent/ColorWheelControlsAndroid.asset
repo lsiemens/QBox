@@ -10,10 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 11cf9d27a6a134c43b8e8a333bd46dff, type: 3}
-  m_Name: GaussianControls
+  m_Name: ColorWheelControlsAndroid
   m_EditorClassIdentifier: 
-  id: gaussianDialogeID
-  title: Gaussian
-  content: After pressing "set position" click to set location of the gaussian, or
-    click and drag to set the position and velocity vector.
-  dontShowAgain: 0
+  id: wheelDialogID
+  title: Color Wheel
+  content: Tap in the colored section of the color wheel selector to set the probability
+    amplitude and phase angle of the current state. The current state will increment
+    and the colored section of the wheel will decrease in proportion to the remaining
+    probability.
