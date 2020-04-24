@@ -386,6 +386,12 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 1021408108}
   m_PrefabAsset: {fileID: 0}
+--- !u!223 &1556503849 stripped
+Canvas:
+  m_CorrespondingSourceObject: {fileID: 2614308554281914432, guid: 35735ac3ea9e661479250a33f2927a13,
+    type: 3}
+  m_PrefabInstance: {fileID: 1021408108}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1579009398
 GameObject:
   m_ObjectHideFlags: 0
@@ -842,6 +848,11 @@ PrefabInstance:
       propertyPath: imageTransform
       value: 
       objectReference: {fileID: 2018495949}
+    - target: {fileID: 8069928838513841520, guid: bb486fb217de45ffd84aea20165c0ce9,
+        type: 3}
+      propertyPath: canvas
+      value: 
+      objectReference: {fileID: 1556503849}
     - target: {fileID: 9147210735851006109, guid: bb486fb217de45ffd84aea20165c0ce9,
         type: 3}
       propertyPath: dialogeGroup

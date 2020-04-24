@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class InputManagerTouch : InputManager
 {
-    private Vector2 lastTouchLocation;
+    private Vector3 lastTouchLocation;
 
     void OnEnable() {
         Lean.Touch.LeanTouch.OnFingerUp += HandleFingerUp;
         Lean.Touch.LeanTouch.OnFingerSet += HandleFingerSet;
         Lean.Touch.LeanTouch.OnFingerDown += HandleFingerDown;
-        lastTouchLocation = Vector2.zero;
+        lastTouchLocation = Vector3.zero;
     }
 
     void OnDisable() {
@@ -37,7 +37,25 @@ public class InputManagerTouch : InputManager
     }
 
     protected override Vector2 GetMousePosition(RectTransform rectTransform) {
-        Debug.LogError("Need to implement rect transform");
-        return 2*(new Vector3(lastTouchLocation.x, lastTouchLocation.y, 0) - imageTransform.position)/imageTransform.rect.width;
+        Debug.Log((lastTouchLocation - imageTransform.position));
+        Vector2 pos;
+
+        if (rectTransform is null) {
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                canvas.transform as RectTransform, lastTouchLocation,
+                canvas.worldCamera,
+                out pos);
+            Debug.Log(pos + " " + imageTransform.rect.width);
+
+            return 2*(pos)/imageTransform.rect.width;
+        } else {
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                rectTransform, lastTouchLocation,
+                canvas.worldCamera,
+                out pos);
+            Debug.Log(pos + " " + rectTransform.rect.width);
+
+            return 2*(pos)/rectTransform.rect.width;
+        }
     }
 }
