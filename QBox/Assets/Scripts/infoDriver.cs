@@ -16,9 +16,11 @@ public class infoDriver : MonoBehaviour
             QSystemController.currentQuantumSystem.potentialLabel,
             MaterialController.ShaderLabel(),
             QSystemController.currentQuantumSystem.length,
-            1.0,
+            QSystemController.currentQuantumSystem.mass,
             WaveFunction.expectedEnergy,
-            runMode.time);
+            runMode.time,
+            QSystemController.currentQuantumSystem.potentialMin,
+            QSystemController.currentQuantumSystem.potentialMax);
     }
 
 }

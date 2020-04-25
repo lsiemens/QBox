@@ -28,8 +28,11 @@ MonoBehaviour:
     Time
     = {5} <b>h-bar/E<sub>h</sub></b>
 
+    Potential Energy range: {6} to {7} <b>E<sub>h</sub></b>
 
-    All units are in Hartree units.'
+
+    All
+    units are in Hartree units.'
 --- !u!114 &5428611355503246446
 MonoBehaviour:
   m_ObjectHideFlags: 0

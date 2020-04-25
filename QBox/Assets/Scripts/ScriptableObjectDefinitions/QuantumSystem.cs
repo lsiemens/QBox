@@ -13,7 +13,8 @@ public class QuantumSystem : ScriptableObject {
     [System.NonSerialized] public int stateChannels;
     [System.NonSerialized] public int maxTextureLayer;
     [System.NonSerialized] public int numberOfStates;
-    [System.NonSerialized] public float length;
+    [System.NonSerialized] public float length, mass;
+    [System.NonSerialized] public float potentialMin, potentialMax;
     int resolution;
     float dx;
     float[][,] states; // states[level, i, j]
@@ -34,6 +35,9 @@ public class QuantumSystem : ScriptableObject {
         }
         resolution = importData.resolution;
         length = (float)importData.length;
+        mass = (float)importData.mass;
+        potentialMin = (float)importData.potentialMin;
+        potentialMax = (float)importData.potentialMax;
         dx = length/(resolution - 1);
         stateChannels = importData.statesAtlasChannels;
         numberOfStates = Mathf.Min(numberOfStates, stateChannels*MaterialController.instance.shaderMaxReservedIndex);
@@ -44,13 +48,27 @@ public class QuantumSystem : ScriptableObject {
         potentialTexture = new Texture2D(resolution, resolution, TextureFormat.RFloat, false);
         Color[] textureData = potentialTextureEXR.GetPixels(0);
 
+        float maximumPotentialCompressed = 0.0f;
+        float potentialValue;
         for (int i = 0; i < resolution; i++) {
             for (int j = 0; j < resolution; j++) {
                 for (int k = 0; k < importData.potentialAtlasChannels; k++) {
-                    textureData[j + i*resolution][k] = 0.5f*(1.0f + Mathf.Log(textureData[j + i*resolution][k]));
+                    potentialValue = 0.5f*(1.0f + Mathf.Log(textureData[j + i*resolution][k]));
+                    textureData[j + i*resolution][k] = potentialValue;
+                    if (potentialValue > maximumPotentialCompressed) {
+                        maximumPotentialCompressed = potentialValue;
+                    }
                 }
             }
         }
+
+        // the only reason the EXR does not fill the potential range is if
+        // the potenital is constant every where. in that case the potentialMax
+        // would have been set to potentialMin + 1 to avoid division by zero.
+        if (maximumPotentialCompressed < 0.1f) {
+            potentialMax = potentialMin;
+        }
+
         potentialTexture.SetPixels(textureData, 0);
         potentialTexture.Apply();
         MaterialController.currentMaterial.SetTexture("_MainTex", potentialTexture);
