@@ -45,6 +45,7 @@ public class ViewerMode : MonoBehaviour
             }
         }
         WaveFunction.SetCoefficients(coefficients);
+        MaterialController.ResetScale(QSystemController.currentQuantumSystem.MaxStateValue(viewStateIndex));
         WaveFunction.UpdateRender();
     }
 

@@ -139,4 +139,11 @@ public class QuantumSystem : ScriptableObject {
         return qMath.ProjectFunctionComplex(states, function, stride);
     }
 
+    public float MaxStateValue(int state) {
+        if ((state > numberOfStates) || (state < 0)) {
+            Debug.LogError("State must be in the range [0, numberOfStates].");
+        }
+        return qMath.MaxFunctionValue(states[state]);
+    }
+
 }

@@ -7,8 +7,7 @@ using UnityEngine.UI;
 public class MaterialController : MonoBehaviour
 {
     public RawImage screen;
-    public Shader[] shaders;
-    public string[] shaderLabels;
+    public DisplayMode[] displayModes;
     [System.NonSerialized] public int shaderMaxReservedIndex;
 
     private int shaderIndex;
@@ -64,11 +63,17 @@ public class MaterialController : MonoBehaviour
     }
 
     public static string ShaderLabel() {
-        return instance.shaderLabels[instance.shaderIndex];
+        return instance.displayModes[instance.shaderIndex].label;
     }
 
     public static void Reload() {
         instance.Initalize();
+    }
+
+    public static void ResetScale(float maxWaveFunctionValue) {
+        // inverse of scaling found in shaders
+        instance.shaderScale = Mathf.Log(1.0f/Mathf.Pow(maxWaveFunctionValue, instance.displayModes[instance.shaderIndex].scaleExponent));
+        currentMaterial.SetFloat("_Scale", instance.shaderScale);
     }
 
     void Initalize() {
@@ -77,8 +82,8 @@ public class MaterialController : MonoBehaviour
         }
 
         shaderIndex = 0;
-        if (shaders.Length > 0) {
-            material = new Material(shaders[shaderIndex]);
+        if (displayModes.Length > 0) {
+            material = new Material(displayModes[shaderIndex].shader);
         } else {
             Debug.LogError("MaterialController has not been assigned any shaders.");
         }
@@ -95,15 +100,18 @@ public class MaterialController : MonoBehaviour
     }
 
     void OnCycleShader() {
-        if (shaderIndex + 1 < shaders.Length) {
+        int oldExponent = displayModes[shaderIndex].scaleExponent;
+        if (shaderIndex + 1 < displayModes.Length) {
             shaderIndex++;
-        } else if (shaders.Length > 0) {
+        } else if (displayModes.Length > 0) {
             shaderIndex = 0;
         } else {
             Debug.LogError("MaterialController has not been assigned any shaders.");
         }
+        // maintaine intesity after switching displayModes
+        shaderScale *= displayModes[shaderIndex].scaleExponent/((float)oldExponent);
 
-        material.shader = shaders[shaderIndex];
+        material.shader = displayModes[shaderIndex].shader;
 
         material.SetInt("_MaxIndex", QSystemController.currentQuantumSystem.maxTextureLayer);
         Debug.Log("set _MaxIndex:" + QSystemController.currentQuantumSystem.maxTextureLayer);

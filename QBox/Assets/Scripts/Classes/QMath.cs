@@ -161,4 +161,16 @@ public class QMath
         return coefficients;
     }
 
+    public float MaxFunctionValue(float[,] function) {
+        float value = 0;
+        for (int i = 0; i < resolution; i++) {
+            for (int j = 0; j < resolution; j++) {
+                if (Mathf.Abs(function[i, j]) > value) {
+                    value = Mathf.Abs(function[i, j]);
+                }
+            }
+        }
+        return value;
+    }
+
 }
