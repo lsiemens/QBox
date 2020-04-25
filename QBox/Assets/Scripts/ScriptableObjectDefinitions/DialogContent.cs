@@ -16,6 +16,7 @@ public class DialogContent : ScriptableObject
             return PlayerPrefs.HasKey(id);
         }
         set {
+            Debug.Log("set key:" + id + " to " + value);
             if (value) {
                 PlayerPrefs.SetInt(id, 0);
             } else {

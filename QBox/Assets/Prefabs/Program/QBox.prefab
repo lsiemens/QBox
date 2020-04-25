@@ -125,6 +125,11 @@ MonoBehaviour:
   - {fileID: 4800000, guid: f0d3cfbac264d5f42a75f239452ae88c, type: 3}
   - {fileID: 4800000, guid: 5800f8a26b95f5d459a324a586cf6705, type: 3}
   - {fileID: 4800000, guid: 9653055ced728eb44954da3b4f5ef540, type: 3}
+  shaderLabels:
+  - probability density
+  - real part of the wave function
+  - imaginary part of the wave function
+  - phase angle
   shaderScaleSpeed: 1
 --- !u!114 &3974466313532299873
 MonoBehaviour:

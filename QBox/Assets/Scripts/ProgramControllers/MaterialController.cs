@@ -8,6 +8,7 @@ public class MaterialController : MonoBehaviour
 {
     public RawImage screen;
     public Shader[] shaders;
+    public string[] shaderLabels;
     [System.NonSerialized] public int shaderMaxReservedIndex;
 
     private int shaderIndex;
@@ -60,6 +61,10 @@ public class MaterialController : MonoBehaviour
         EventManager.DeregisterListener("Cycle Shader", OnCycleShaderAction);
         EventManager.DeregisterListener("Raise Shader Scale", OnRaiseShaderScaleAction);
         EventManager.DeregisterListener("Lower Shader Scale", OnLowerShaderScaleAction);
+    }
+
+    public static string ShaderLabel() {
+        return instance.shaderLabels[instance.shaderIndex];
     }
 
     public static void Reload() {

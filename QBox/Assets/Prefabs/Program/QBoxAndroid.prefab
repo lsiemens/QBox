@@ -88,6 +88,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3974466313532299872, guid: 96648634cfa72864e81e9b5a35f3a711,
         type: 3}
+      propertyPath: shaderLabels.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3974466313532299872, guid: 96648634cfa72864e81e9b5a35f3a711,
+        type: 3}
       propertyPath: shaderMaxReservedIndex
       value: 64
       objectReference: {fileID: 0}
@@ -96,6 +101,11 @@ PrefabInstance:
       propertyPath: shaders.Array.data[2]
       value: 
       objectReference: {fileID: 4800000, guid: 9653055ced728eb44954da3b4f5ef540, type: 3}
+    - target: {fileID: 3974466313532299872, guid: 96648634cfa72864e81e9b5a35f3a711,
+        type: 3}
+      propertyPath: shaderLabels.Array.data[2]
+      value: phase angle
+      objectReference: {fileID: 0}
     - target: {fileID: 3974466313532299873, guid: 96648634cfa72864e81e9b5a35f3a711,
         type: 3}
       propertyPath: quantumSystems.Array.data[0]

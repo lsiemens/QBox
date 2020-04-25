@@ -8,7 +8,7 @@ public abstract class InputManager : MonoBehaviour
     public Canvas canvas;
     private static InputManager inputManager;
 
-    public static Vector2 mousePosition {
+    public static InputManager instance {
         get {
             if (!inputManager) {
                 inputManager = FindObjectOfType(typeof(InputManager)) as InputManager;
@@ -16,7 +16,13 @@ public abstract class InputManager : MonoBehaviour
                     Debug.LogError("No active InputManager component found.");
                 }
             }
-            return inputManager.GetMousePosition();
+            return inputManager;
+        }
+    }
+
+    public static Vector2 mousePosition {
+        get {
+            return instance.GetMousePosition();
         }
     }
 
@@ -33,8 +39,7 @@ public abstract class InputManager : MonoBehaviour
     }
 
     public static Vector2 GetMousePositionInUI(RectTransform rectTransform) {
-        Debug.LogError("need to implement a proper instance variable");
-        return inputManager.GetMousePosition(rectTransform);
+        return instance.GetMousePosition(rectTransform);
     }
 
     public void TriggerRaiseShaderScale() {

@@ -7,7 +7,7 @@ public class RunMode : MonoBehaviour
 {
 
     public float speed;
-    private float time;
+    [System.NonSerialized] public float time;
     private UnityAction OnStateMachineTransitionAction;
     private bool isRunMode;
 

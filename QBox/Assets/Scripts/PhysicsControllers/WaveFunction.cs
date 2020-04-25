@@ -8,9 +8,16 @@ public class WaveFunction : MonoBehaviour
 {
     [System.NonSerialized] public int numberOfStates;
     float[,] coefficients; // {{real part, imaginary part}, ...}
+    private float _expectedEnergy;
 
     QuantumSystem quantumSystem;
     private static WaveFunction waveFunction;
+
+    public static float expectedEnergy {
+        get {
+            return instance._expectedEnergy;
+        }
+    }
 
     public static int NumberOfStates {
         get {
@@ -48,6 +55,7 @@ public class WaveFunction : MonoBehaviour
 
     public static void SetCoefficients(float[,] newCoeffiecients) {
         instance.coefficients = newCoeffiecients;
+        instance._expectedEnergy = instance.GetExpectedEnergy();
     }
 
     public static void UpdateRender(float time=0.0f) {
@@ -67,6 +75,18 @@ public class WaveFunction : MonoBehaviour
 
         MaterialController.currentMaterial.SetColorArray("_RealCoefficients", realData);
         MaterialController.currentMaterial.SetColorArray("_ImaginaryCoefficients", imaginaryData);
+    }
+
+    private float GetExpectedEnergy() {
+        float energy = 0.0f;
+        int k = 0;
+        for (int i = 0; i < instance.quantumSystem.maxTextureLayer; i++) {
+            for (int j = 0; j < instance.quantumSystem.stateChannels; j++) {
+                k = j + i*instance.quantumSystem.stateChannels;
+                energy += (Mathf.Pow(instance.coefficients[k, 0], 2) + Mathf.Pow(instance.coefficients[k, 1], 2))*instance.quantumSystem.energyLevels[k];
+            }
+        }
+        return energy;
     }
 
 }

@@ -238,7 +238,7 @@ PrefabInstance:
         type: 3}
       propertyPath: dialogPrefab
       value: 
-      objectReference: {fileID: 5247493407994557746, guid: 07b202102c9761646b187319825f89d2,
+      objectReference: {fileID: 40149503415977517, guid: d826597570e8e4d48afe4d2dff373b89,
         type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 96648634cfa72864e81e9b5a35f3a711, type: 3}
