@@ -119,33 +119,14 @@ PrefabInstance:
         type: 2}
     - target: {fileID: 3974466313532299873, guid: 96648634cfa72864e81e9b5a35f3a711,
         type: 3}
-      propertyPath: quantumSystems.Array.data[0]
-      value: 
-      objectReference: {fileID: 11400000, guid: 1f6a98a7957fc3b4f9a308626036ddd0,
-        type: 2}
-    - target: {fileID: 3974466313532299873, guid: 96648634cfa72864e81e9b5a35f3a711,
-        type: 3}
-      propertyPath: quantumSystems.Array.data[1]
-      value: 
-      objectReference: {fileID: 11400000, guid: 82033d911b0b69446ac0ca021c7188cb,
-        type: 2}
-    - target: {fileID: 3974466313532299873, guid: 96648634cfa72864e81e9b5a35f3a711,
-        type: 3}
-      propertyPath: quantumSystems.Array.data[2]
-      value: 
-      objectReference: {fileID: 11400000, guid: c371c8deca9c2d94b924508c6355b056,
-        type: 2}
+      propertyPath: quantumSystems.Array.size
+      value: 12
+      objectReference: {fileID: 0}
     - target: {fileID: 3974466313532299873, guid: 96648634cfa72864e81e9b5a35f3a711,
         type: 3}
       propertyPath: quantumSystems.Array.data[4]
       value: 
-      objectReference: {fileID: 11400000, guid: 82dd9883435bb174db151e9803fa340a,
-        type: 2}
-    - target: {fileID: 3974466313532299873, guid: 96648634cfa72864e81e9b5a35f3a711,
-        type: 3}
-      propertyPath: quantumSystems.Array.data[3]
-      value: 
-      objectReference: {fileID: 11400000, guid: 893085570aadb264ea264c5598002e59,
+      objectReference: {fileID: 11400000, guid: 9a27c2459b337b94f97381422830ae34,
         type: 2}
     - target: {fileID: 3974466313532299873, guid: 96648634cfa72864e81e9b5a35f3a711,
         type: 3}
@@ -157,37 +138,37 @@ PrefabInstance:
         type: 3}
       propertyPath: quantumSystems.Array.data[6]
       value: 
-      objectReference: {fileID: 11400000, guid: 9a27c2459b337b94f97381422830ae34,
+      objectReference: {fileID: 11400000, guid: 74e51975fa68704418cd65e7b728907f,
         type: 2}
     - target: {fileID: 3974466313532299873, guid: 96648634cfa72864e81e9b5a35f3a711,
         type: 3}
       propertyPath: quantumSystems.Array.data[7]
       value: 
-      objectReference: {fileID: 11400000, guid: 157dc84ee5c76c94586b2f043470a2a2,
+      objectReference: {fileID: 11400000, guid: aeec5223800b7464e8f0a8b3badd4683,
         type: 2}
     - target: {fileID: 3974466313532299873, guid: 96648634cfa72864e81e9b5a35f3a711,
         type: 3}
       propertyPath: quantumSystems.Array.data[8]
       value: 
-      objectReference: {fileID: 11400000, guid: ff6363815b921004c8b35cefa002ff9a,
+      objectReference: {fileID: 11400000, guid: 82033d911b0b69446ac0ca021c7188cb,
         type: 2}
     - target: {fileID: 3974466313532299873, guid: 96648634cfa72864e81e9b5a35f3a711,
         type: 3}
       propertyPath: quantumSystems.Array.data[9]
       value: 
-      objectReference: {fileID: 11400000, guid: 5cab381965364ca40979fab7ccc41d74,
+      objectReference: {fileID: 11400000, guid: ff6363815b921004c8b35cefa002ff9a,
         type: 2}
     - target: {fileID: 3974466313532299873, guid: 96648634cfa72864e81e9b5a35f3a711,
         type: 3}
       propertyPath: quantumSystems.Array.data[10]
       value: 
-      objectReference: {fileID: 11400000, guid: 75487605e3f49e948b92a8700db77e00,
+      objectReference: {fileID: 11400000, guid: 5cab381965364ca40979fab7ccc41d74,
         type: 2}
     - target: {fileID: 3974466313532299873, guid: 96648634cfa72864e81e9b5a35f3a711,
         type: 3}
       propertyPath: quantumSystems.Array.data[11]
       value: 
-      objectReference: {fileID: 11400000, guid: aeec5223800b7464e8f0a8b3badd4683,
+      objectReference: {fileID: 11400000, guid: 75487605e3f49e948b92a8700db77e00,
         type: 2}
     - target: {fileID: 3974466313532299873, guid: 96648634cfa72864e81e9b5a35f3a711,
         type: 3}
@@ -206,6 +187,30 @@ PrefabInstance:
       propertyPath: quantumSystems.Array.data[14]
       value: 
       objectReference: {fileID: 11400000, guid: df415a97b4bc54646b295040e0cacabd,
+        type: 2}
+    - target: {fileID: 3974466313532299873, guid: 96648634cfa72864e81e9b5a35f3a711,
+        type: 3}
+      propertyPath: quantumSystems.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 1f6a98a7957fc3b4f9a308626036ddd0,
+        type: 2}
+    - target: {fileID: 3974466313532299873, guid: 96648634cfa72864e81e9b5a35f3a711,
+        type: 3}
+      propertyPath: quantumSystems.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: 893085570aadb264ea264c5598002e59,
+        type: 2}
+    - target: {fileID: 3974466313532299873, guid: 96648634cfa72864e81e9b5a35f3a711,
+        type: 3}
+      propertyPath: quantumSystems.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: 82dd9883435bb174db151e9803fa340a,
+        type: 2}
+    - target: {fileID: 3974466313532299873, guid: 96648634cfa72864e81e9b5a35f3a711,
+        type: 3}
+      propertyPath: quantumSystems.Array.data[3]
+      value: 
+      objectReference: {fileID: 11400000, guid: 157dc84ee5c76c94586b2f043470a2a2,
         type: 2}
     - target: {fileID: 8253155114304782806, guid: 96648634cfa72864e81e9b5a35f3a711,
         type: 3}

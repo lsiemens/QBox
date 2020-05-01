@@ -17,6 +17,7 @@ public class GaussianDriver : MonoBehaviour
     public float maxWidthSlider;
     public float defaultWidth;
     public float maxSpeedSlider;
+    public float minSpeedSlider;
     public float defaultSpeed;
 
     public int previewScaling;
@@ -67,7 +68,7 @@ public class GaussianDriver : MonoBehaviour
         widthSlider.minValue = minWidthSlider;
         widthSlider.value = width;
         speedSlider.maxValue = maxSpeedSlider;
-        speedSlider.minValue = 0.0f;
+        speedSlider.minValue = minSpeedSlider;
         speedSlider.value = speed;
     }
 

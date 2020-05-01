@@ -15,4 +15,5 @@ MonoBehaviour:
   id: displayDialogID
   title: Display
   content: Double tap to switch display mode. Swipe left or right to adjust wave
-    function brightness.
+    function brightness. The current potential/problem can be changed in the main
+    menu under "Select Potential".
