@@ -1,0 +1,97 @@
+\documentclass[%
+ %twocolumn,
+ preprint,
+ amsmath, amssymb, aps, pra, 10pt
+]{revtex4-2}
+
+\usepackage{amsmath}
+
+% Personal definitions
+\newcommand{\dvec}[1]{\dot{\vec{#1}}}
+\newcommand{\grad}{\vec{\nabla}}
+\newcommand{\intV}[1]{\int_{-\infty}^{\infty} #1 d^3x}
+\newcommand{\intVdot}[1]{\int_{-\infty}^{\infty} #1 d^3\dot{x}}
+\newcommand{\intVVdot}[1]{\int_{-\infty}^{\infty}\int_{-\infty}^{\infty} #1 d^3xd^3\dot{x}}
+
+\begin{document}
+
+\title{QBox: Schrödinger equation in 2D}% Force line breaks with \
+
+\author{Luke A. Siemens}
+\email{luke.siemens@lsiemens.com}
+\noaffiliation
+
+\date{\today}
+
+\maketitle
+
+%\tableofcontents
+
+\section{Physics}
+motivation, how to solve the Schrodinger equation in real time on low power devices. The method used by QBox is to precompute the steady states and then only reconstruct solutions in real time.
+describe how to solve the wave functions and how to make precomputed measurements of the wave function using this method.
+
+\begin{equation}
+i\hbar\partial_{t}\psi = \frac{-\hbar^2}{2m}\nabla^{2}\psi + V\psi
+\label{schrodingers_equation}
+\end{equation}
+
+This can be reduced to,
+
+\[
+i\hbar\partial_{t}\psi = \hat{H}\psi
+\]
+
+\[
+\hat{H}\psi = \frac{-\hbar^2}{2m}\nabla^{2}\psi + V\psi
+\]
+
+steady state solutions are, for $\psi(x)$ satisfying $\hat{H}\psi(x) = E\psi(x)$
+
+\[
+\psi(x, t) = e^{-iEt / \hbar}\psi(x)
+\]
+
+This is the dynamics of the steady state solutions.
+
+\section{Math}
+how to find the steady states. using a wick rotation of the schrodinger equation \eqref{schrodingers_equation} it is transformed in to a form simular to the heat equation. allow it to "cool" to find solutions.
+and describe using othonormalization to find heigher order steady states.
+
+
+Using the wick rotation $t = -it'$, the schrodinger equation becomes,
+
+\begin{equation}
+-\hbar\partial_{t'}\psi = \frac{-\hbar^2}{2m}\nabla^{2}\psi + V\psi
+\label{wick_rotated_schrodinger}
+\end{equation}
+
+This can be reduced to,
+
+\[
+-\hbar\partial_{t'}\psi = \hat{H}\psi
+\]
+
+then for $\psi(x)$ satisfying $\hat{H}\psi(x) = E\psi(x)$
+
+\[
+\psi(x, t') = e^{-Et' / \hbar}\psi(x)
+\]
+
+So if an arbitrary wave function evolving by equation \eqref{wick_rotated_schrodinger} is normalized after some time $t' >> \hbar / E_0$ the wave function at that time tends towards the ground state of equation \eqref{schrodingers_equation}.
+
+now we just need to implement these PDEs.
+
+\section{Algorithms}
+how solve the PDEs. my algorithm uses a forward Eular integrator of the rotated schrodinger equation, the time step is determined by using Von Noumann stability analysis as a heuristic,
+and the elevolution time that convergence is determined using principles from Von Noumann, then it is solve in a multi grid scheeme to increase the speed.
+
+
+\section{End. random notes}
+\subsection{solver}
+solve steady states using wick rotation
+use forward Euler with von neouman stability
+on a multi resolution grid
+\subsection{Unity}
+reacombine steady state in the GPU to take advantage of the parralell nature of constructing the solution in this way.
+\end{document}
