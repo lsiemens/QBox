@@ -79,3 +79,5 @@ $RECYCLE.BIN/
 *.msm
 *.msp
 *.lnk
+
+# ./theory has an additional .gitignore file

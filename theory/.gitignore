@@ -1,5 +1,6 @@
+### Latex ###
 *.aux
 *.dvi
 *.log
-*.synctex.gz
 *.bib
+*.pdf
