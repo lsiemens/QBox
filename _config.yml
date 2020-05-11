@@ -27,7 +27,6 @@ url: "http://qbox.lsiemens.com" # the base hostname & protocol for your site, e.
 github_username:  lsiemens
 
 # Build settings
-#theme: jekyll-theme-minimal
 theme: minima
 plugins:
   - jekyll-feed
