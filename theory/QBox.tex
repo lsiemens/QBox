@@ -27,7 +27,16 @@
 
 %\tableofcontents
 
+\section{The Goal}
+
+When first studying quantum mechanics I started looking for Schrodinger equation solvers online that would let me tinker with quantum mechanics. I quickly found one that satisfyied my needs for a while, the tool pySchrodinger by Jake Vanderplas http://jakevdp.github.io/blog/2012/09/05/quantum-python/. This tool solves the time dependent schrodinger equation in one dimension. After using this code for awhile it left me wanting more, I wanted to work with problems in atleast two dimension were more complex problems are possible. I started looking again with the requirements that the program should solve the time dependent schrodingers equation in two dimensions, it should be reasonably accurate so I can trust the solutions and it should run fast enough that I could reasonably tinker with quantum mechanics. In the end I did not find a program that satisfied my requirements (not that one does not exist but that i did not find it) so I started thinking about writing it myself.
+
 \section{Physics}
+
+I want to demonstrate why my method of solving the time dependent shrodingers equation is reasonable 
+
+argue that my aproximations (finite resolution, limited set of eigenvectors, using aproximate eigenvector and eigenvalues) are reasonable and that show that the operator/matrix description of quantum mechanics is sufficient.
+
 motivation, how to solve the Schrodinger equation in real time on low power devices. The method used by QBox is to precompute the steady states and then only reconstruct solutions in real time.
 describe how to solve the wave functions and how to make precomputed measurements of the wave function using this method.
 
@@ -52,12 +61,17 @@ steady state solutions are, for $\psi(x)$ satisfying $\hat{H}\psi(x) = E\psi(x)$
 \psi(x, t) = e^{-iEt / \hbar}\psi(x)
 \]
 
-This is the dynamics of the steady state solutions.
+This is the dynamics of the steady state solutions. Using this every equation and observation in quantum mechanics can expressed in matrix form.
+
+Discuss the result of a finite resolution on the operators.
+
+Discuss the result of using only a limited subset of the steady states. it is equivelent to appling a low pass filter before solving shrodingers equation.
+
+Discuss the result of using approximate steady states and aproximate energies.
 
 \section{Math}
 how to find the steady states. using a wick rotation of the schrodinger equation \eqref{schrodingers_equation} it is transformed in to a form simular to the heat equation. allow it to "cool" to find solutions.
 and describe using othonormalization to find heigher order steady states.
-
 
 Using the wick rotation $t = -it'$, the schrodinger equation becomes,
 
@@ -75,19 +89,31 @@ This can be reduced to,
 then for $\psi(x)$ satisfying $\hat{H}\psi(x) = E\psi(x)$
 
 \[
-\psi(x, t') = e^{-Et' / \hbar}\psi(x)
+\psi(x, t') = e^{-Et' / \hbar}\psi_i(x)\psi(x)
 \]
 
-So if an arbitrary wave function evolving by equation \eqref{wick_rotated_schrodinger} is normalized after some time $t' >> \hbar / E_0$ the wave function at that time tends towards the ground state of equation \eqref{schrodingers_equation}.
+An arbitrary normalized wave function $F(x)$ can be expressed as $F(x) = \sum_{i=0} c_i \psi_i(x)$ such that $\sum_{i=0} \left| c_i \right|^2 = 1$ and $\hat{H}\psi_i(x) = E_i \psi_i(x)$.  the dynamics of this wave function evolving by equation \eqref{wick_rotated_schrodinger} is,
+
+\[
+f(x, t) = \sum_{i=0} c_i e^{-Et' / \hbar}\psi_i(x) = \sum_{i=0} c_i(t)\psi_i(x)
+\]
+
+where $c_i(t)$ is $c_i(t) = c_i e^{-Et' / \hbar}$. So the rato of two coeficients $c_i$ and $c_j$ over time is $\frac{c_i(t)}{c_j(t)} = \frac{c_i}{c_j} e^{(E_j - E_i)t' / \hbar}\psi_i(x) = \frac{c_i}{c_j} e^{\Delta Et' / \hbar}\psi_i(x)$. Ordering the coefficients by the energy $E_i$ with $c_0$ corrisponding to the lowest energy statte, denote $c_k$ as the first coefficient in the list with non-zero value. Taking the ratio $c_k$ to any other coeffient $\frac{c_k(t)}{c_i(t)} = \frac{c_k}{c_i} e^{\Delta Et' / \hbar}$ is strictly increasing with time and after some finite time $T_i$ the coefficient $c_k$ will be the larger of the two. Applying this to every state after some finite large time $T_f$ where $T_f \geq T_i$ for all $c_i$, then evolving for time $t'_f \gg T_f$ after normalizing $f(x, t'_f) \approx \psi_k(x)$ since $c_k(t'_f) \approx 1$ and $c_i(t'_f) \ll 1$.
+
+So under the limit $\lim_{t'_f \to \inf} f(x, t'_f) = \psi_k(x)$ where $\psi_k(x)$ is the lowest energy steady state in the inital wave function $f(x, 0)$.
+
+given some set of steady states are known apply the same procedure but first orthogonalizing aganst the known states $\psi_i(x)$ for i in range (0, n) this will geranty that the known states all have a coefficient of zero in the inital state $f(x, 0)$ so this procedure will find $\psi_k(x)=\psi_{n + 1}(x)$ the next excited energy state.
+
+So appling this procedure multiple times each time adding new states to the set of found states will generate the first N steady states. Their energies can then be callculated from the hameltonian.
 
 now we just need to implement these PDEs.
 
 \section{Algorithms}
-how solve the PDEs. my algorithm uses a forward Eular integrator of the rotated schrodinger equation, the time step is determined by using Von Noumann stability analysis as a heuristic,
-and the elevolution time that convergence is determined using principles from Von Noumann, then it is solve in a multi grid scheeme to increase the speed.
-
+how to solve the PDEs. my algorithm uses a forward Eular integrator of the rotated schrodinger equation, the time step is determined by using Von Noumann stability analysis as a heuristic,
+and the total evolution time nessisary for reasonable convergence is estimated using principles from Von Noumann stablility analysis, then it is solved in a multi grid scheeme to increase the speed of the algorithm.
 
 \section{End. random notes}
+
 \subsection{solver}
 solve steady states using wick rotation
 use forward Euler with von neouman stability
