@@ -6,13 +6,6 @@
 
 \usepackage{amsmath}
 
-% Personal definitions
-\newcommand{\dvec}[1]{\dot{\vec{#1}}}
-\newcommand{\grad}{\vec{\nabla}}
-\newcommand{\intV}[1]{\int_{-\infty}^{\infty} #1 d^3x}
-\newcommand{\intVdot}[1]{\int_{-\infty}^{\infty} #1 d^3\dot{x}}
-\newcommand{\intVVdot}[1]{\int_{-\infty}^{\infty}\int_{-\infty}^{\infty} #1 d^3xd^3\dot{x}}
-
 \begin{document}
 
 \title{QBox: Schrödinger equation in 2D}% Force line breaks with \
@@ -108,9 +101,33 @@ So appling this procedure multiple times each time adding new states to the set 
 
 now we just need to implement these PDEs.
 
+when expressed in matrix form compute the flow $\varphi^t(\vec{c})$ for a set of steady states $\psi_i(x), E_i$ such that $\varphi^0(\vec{c}) = \sum_{i=0}c_i \psi_i(x)$ and $\varphi^t(\vec{c}) = \sum_{i=0}c_i e^{-E_i t' / \hbar} \psi_i(x)$
+
+normalization can be expressed as $norm(\vec{c}) = \frac{ortho(\vec{c})}{\left| ortho(\vec{c})\right|}$ where $ortho(\vec{c}) = \vec{c} \cdot \vec{b}$ where $b_i = \begin{cases}0, if i < k \\ 1, else\end{cases}$
+
+So then $\lim_{t \to \infty} \varphi^t(norm(\vec{c})) = \psi_{k+1}(x)$ 
+
+
+
+
+
 \section{Algorithms}
+The integrator used to solve equation \eqref{wick_rotated_schrodinger} is a forward Euler integrater. In order to solve the problem generaly each step the folowing procedures are applied to the wavefunction, 
+ 
+\begin{enumerate}
+	\item Orthonormalize the wave function against the known steady states solutions use Ghram-Shmidt orthonormalization
+	\item Apply constraints including boundry conditions
+	\item Evolve the wave function by one step using the forward Euler algoritm
+\end{enumerate}
+
+Now all that is left to define is the time set to use with the integrator and the limits of integration. For the time step I used the Von Noumann stability condition as a huristic, and then some ideas from that to define the integration bounds.
+
 how to solve the PDEs. my algorithm uses a forward Eular integrator of the rotated schrodinger equation, the time step is determined by using Von Noumann stability analysis as a heuristic,
 and the total evolution time nessisary for reasonable convergence is estimated using principles from Von Noumann stablility analysis, then it is solved in a multi grid scheeme to increase the speed of the algorithm.
+
+\section{Future development}
+Add magnetic fields $i\hbar\partial_t \psi = -\frac{\hbar^2}{2m}(\nabla - iq\vec{A})^2 \psi + v(x)\psi$
+time dependent potenetials by switching between problems using projection. solving the 1d time dependent schrodinger equation for two particles by enforcing coordinate symmetry/antisymmetry and carfull selection of potentials. pertubation theory. Add periodicaly verying electric and magnetic fields to investigate quantum optics selection rules and forbidden transitions. Include particle spin and spin/magnatism interactions?
 
 \section{End. random notes}
 
