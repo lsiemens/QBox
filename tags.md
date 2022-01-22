@@ -2,6 +2,7 @@
 layout: page
 subtitle: Tags
 permalink: /tags/
+date: 2020-01-01
 ---
 
 {% capture tags %}
