@@ -8,28 +8,31 @@ public class InputManagerTouch : InputManager
 
     void OnEnable() {
         Lean.Touch.LeanTouch.OnFingerUp += HandleFingerUp;
-        Lean.Touch.LeanTouch.OnFingerSet += HandleFingerSet;
+        Lean.Touch.LeanTouch.OnFingerUpdate += HandleFingerUpdate;
         Lean.Touch.LeanTouch.OnFingerDown += HandleFingerDown;
         lastTouchLocation = Vector3.zero;
     }
 
     void OnDisable() {
         Lean.Touch.LeanTouch.OnFingerUp -= HandleFingerUp;
-        Lean.Touch.LeanTouch.OnFingerSet -= HandleFingerSet;
+        Lean.Touch.LeanTouch.OnFingerUpdate -= HandleFingerUpdate;
         Lean.Touch.LeanTouch.OnFingerDown -= HandleFingerDown;
     }
 
     void HandleFingerUp(Lean.Touch.LeanFinger finger) {
         lastTouchLocation = finger.ScreenPosition;
+        Debug.Log("Finger up");
         EventManager.TriggerEvent("Mouse Click Up");
     }
 
-    void HandleFingerSet(Lean.Touch.LeanFinger finger) {
+    void HandleFingerUpdate(Lean.Touch.LeanFinger finger) {
+        Debug.Log("Finger Update");
         lastTouchLocation = finger.ScreenPosition;
     }
 
     void HandleFingerDown(Lean.Touch.LeanFinger finger) {
         lastTouchLocation = finger.ScreenPosition;
+        Debug.Log("Finger down");
         EventManager.TriggerEvent("Mouse Click Down");
     }
 

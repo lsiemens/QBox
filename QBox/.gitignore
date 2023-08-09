@@ -62,6 +62,6 @@ crashlytics-build.properties
 /[Aa]ssets/TextMesh Pro/*
 
 # Ignore Lean assets
-/[Aa]ssets/Lean/*
+/[Aa]ssets/Plugins/*
 
 # Extra rules in QBox/Assets/Quantum_Data/PCData/.gitignore
