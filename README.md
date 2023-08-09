@@ -1,5 +1,18 @@
 # QBox
-A solver for shrodingers equation, focusing on the particle in a box problem.
+A Realtime solver for Schrodingers equation in 2D, focusing on the
+particle in a box problem.
 
-## Goal
-The goal of this project is to produce accurate realtime solutions to the time dependent schrodinger equation.
+## Motivating Ideas
+On the graphical side of the project, the idea is to use an
+eigenvalue/eigenstate repersentation of the quantum mechanical system.
+In this way we can avoid solving any differential equations in the
+graphical software and instead reconstruct solutions from known
+eigenstates. This process can be done entirely as graphics shaders,
+allowing the software to run on lowpower devices.
+
+On the backend side of the project, for a given potential the energy
+eigenvalues and eigenstates need to be precomputed. Applying a Wick
+rotation to the Schrodinger equation produces a new equation that is
+analogus to the diffusion equation with an added source term. The energy
+eigenstates can be found from this equation using a Gram-Schmidt
+orthonormalization.
