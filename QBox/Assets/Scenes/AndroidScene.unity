@@ -326,6 +326,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7527592648043622364, guid: 35735ac3ea9e661479250a33f2927a13,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -20.00003
+      objectReference: {fileID: 0}
     - target: {fileID: 8715749668791907175, guid: 35735ac3ea9e661479250a33f2927a13,
         type: 3}
       propertyPath: m_RootOrder
@@ -447,20 +452,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fc98219a83dff145947365dc914d06e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TapThreshold: 0.2
-  SwipeThreshold: 100
-  ReferenceDpi: 200
-  GuiLayers:
+  tapThreshold: 0.2
+  swipeThreshold: 100
+  referenceDpi: 200
+  guiLayers:
     serializedVersion: 2
-    m_Bits: 4294967291
-  RecordFingers: 1
-  RecordThreshold: 5
-  RecordLimit: 10
-  SimulateMultiFingers: 1
-  PinchTwistKey: 306
-  MovePivotKey: 308
-  MultiDragKey: 308
-  FingerTexture: {fileID: 2800000, guid: 25c48be3a87ea0f489a6d41c9c9a2194, type: 3}
+    m_Bits: 32
+  useTouch: 1
+  useHover: 1
+  useMouse: 1
+  useSimulator: 1
+  disableMouseEmulation: 1
+  recordFingers: 1
+  recordThreshold: 5
+  recordLimit: 10
 --- !u!1 &1887774268
 GameObject:
   m_ObjectHideFlags: 0
@@ -509,8 +514,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2b29544581cbff48a74923442363fb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RequiredAngle: 0
-  RequiredArc: 45
+  requiredAngle: 0
+  requiredArc: 45
   onFinger:
     m_PersistentCalls:
       m_Calls:
@@ -526,9 +531,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  Modify: 0
-  Coordinate: 0
-  Multiplier: 1
+  modify: 0
+  coordinate: 0
+  multiplier: 1
   onDelta:
     m_PersistentCalls:
       m_Calls: []
@@ -555,9 +560,9 @@ MonoBehaviour:
   onWorldFromTo:
     m_PersistentCalls:
       m_Calls: []
-  IgnoreStartedOverGui: 0
-  IgnoreIsOverGui: 0
-  RequiredSelectable: {fileID: 0}
+  ignoreStartedOverGui: 0
+  ignoreIsOverGui: 0
+  requiredSelectable: {fileID: 0}
 --- !u!114 &1887774271
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -570,8 +575,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2b29544581cbff48a74923442363fb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RequiredAngle: 180
-  RequiredArc: 45
+  requiredAngle: 180
+  requiredArc: 45
   onFinger:
     m_PersistentCalls:
       m_Calls:
@@ -587,9 +592,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  Modify: 0
-  Coordinate: 0
-  Multiplier: 1
+  modify: 0
+  coordinate: 0
+  multiplier: 1
   onDelta:
     m_PersistentCalls:
       m_Calls: []
@@ -616,9 +621,9 @@ MonoBehaviour:
   onWorldFromTo:
     m_PersistentCalls:
       m_Calls: []
-  IgnoreStartedOverGui: 0
-  IgnoreIsOverGui: 0
-  RequiredSelectable: {fileID: 0}
+  ignoreStartedOverGui: 0
+  ignoreIsOverGui: 0
+  requiredSelectable: {fileID: 0}
 --- !u!114 &1887774272
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -631,11 +636,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7c1c71d8ad5da9438de3b2e5990763f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IgnoreStartedOverGui: 0
-  IgnoreIsOverGui: 0
-  RequiredSelectable: {fileID: 0}
-  RequiredTapCount: 2
-  RequiredTapInterval: 0
+  ignoreStartedOverGui: 0
+  ignoreIsOverGui: 0
+  requiredSelectable: {fileID: 0}
+  requiredTapCount: 2
+  requiredTapInterval: 0
   onFinger:
     m_PersistentCalls:
       m_Calls:
@@ -651,6 +656,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  onCount:
+    m_PersistentCalls:
+      m_Calls: []
   ScreenDepth:
     Conversion: 1
     Camera: {fileID: 0}
@@ -659,7 +667,10 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 4294967291
     Distance: 0
-  onPosition:
+  onWorld:
+    m_PersistentCalls:
+      m_Calls: []
+  onScreen:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &1887774273
@@ -674,8 +685,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2b29544581cbff48a74923442363fb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RequiredAngle: 90
-  RequiredArc: 45
+  requiredAngle: 90
+  requiredArc: 45
   onFinger:
     m_PersistentCalls:
       m_Calls:
@@ -691,9 +702,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  Modify: 0
-  Coordinate: 0
-  Multiplier: 1
+  modify: 0
+  coordinate: 0
+  multiplier: 1
   onDelta:
     m_PersistentCalls:
       m_Calls: []
@@ -720,9 +731,9 @@ MonoBehaviour:
   onWorldFromTo:
     m_PersistentCalls:
       m_Calls: []
-  IgnoreStartedOverGui: 0
-  IgnoreIsOverGui: 0
-  RequiredSelectable: {fileID: 0}
+  ignoreStartedOverGui: 0
+  ignoreIsOverGui: 0
+  requiredSelectable: {fileID: 0}
 --- !u!114 &1887774274
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -735,8 +746,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2b29544581cbff48a74923442363fb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RequiredAngle: 270
-  RequiredArc: 45
+  requiredAngle: 270
+  requiredArc: 45
   onFinger:
     m_PersistentCalls:
       m_Calls:
@@ -752,9 +763,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  Modify: 0
-  Coordinate: 0
-  Multiplier: 1
+  modify: 0
+  coordinate: 0
+  multiplier: 1
   onDelta:
     m_PersistentCalls:
       m_Calls: []
@@ -781,9 +792,9 @@ MonoBehaviour:
   onWorldFromTo:
     m_PersistentCalls:
       m_Calls: []
-  IgnoreStartedOverGui: 0
-  IgnoreIsOverGui: 0
-  RequiredSelectable: {fileID: 0}
+  ignoreStartedOverGui: 0
+  ignoreIsOverGui: 0
+  requiredSelectable: {fileID: 0}
 --- !u!1001 &1909271844
 PrefabInstance:
   m_ObjectHideFlags: 0
