@@ -1,18 +1,5 @@
 ## QBox Road Map ##
 
-### Version >> 2.0.0: Far Future ###
-- [ ] Add pertubation theory and time dependent hamiltonian (multiple potentials using projection to switch between)
-- [ ] 2 particle wave functions in 1D (Add a symmetry/antisymmetry condition to the solver and analisis tools for multiparticle wave functions)
-- [ ] Energy level diagrams to track, photon emmision/absorption, forbiden transitions and energy level splitting
-
-
-### Version ~ 2.0.0: Near Future ###
-- [ ] Momentum space repersentation of wave functions and wave function evolution
-- [ ] Measurements of expected position and momentum ...
-- [ ] Better color maps
-- [ ] Distribution on more platforms
-
-
 ### Version 1.0.0: Production ###
 #### Unity ####
 - [ ] Add an _About_ page in the menu. It should contain name, version, descriptions, author and links
@@ -30,3 +17,14 @@
 
 #### Other ####
 - [ ] Disable sleep in simulation mode
+
+### Version ~ 2.0.0: Near Future ###
+- [ ] Momentum space repersentation of wave functions and wave function evolution
+- [ ] Measurements of expected position and momentum ...
+- [ ] Better color maps
+- [ ] Distribution on more platforms
+
+### Version >> 2.0.0: Far Future ###
+- [ ] Add pertubation theory and time dependent hamiltonian (multiple potentials using projection to switch between)
+- [ ] 2 particle wave functions in 1D (Add a symmetry/antisymmetry condition to the solver and analisis tools for multiparticle wave functions)
+- [ ] Energy level diagrams to track, photon emmision/absorption, forbiden transitions and energy level splitting
