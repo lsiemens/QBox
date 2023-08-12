@@ -50,10 +50,12 @@ public class RunMode : MonoBehaviour
             case "Run":
                 isRunMode = true;
                 run.SetActive(true);
+                Screen.sleepTimeout = SleepTimeout.NeverSleep;
                 break;
             default:
                 isRunMode = false;
                 run.SetActive(false);
+                Screen.sleepTimeout = SleepTimeout.SystemSetting;
                 break;
         }
     }

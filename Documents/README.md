@@ -16,7 +16,7 @@
 - [ ] A latex document describing the mathematical methods, physics theory and algorithms in QBox
 
 #### Other ####
-- [ ] Disable sleep in simulation mode
+- [x] Disable sleep in simulation mode
 
 ### Version ~ 2.0.0: Near Future ###
 - [ ] Momentum space repersentation of wave functions and wave function evolution

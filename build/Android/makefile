@@ -1,6 +1,6 @@
-BUNDLETOOL="./bundletool-all-1.15.2.jar"
+BUNDLETOOL="./bundletool-all-1.15.4.jar"
 KEYSTORE="../../../../Keys/QBox.keystore"
-SDK="../../../../Unity/2022.3.6f1/Editor/Data/PlaybackEngines/AndroidPlayer/SDK/"
+SDK="../../../../Unity/2022.3.7f1/Editor/Data/PlaybackEngines/AndroidPlayer/SDK/"
 
 ADB=$(SDK)"platform-tools/adb"
 PACKAGE="com.lsiemens.Qbox"
