@@ -80,7 +80,7 @@ width of the Gaussian and a speed multiplier are set with the sliders. To
 change the position and velocity of the Gaussian press the "Set Position"
 button then press and drag on the screen. The location of the Gaussian is
 set to where the screen is first pressed and the velocity vector starts
-at where the the user releases the screen and ends at the centre of the
+at where the the user releases the screen and ends at the center of the
 Gaussian. All else aside when running the simulation the Gaussian will
 move away from the direction in which the screen was dragged with a speed
 proportional to the distance it was dragged. When changing any of these
@@ -125,8 +125,19 @@ After pressing the "Run" button the simulation will begin. Pressing
 beginning and slider to adjust the simulation speed.
 
 ## 4. Menu button
-### 4.1. Selecting potentials
+From the "Menu" button the user can access the potential selection menu
+and the options menu.
+
+### 4.1. Selecting potential
+From this menu the user can select from one of the precomputed potentials.
+Tapping on one of the options will load the selected potential along with
+the energy eigenvalues and eigenstates.
+
 ### 4.2. options
+From this menu the user can reset the dialogue boxes and set the number
+of textures to be loaded into the [ GPU? ]. Note when setting the number
+of textures, each texture contains three energy eigenstates since they
+are encoded with one per color channel.
 
 ## 5. Info button
 Pressing the "Info" button opens a window on the lower portion of the
