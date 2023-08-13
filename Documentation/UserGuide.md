@@ -98,6 +98,26 @@ the controls can be more responsive. The following are a few tips,
   then using the "Speed" slider to fine tune the speed afterwards.
 
 ##### Color Wheel
+This tool is used to add a superposition of energy eigenstates to the
+initial state. The superposition is constructed by getting the user to
+select the probability amplitude of the individual energy eigenstates.
+The selection starts with the probability amplitude for the ground state
+and then after each selection it moves to the next excited state. The
+interface for selecting a probability amplitude consists of a color wheel
+where tapping on a point in the wheel determines the phase and magnitude
+of the probability amplitude. The differences in hue around the color
+wheel indicate the phase while the distance out from the center indicates
+the magnitude. One catch is that when the user has finished selecting the
+states it should be normalized, so in the process of selecting the states
+the sum of squared amplitudes must not exceed a value of one. To enforce
+this condition the wheel splits into two portions by radius, out side of
+this radius the wheel is switched to grayscale and tapping here does
+nothing. The radius of the selectable region of the color wheel indicates
+the maximum magnitude that is allowed given the previous selections. If
+the user keeps selecting states until the colored region goes to zero
+then the set of selections is necessarily normalized, however if the user
+exits the editor before this point then the set of probability amplitudes
+will be normalized before adding it to the initial state.
 
 #### 3.2.2 Running simulation
 After pressing the "Run" button the simulation will begin. Pressing
@@ -109,21 +129,20 @@ beginning and slider to adjust the simulation speed.
 ### 4.2. options
 
 ## 5. Info button
+Pressing the "Info" button opens a window on the lower portion of the
+screen with some information about the display and simulation settings
+and the current state shown on screen. This information includes,
 
+- Potential: Name of the currently selected potential
+- Display Mode: Name of the active display mode
+- Length: Length of the simulated region
+- Mass: Mass of the particle being simulated
+- Expected Energy: The expected value when measuring the energy of the state
+- Time: The time elapsed since the beginning of the simulation
+- Potential Energy range: Range of the potential energy in the simulation region
 
-# Outline
-Viewing States
-- display modes
-    - gestures
-Program modes
-- Steady States
-    - gestures
-- Simulation
-    - set initial state
-    - running simulation
-App Options
-- selecting potential
-- setting number of states
-
-Info
-- available information
+All units are given in Hartree atomic units. So length is given in terms
+of the Bohr radius. Mass is given in terms of the electron mass. Energy
+is given in terms of the Hartree energy, which is approximately twice the
+ionization energy of the ground state of atomic hydrogen. Time is given
+in terms of Planks reduced constant divided by the Hartree energy.
