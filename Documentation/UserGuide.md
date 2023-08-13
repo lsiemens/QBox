@@ -27,26 +27,22 @@ of the state. The display modes are "probability density", "wave function,
 real part" and "phase angle", all of which display the state against a
 grayscale representation of the potential in the background.
 
-### 2.1. Probability Density
-In this display mode the probability density of the state is represented
-and the brightness in the red channel.
+### 2.1. Display Modes
+In the "Probability Density" display mode the probability density of
+the state is represented by the brightness in the red channel. In the
+"Real Part" display mode the real part of the state is represented,
+where positive values are shown as brightness in the [red channel ?] and
+negative values are shown as brightness in the [green channel]. In the
+"Phase Angle" display mode both the magnitude and the phase angle of the
+state is represented. The phase angle is shown as the hue and the
+magnitude is shown as the brightness.
 
-### 2.2. Real Part
-In this display mode the real part of the state is represented. Where
-positive values are shown as brightness in the [red channel ?] and negative
-values are shown as brightness in the [green channel].
-
-### 2.3. Phase Angle
-In this display mode both the magnitude and the phase angle of the state
-is represented. The phase angle is shown as the hue and the magnitude is
-shown as the brightness.
-
-### 2.4. Gesture Controls
+### 2.2. Gesture Controls
 The display mode can be changed by double tapping on the screen, this
-will cycle through the modes. The brightness of the modes can be changed
-by swiping left and right, this can be used to view details in a low
-intensity region or to avoid clipping. Swiping right increases the
-brightness and swiping left decrease the brightness. 
+will cycle through the modes in the order given above. The brightness of
+the modes can be changed by swiping left and right, this can be used to
+view details in a low intensity region or to avoid clipping. Swiping
+right increases the brightness and swiping left decrease the brightness. 
 
 ## 3. Program Modes
 QBox has two modes of operation "Steady States" and "Simulation". The
