@@ -1,14 +1,14 @@
 # QBox: User Guide
 Welcome to the user documentation for QBox, simulation software for
-solving Schrodinger's equation in two dimensions in real time. In this
+solving Schrödinger's equation in two dimensions in real time. In this
 documentation I will assume you are familiar with standard concepts and
 terminology in quantum mechanics, for a brief introduction to the quantum
 mechanics used in QBox and for further reading see [Here (Coming soon)].
 
 ## 1. What is QBox
-As stated above QBox solves Schrodinger's equation in two dimensions.
+As stated above QBox solves Schrödinger's equation in two dimensions.
 In particular this software is based on the eigenvalue problem formulation
-of Schrodinger's equation. The energy eigenvalues and eigenstates have
+of Schrödinger's equation. The energy eigenvalues and eigenstates have
 been precomputed for fixed set of potentials which are then used to solve
 for the time evolution of arbitrary initial states defined by the user.
 In this app for each of the included potentials, the user is able to view
@@ -19,7 +19,7 @@ the time evolution of said initial state.
 As the primary purpose of this app is to view time dependent states, let
 us start with the display of quantum states. While the states being
 displayed can be energy eigenstates or an arbitrary state evolving
-according to the time dependent Schrodinger's equation, how the states are
+according to the time dependent Schrödinger's equation, how the states are
 displayed and the accompanying controls remain the same. A quantum state
 has a complex value on each point of the simulation domain, this is
 represented visually by one of three display modes that show some aspect
@@ -64,7 +64,7 @@ do nothing, likewise for swiping down when at the ground state.
 ### 3.2. Mode: Simulation
 This mode has two parts, first the user is presented with option for setting
 the initial state to simulate. After pressing the "Run" button the initial
-state will evolve according to the time dependent Schrodinger's equation.
+state will evolve according to the time dependent Schrödinger's equation.
 
 #### 3.2.1 Set initial state
 When defining the initial state, the user is presented with some options
