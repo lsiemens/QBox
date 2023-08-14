@@ -6,7 +6,7 @@ Welcome to the user documentation for QBox, simulation software for
 solving Schrödinger's equation in two dimensions in real time. In this
 documentation I will assume you are familiar with standard concepts and
 terminology in quantum mechanics, for a brief introduction to the quantum
-mechanics used in QBox and for further reading see [Here (Coming soon)].
+mechanics used in QBox and for further reading see [Coming soon].
 
 ## 1. What is QBox
 As stated above QBox solves Schrödinger's equation in two dimensions.
@@ -69,7 +69,7 @@ This mode has two parts, first the user is presented with option for setting
 the initial state to simulate. After pressing the "Run" button the initial
 state will evolve according to the time dependent Schrödinger's equation.
 
-#### 3.2.1 Set initial state
+#### 3.2.1 Initial State
 When defining the initial state, the user is presented with some options
 for constructing the state "Gaussian" and "Color Wheel". When finished
 with one of these tools the user can keep using these tools to add more
@@ -122,7 +122,7 @@ then the set of selections is necessarily normalized, however if the user
 exits the editor before this point then the set of probability amplitudes
 will be normalized before adding it to the initial state.
 
-#### 3.2.2 Running simulation
+#### 3.2.2 Simulation
 After pressing the "Run" button the simulation will begin. Pressing
 "Run Settings" provides options to restart the simulation from the
 beginning and slider to adjust the simulation speed.
@@ -131,12 +131,12 @@ beginning and slider to adjust the simulation speed.
 From the "Menu" button the user can access the potential selection menu
 and the options menu.
 
-### 4.1. Selecting potential
+### 4.1. Select Potential
 From this menu the user can select from one of the precomputed potentials.
 Tapping on one of the options will load the selected potential along with
 the energy eigenvalues and eigenstates.
 
-### 4.2. options
+### 4.2. Options
 From this menu the user can reset the dialogue boxes and set the number
 of textures to be loaded into the [ GPU? ]. Note when setting the number
 of textures, each texture contains three energy eigenstates since they
