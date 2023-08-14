@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class ButtonFunctions : MonoBehaviour
-{
+{    
     public void ApplicationExit() {
         #if UNITY_STANDALONE
             Application.Quit();
@@ -13,6 +13,14 @@ public class ButtonFunctions : MonoBehaviour
         #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
         #endif
+    }
+
+    public void OpenDocumentation() {
+        # if UNITY_ANDROID
+            Application.OpenURL("https://qbox.lsiemens.com/Documentation/AndroidUserGuide.html");
+        # else
+            Application.OpenURL("https://qbox.lsiemens.com/Documentation/README.html");
+        # endif
     }
 
     public void NavigationView() {

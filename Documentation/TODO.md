@@ -1,7 +1,7 @@
 # TODO
 Current documentation tasks
-- [ ] App userguide on the website with links in the app
-    - [ ] How to use the app: Descripe options, modes, tips and tricks
+- [x] App userguide on the website with links in the app
+    - [x] How to use the app: Descripe options, modes, tips and tricks
     - [ ] How to understand it: brief intro to the physics and interpretations
 - [ ] technical guid of the inner workings on the website.
     - [ ] how the unity front end works
