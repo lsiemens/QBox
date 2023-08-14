@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Real
   m_EditorClassIdentifier: 
   shader: {fileID: 4800000, guid: f0d3cfbac264d5f42a75f239452ae88c, type: 3}
-  label: wave function, real part
+  label: Real Part
   scaleExponent: 1

@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Phase
   m_EditorClassIdentifier: 
   shader: {fileID: 4800000, guid: 9653055ced728eb44954da3b4f5ef540, type: 3}
-  label: phase angle
+  label: Phase Angle
   scaleExponent: 1

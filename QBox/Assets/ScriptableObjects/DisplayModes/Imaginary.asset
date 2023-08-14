@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Imaginary
   m_EditorClassIdentifier: 
   shader: {fileID: 4800000, guid: 5800f8a26b95f5d459a324a586cf6705, type: 3}
-  label: wave function, imaginary part
+  label: Imaginary Part
   scaleExponent: 1

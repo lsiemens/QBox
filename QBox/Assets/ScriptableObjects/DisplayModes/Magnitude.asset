@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Magnitude
   m_EditorClassIdentifier: 
   shader: {fileID: 4800000, guid: f8e1d37014d627843b280d4a4c764917, type: 3}
-  label: probability density
+  label: Probability Density
   scaleExponent: 2
