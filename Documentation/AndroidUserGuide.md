@@ -23,16 +23,16 @@ according to the time dependent Schrödinger's equation, how the states are
 displayed and the accompanying controls remain the same. A quantum state
 has a complex value on each point of the simulation domain, this is
 represented visually by one of three display modes that show some aspect
-of the state. The display modes are "probability density", "wave function,
-real part" and "phase angle", all of which display the state against a
-grayscale representation of the potential in the background.
+of the state. The display modes are "probability density", "real part"
+and "phase angle", all of which display the state against a grayscale
+representation of the potential in the background.
 
 ### 2.1. Display Modes
 In the "Probability Density" display mode the probability density of
 the state is represented by the brightness in the red channel. In the
 "Real Part" display mode the real part of the state is represented,
-where positive values are shown as brightness in the [red channel ?] and
-negative values are shown as brightness in the [green channel]. In the
+where positive values are shown as brightness in the red channel and
+negative values are shown as brightness in the green channel. In the
 "Phase Angle" display mode both the magnitude and the phase angle of the
 state is represented. The phase angle is shown as the hue and the
 magnitude is shown as the brightness.
@@ -135,9 +135,9 @@ the energy eigenvalues and eigenstates.
 
 ### 4.2. Options
 From this menu the user can reset the dialogue boxes and set the number
-of textures to be loaded into the [ GPU? ]. Note when setting the number
-of textures, each texture contains three energy eigenstates since they
-are encoded with one per color channel.
+of textures to be loaded into the GPU. Note when setting the number of
+textures, each texture contains three energy eigenstates since they are
+encoded with one per color channel.
 
 ## 5. Info button
 Pressing the "Info" button opens a window on the lower portion of the

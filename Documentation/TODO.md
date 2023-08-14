@@ -29,6 +29,7 @@ moved/copied to the gh-pages branch and modified to work with jekyll
 
 #### Other ####
 - [x] Disable sleep in simulation mode
+- [x] rename display mode to real part
 
 ### Version ~ 2.0.0: Near Future ###
 - [ ] Momentum space repersentation of wave functions and wave function evolution
