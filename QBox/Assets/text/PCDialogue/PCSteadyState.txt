@@ -1,0 +1,1 @@
+Use the up arrow key to raise the state, or the down down arrow key to lower the state. The first state shown is the ground state.

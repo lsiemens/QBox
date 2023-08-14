@@ -1,0 +1,1 @@
+Swipe up to raise the state, or swipe down to lower the state. The first state shown is the ground state.

@@ -14,7 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: wheelDialogID
   title: Color Wheel
-  content: Click in the colored section of the color wheel selector to set the probability
-    amplitude and phase angle of the current state. The current state will increment
-    and the colored section of the wheel will decrease in proportion to the remaining
-    probability.
+  content: {fileID: 4900000, guid: c8db2ff6c9e6ec65f9f3898cccbb0213, type: 3}

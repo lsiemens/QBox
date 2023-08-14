@@ -1,0 +1,1 @@
+Tap in the colored section of the color wheel selector to set the magnitude and phase angle of the current state. The state will change to the next excited state and the colored section of the wheel will decrease so the final state is normalized.

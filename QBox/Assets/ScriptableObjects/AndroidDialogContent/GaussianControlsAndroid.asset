@@ -14,5 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: gaussianDialogID
   title: Gaussian
-  content: After pressing "set position" tap on the screen to set location of the
-    gaussian, or press and drag to set the position and velocity vector.
+  content: {fileID: 4900000, guid: 1efa9408ca874e526a1063605d51c040, type: 3}

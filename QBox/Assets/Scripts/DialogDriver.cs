@@ -29,7 +29,7 @@ public class DialogDriver : MonoBehaviour
     public void Initalize(DialogContent dialog) {
         dialogContent = dialog;
         title.text = dialogContent.title;
-        content.text = dialogContent.content;
+        content.text = dialogContent.content.text;
         dontShowAgain.isOn = dialogContent.dontShowAgain;
     }
 

@@ -1,0 +1,1 @@
+Double tap to switch display mode. Swipe left or right to adjust the wave function brightness. The current potential can be changed in the main menu under "Select Potential"

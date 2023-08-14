@@ -7,8 +7,7 @@ public class DialogContent : ScriptableObject
 {
     public string id;
     public string title;
-    [TextArea]
-    public string content;
+    public TextAsset content;
 
     // store dontShowAgain as a entry in PlayerPrefs
     public bool dontShowAgain {

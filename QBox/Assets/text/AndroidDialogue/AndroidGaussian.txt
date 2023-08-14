@@ -1,0 +1,1 @@
+After pressing "set position" tap on the screen to set location of the Gaussian, or press and drag to set the position and velocity vector.

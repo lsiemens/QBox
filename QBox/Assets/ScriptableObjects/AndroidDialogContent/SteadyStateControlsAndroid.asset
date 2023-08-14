@@ -14,5 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: stateDialogID
   title: Steady State
-  content: Swipe up to raise the state, or swipe down to lower the state. The default
-    state is the ground state.
+  content: {fileID: 4900000, guid: 25905b794e21f94b0ba9ba21b26d41c9, type: 3}

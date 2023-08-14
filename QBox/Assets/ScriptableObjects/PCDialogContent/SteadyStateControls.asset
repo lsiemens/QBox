@@ -14,5 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: stateDialogID
   title: Steady State
-  content: Use the up arrow key to raise the state, or the down down arrow key to
-    lower the state. The default state is the ground state.
+  content: {fileID: 4900000, guid: 0b0b51069b441ce16911408d4ec1fe47, type: 3}

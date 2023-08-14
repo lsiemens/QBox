@@ -14,6 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: displayDialogID
   title: Display
-  content: Press the Tab key to switch display mode. Use the plus and minus numpad
-    keys to adjust wave function brightness. The current potential/problem can be
-    changed in the main menu under "Select Potential".
+  content: {fileID: 4900000, guid: b2bcc315f202c6a6790fc60e3dba78de, type: 3}
