@@ -10,3 +10,8 @@ gem_update:
 	bundle update
 	bundle install
 
+# get documentation from main branch
+get_documentation:
+	git fetch
+	git checkout origin/master -- Documentation
+	cd ./Documentation && ./makeDocumentation.py
