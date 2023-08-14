@@ -125,19 +125,12 @@ After pressing the "Run" button the simulation will begin. Pressing
 beginning and slider to adjust the simulation speed.
 
 ## 4. Menu button
-From the "Menu" button the user can access the potential selection menu
-and the options menu.
-
-### 4.1. Select Potential
-From this menu the user can select from one of the precomputed potentials.
-Tapping on one of the options will load the selected potential along with
-the energy eigenvalues and eigenstates.
-
-### 4.2. Options
-From this menu the user can reset the dialogue boxes and set the number
-of textures to be loaded into the GPU. Note when setting the number of
-textures, each texture contains three energy eigenstates since they are
-encoded with one per color channel.
+From the "Menu" button the user can access the potential selection menu,
+the options menu and open the documentation. From the "Select Potential"
+menu the user can select from one of the precomputed potentials. Tapping
+on one of the options will load the selected potential along with the
+energy eigenvalues and eigenstates. From the "Options" menu the user can
+reset the dialogue boxes and set the number of states to be loaded.
 
 ## 5. Info button
 Pressing the "Info" button opens a window on the lower portion of the
@@ -146,11 +139,11 @@ and the current state shown on screen. This information includes,
 
 - Potential: Name of the currently selected potential
 - Display Mode: Name of the active display mode
-- Length: Length of the simulated region
-- Mass: Mass of the particle being simulated
 - Expected Energy: The expected value when measuring the energy of the state
 - Time: The time elapsed since the beginning of the simulation
 - Potential Energy range: Range of the potential energy in the simulation region
+- Length: Length of the simulated region
+- Mass: Mass of the particle being simulated
 
 All units are given in Hartree atomic units. So length is given in terms
 of the Bohr radius. Mass is given in terms of the electron mass. Energy

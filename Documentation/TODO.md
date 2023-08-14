@@ -17,7 +17,7 @@ moved/copied to the gh-pages branch and modified to work with jekyll
 - [ ] Add an _About_ page in the menu. It should contain name, version, descriptions, author and links
 - [ ] Add a resolution selector to the Options menu. It will likely be necessary to disable some potentials at low resolution
 - [ ] Add low frame rate dialoge to sugest lowering settings. It should apper at most once per session
-- [ ] Improve the Options page in the menu
+- [x] Improve the Options page in the menu
 - [ ] Document Unity code
 - [ ] Reorganize and simplify Unity code
 - [ ] Fix quantum data and display in the PC version
