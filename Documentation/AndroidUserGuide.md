@@ -26,16 +26,16 @@ according to the time dependent Schrödinger's equation, how the states are
 displayed and the accompanying controls remain the same. A quantum state
 has a complex value on each point of the simulation domain, this is
 represented visually by one of three display modes that show some aspect
-of the state. The display modes are "probability density", "wave function,
-real part" and "phase angle", all of which display the state against a
-grayscale representation of the potential in the background.
+of the state. The display modes are "probability density", "real part"
+and "phase angle", all of which display the state against a grayscale
+representation of the potential in the background.
 
 ### 2.1. Display Modes
 In the "Probability Density" display mode the probability density of
 the state is represented by the brightness in the red channel. In the
 "Real Part" display mode the real part of the state is represented,
-where positive values are shown as brightness in the [red channel ?] and
-negative values are shown as brightness in the [green channel]. In the
+where positive values are shown as brightness in the red channel and
+negative values are shown as brightness in the green channel. In the
 "Phase Angle" display mode both the magnitude and the phase angle of the
 state is represented. The phase angle is shown as the hue and the
 magnitude is shown as the brightness.
@@ -128,19 +128,12 @@ After pressing the "Run" button the simulation will begin. Pressing
 beginning and slider to adjust the simulation speed.
 
 ## 4. Menu button
-From the "Menu" button the user can access the potential selection menu
-and the options menu.
-
-### 4.1. Select Potential
-From this menu the user can select from one of the precomputed potentials.
-Tapping on one of the options will load the selected potential along with
-the energy eigenvalues and eigenstates.
-
-### 4.2. Options
-From this menu the user can reset the dialogue boxes and set the number
-of textures to be loaded into the [ GPU? ]. Note when setting the number
-of textures, each texture contains three energy eigenstates since they
-are encoded with one per color channel.
+From the "Menu" button the user can access the potential selection menu,
+the options menu and open the documentation. From the "Select Potential"
+menu the user can select from one of the precomputed potentials. Tapping
+on one of the options will load the selected potential along with the
+energy eigenvalues and eigenstates. From the "Options" menu the user can
+reset the dialogue boxes and set the number of states to be loaded.
 
 ## 5. Info button
 Pressing the "Info" button opens a window on the lower portion of the
@@ -149,11 +142,11 @@ and the current state shown on screen. This information includes,
 
 - Potential: Name of the currently selected potential
 - Display Mode: Name of the active display mode
-- Length: Length of the simulated region
-- Mass: Mass of the particle being simulated
 - Expected Energy: The expected value when measuring the energy of the state
 - Time: The time elapsed since the beginning of the simulation
 - Potential Energy range: Range of the potential energy in the simulation region
+- Length: Length of the simulated region
+- Mass: Mass of the particle being simulated
 
 All units are given in Hartree atomic units. So length is given in terms
 of the Bohr radius. Mass is given in terms of the electron mass. Energy
