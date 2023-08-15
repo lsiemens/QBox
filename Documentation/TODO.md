@@ -8,11 +8,11 @@ Current documentation tasks
     - [ ] how the Fortran/Python backend works
 
 Start with local documentation here then when it is close it can be
-moved/copied to the gh-pages branch and modified to work with jekyll
+copied to the gh-pages branch and modified to work with jekyll
 
 ## QBox Road Map ##
 
-### Version 1.0.0: Production ###
+### Version 1.*.*: Production ###
 #### Unity ####
 - [ ] Add an _About_ page in the menu. It should contain name, version, descriptions, author and links
 - [ ] Add a resolution selector to the Options menu. It will likely be necessary to disable some potentials at low resolution
@@ -25,7 +25,7 @@ moved/copied to the gh-pages branch and modified to work with jekyll
 #### Web and Documentation ####
 - [ ] Make a github-pages website. It should have download links, links to the repository and a description of the mathematical methods
 - [ ] A post on lsiemens.com about QBox, and integration with qbox.lsiemens.com
-- [ ] A latex document describing the mathematical methods, physics theory and algorithms in QBox
+- [ ] A document describing the mathematical methods, physics theory and algorithms in QBox
 
 #### Other ####
 - [x] Disable sleep in simulation mode

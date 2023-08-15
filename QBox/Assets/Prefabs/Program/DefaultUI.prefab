@@ -6415,8 +6415,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dropdown: {fileID: 6527335712909742062}
-  defaultDropdownOption: 5
-  NumTexturesOptions: 20000000400000008000000000010000000200000004000000080000
+  defaultDropdownOption: 2
+  NumTexturesOptions: 200000004000000080000000
 --- !u!224 &7808213332899987567 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2813085020844724525, guid: a8376879c197c264ca5a30d6a48bd213,
