@@ -6,12 +6,18 @@ header_exception: true
 date: 2020-01-01
 ---
 
+## Data Handling:
+QBox does not handle or collect personal information. All data is stored
+on your device only. This data can be erased by clearing the app's data
+or uninstalling it.
 
-I do not handle personal information in this application. All data (app preferences etc.) is stored on your device only, and can be erased by clearing the app's data or uninstalling it.
+## Open Source:
+QBox is an open source Android app. The source code is available at
+[GitHub](https://github.com/lsiemens/QBox) under the BSD 3-Clause license;
 
-QBox is an open source Android app. The source code is available on [GitHub](https://github.com/lsiemens/QBox) under the BSD 3-Clause license; the app is also available on [Google Play](https://play.google.com/store/apps/details?id=com.lsiemens.Qbox).
-
-If you find any security vulnerability that has been inadvertently caused by me, or have any question regarding how the app protects your privacy, please send me an email.
+## Questions and Concerns
+If you find any security vulnerabilities, or have any question regarding
+how QBox protects your privacy, please send me an email.
 
 Luke Siemens <br>
 [{{ site.email }}](mailto:{{ site.email }})

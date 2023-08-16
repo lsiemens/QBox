@@ -49,6 +49,7 @@ header_pages:
 #
 exclude:
   - theory
+  - Documentation/makeDocumentation.py
 #   - .jekyll-cache/
 #   - gemfiles/
 #   - Gemfile

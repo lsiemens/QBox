@@ -50,7 +50,7 @@ class page:
                 raise RuntimeError(f"No Title in first line of .md file \"{self.path}\"")
         else:
             title, text = self.title, text[1:]
-        header = f"---\nlayout: page\ntitle: \"{title}\"\n---\n"
+        header = f"---\nlayout: page\ntitle: \"{title}\"\ndate: 2020-01-01\n---\n"
 
         file = header + "\n".join(text)
 
