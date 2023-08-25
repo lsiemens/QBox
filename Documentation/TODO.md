@@ -20,7 +20,7 @@ copied to the gh-pages branch and modified to work with jekyll
 - [x] Improve the Options page in the menu
 - [ ] Document Unity code
 - [ ] Reorganize and simplify Unity code
-- [ ] Fix quantum data and display in the PC version
+- [x] Fix quantum data and display in the PC version
 
 #### Web and Documentation ####
 - [ ] Make a github-pages website. It should have download links, links to the repository and a description of the mathematical methods
@@ -41,3 +41,5 @@ copied to the gh-pages branch and modified to work with jekyll
 - [ ] Add pertubation theory and time dependent hamiltonian (multiple potentials using projection to switch between)
 - [ ] 2 particle wave functions in 1D (Add a symmetry/antisymmetry condition to the solver and analisis tools for multiparticle wave functions)
 - [ ] Energy level diagrams to track, photon emmision/absorption, forbiden transitions and energy level splitting
+
+- [ ] Add tool for thermal pure quantum state (This can approximate the position space distribution of a canonical ensemble for a quantum system)
