@@ -1,12 +1,22 @@
 INCLUDE=-I/usr/include/OpenEXR
-LINK=-lIlmImf -lHalf -lImath -lIex -lIlmThread
+LINK=-lIlmImf -lHalf -lImath -lIex -lIlmThread -g
+# -fsanitize=address
 
-run: writePotential.out readPotential.out
-	./writePotential.out
-	./readPotential.out
+run: test.out test2.out
+	./test.out
+	./test2.out
 
-makeEXR.out:
-	g++ -Wall makeEXR.cpp -o makeEXR.out $(INCLUDE) $(LINK)
+test2.out: QBEXR.o
+	g++ -Wall QBEXR.o test2.cpp -o test2.out $(INCLUDE) $(LINK)
+
+test.out: QBEXR.o
+	g++ -Wall QBEXR.o test.cpp -o test.out $(INCLUDE) $(LINK)
+
+QBEXR.o:
+	g++ -Wall -c QBEXR.cpp -o QBEXR.o $(INCLUDE) $(LINK)
+
+writeEXR.out:
+	g++ -Wall writeEXR.cpp -o writeEXR.out $(INCLUDE) $(LINK)
 
 writePotential.out:
 	g++ -Wall writePotential.cpp -o writePotential.out $(INCLUDE) $(LINK)
