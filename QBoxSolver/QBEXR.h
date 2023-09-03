@@ -18,7 +18,5 @@ extern "C" float* readRGB(const char fname[], int& width, int& height);
 
 void _writeR(const char fname[], const half* rPixels, int width, int height);
 void _writeRGB(const char fname[], const half* rPixels, const half* gPixels, const half* bPixels, int width, int height);
-void _readR(const char fname[], Imf::Array2D<half>& rPixels, int& width, int& height);
-void _readRGB(const char fname[], Imf::Array2D<half>& rPixels, Imf::Array2D<half>& gPixels, Imf::Array2D<half>& bPixels, int& width, int& height);
 
 #endif // QBEXR_H_

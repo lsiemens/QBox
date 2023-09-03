@@ -59,7 +59,7 @@ def readR(fname):
     width, height = width.value, height.value
 
     data = ctypes.cast(data, ctypes.POINTER(ctypes.c_float*(width*height)))[0]
-    return numpy.frombuffer(data, ctypes.c_float).reshape(width, height)
+    return numpy.frombuffer(data, ctypes.c_float).reshape(height, width)
 
 def readRGB(fname):
     width, height = ctypes.c_int(), ctypes.c_int()
@@ -68,14 +68,14 @@ def readRGB(fname):
     width, height = width.value, height.value
 
     data = ctypes.cast(data, ctypes.POINTER(ctypes.c_float*(width*height*3)))[0]
-    return numpy.frombuffer(data, ctypes.c_float).reshape(width, height, 3)
+    return numpy.frombuffer(data, ctypes.c_float).reshape(height, width, 3)
 
 from matplotlib import pyplot
-
-b = 2
-width = 100
+a = 1
+b = 1
+width = a*100
 height = b*100
-x = numpy.linspace(-3, 3, width)
+x = numpy.linspace(-3*a, 3*a, width)
 y = numpy.linspace(-3*b, 3*b, height)
 X, Y = numpy.meshgrid(x, y)
 print(X.shape, " is ", (height, width))
