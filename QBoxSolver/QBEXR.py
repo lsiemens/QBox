@@ -65,33 +65,3 @@ def readRGB(fname):
 
     data = ctypes.cast(data, ctypes.POINTER(ctypes.c_float*(width*height*3)))[0]
     return numpy.frombuffer(data, ctypes.c_float).reshape(height, width, 3)
-
-from matplotlib import pyplot
-a = 1
-b = 1
-width = a*100
-height = b*100
-x = numpy.linspace(-3*a, 3*a, width)
-y = numpy.linspace(-3*b, 3*b, height)
-X, Y = numpy.meshgrid(x, y)
-print(X.shape, " is ", (height, width))
-
-data = numpy.exp(-(X**2 + Y**2))
-cdata = numpy.empty((height, width, 3))
-cdata[:, :, 0] = numpy.exp(-(X**2 + Y**2))
-cdata[:, :, 1] = numpy.exp(-((X - 1)**2 + Y**2)*4)
-cdata[:, :, 2] = numpy.exp(-(X**2 + (Y + 1)**2)*9)
-
-pyplot.imshow(cdata)
-pyplot.show()
-
-writeR("gaussian.exr", data)
-writeRGB("cgaussian.exr", cdata)
-
-data2 = readR("gaussian.exr")
-pyplot.imshow(data2)
-pyplot.show()
-
-cdata2 = readRGB("cgaussian.exr")
-pyplot.imshow(cdata2)
-pyplot.show()

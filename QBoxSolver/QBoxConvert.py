@@ -23,10 +23,10 @@ import docopt
 import h5py
 import json
 import numpy
-import imageio
 import warnings
 
 import QBHD
+import QBEXR
 
 def _sRGBtoLinearRGB(data):
     warnings.warn("sRGB to linear RGB conversion is using the aproximation gamma=2.2", stacklevel=2)
@@ -35,7 +35,7 @@ def _sRGBtoLinearRGB(data):
 class QBoxConvert:
     _EXR_ZIP = 4 # freeimage library flag: EXR_ZIP 4
     _CHANNELS = 3 # RGBA
-    _VALID_CHANNELS = [1, 3, 4] # R RGB RGBA
+    _VALID_CHANNELS = [1, 3] # R RGB RGBA
 
     def __init__(self, path_h5, title, path_data = ".", isLinearMode=True):
         self.path_h5 = path_h5
@@ -93,7 +93,11 @@ class QBoxConvert:
             image_path += "_GAMMA"
 
         data = data.astype(numpy.float32)
-        imageio.imwrite(image_path + ".exr", data, format="exr", flags=self._EXR_ZIP)
+        print(data.shape)
+        if numChannels == 1:
+            QBEXR.writeR(image_path + ".exr", data[:, :, 0])
+        elif numChannels == 3:
+            QBEXR.writeRGB(image_path + ".exr", data)
 
     def _pack_EXR(self, data, postfix, numChannels=4):
         if numChannels not in self._VALID_CHANNELS:

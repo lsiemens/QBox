@@ -2,9 +2,6 @@ INCLUDE_EXR=-I/usr/include/OpenEXR
 LINK_EXR=-lIlmImf -lHalf -lImath -lIex -lIlmThread
 DEST="."
 
-test_QBEXR: libQBEXR.so
-	python3 QBEXR.py
-
 QBoxSolver.out: Multigrid.o Math.o QBHDBackEnd.o QBHD.o Types.o
 	h5fc QBoxSolver.F90 Types.o QBHD.o QBHDBackEnd.o Math.o Multigrid.o -o QBoxSolver.out
 
@@ -30,7 +27,7 @@ run: QBoxSolver.out data.h5
 	./QBoxSolver.out
 	python3 readData.py
 
-convert: data.h5
+convert: libQBEXR.so data.h5
 	./QBoxConvert.py data.h5 testData --path=$(DEST)
 
 view: data.h5
