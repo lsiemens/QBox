@@ -1,4 +1,9 @@
+INCLUDE_EXR=-I/usr/include/OpenEXR
+LINK_EXR=-lIlmImf -lHalf -lImath -lIex -lIlmThread
 DEST="."
+
+test_QBEXR: libQBEXR.so
+	python3 QBEXR.py
 
 QBoxSolver.out: Multigrid.o Math.o QBHDBackEnd.o QBHD.o Types.o
 	h5fc QBoxSolver.F90 Types.o QBHD.o QBHDBackEnd.o Math.o Multigrid.o -o QBoxSolver.out
@@ -17,6 +22,9 @@ QBHD.o: Types.o
 
 Types.o:
 	h5fc -c Types.F90 -o Types.o
+
+libQBEXR.so:
+	g++ -shared -fPIC QBEXR.cpp -o libQBEXR.so $(INCLUDE_EXR) $(LINK_EXR)
 
 run: QBoxSolver.out data.h5
 	./QBoxSolver.out
@@ -37,6 +45,7 @@ clean:
 	rm -f stop.msg
 	rm -f *.json
 	rm -f *.exr
+	rm -f *.so
 
 data.h5:
 	python3 runSetup.py
