@@ -5,27 +5,23 @@
 #include "QBEXR.h"
 
 extern "C" void writeR(const char* fname, const float* rPixels, int width, int height) {
-    Imf::Array2D<half> rPixels_half(width, height);
-    for (int y=0; y < height; y++) {
-        for (int x=0; x < width; x++) {
-            rPixels_half[y][x] = half(rPixels[y + x*width]);
-        }
+    half* rPixels_half = new half[width*height];
+    for (int i=0; i < width*height; i++) {
+        rPixels_half[i] = half(rPixels[i]);
     }
-    _writeR(fname, &rPixels_half[0][0], width, height);
+    _writeR(fname, rPixels_half, width, height);
 }
 
 extern "C" void writeRGB(const char* fname, const float* rPixels, const float* gPixels, const float* bPixels, int width, int height) {
-    Imf::Array2D<half> rPixels_half(width, height);
-    Imf::Array2D<half> gPixels_half(width, height);
-    Imf::Array2D<half> bPixels_half(width, height);
-    for (int y=0; y < height; y++) {
-        for (int x=0; x < width; x++) {
-            rPixels_half[y][x] = half(rPixels[y + x*width]);
-            gPixels_half[y][x] = half(gPixels[y + x*width]);
-            bPixels_half[y][x] = half(bPixels[y + x*width]);
-        }
+    half* rPixels_half = new half[width*height];
+    half* gPixels_half = new half[width*height];
+    half* bPixels_half = new half[width*height];
+    for (int i=0; i < width*height; i++) {
+        rPixels_half[i] = half(rPixels[i]);
+        gPixels_half[i] = half(gPixels[i]);
+        bPixels_half[i] = half(bPixels[i]);
     }
-    _writeRGB(fname, &rPixels_half[0][0], &gPixels_half[0][0], &bPixels_half[0][0], width, height);
+    _writeRGB(fname, rPixels_half, gPixels_half, bPixels_half, width, height);
 }
 
 extern "C" float* readR(const char* fname, int& width, int& height) {
