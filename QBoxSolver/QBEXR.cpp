@@ -9,37 +9,31 @@ extern "C" void writeR(const char* fname, const float* rPixels, int width, int h
     for (int i=0; i < width*height; i++) {
         rPixels_half[i] = half(rPixels[i]);
     }
-    _writeR(fname, rPixels_half, width, height);
-    delete[] rPixels_half;
-}
 
-extern "C" void writeRGB(const char* fname, const float* rPixels, const float* gPixels, const float* bPixels, int width, int height) {
-    half* rPixels_half = new half[width*height];
-    half* gPixels_half = new half[width*height];
-    half* bPixels_half = new half[width*height];
-    for (int i=0; i < width*height; i++) {
-        rPixels_half[i] = half(rPixels[i]);
-        gPixels_half[i] = half(gPixels[i]);
-        bPixels_half[i] = half(bPixels[i]);
-    }
-    _writeRGB(fname, rPixels_half, gPixels_half, bPixels_half, width, height);
-    delete[] rPixels_half;
-    delete[] gPixels_half;
-    delete[] bPixels_half;
-}
-
-void _writeR(const char fname[], const half* rPixels, int width, int height) {
     Imf::Header header(width, height);
     header.channels().insert("R", Imf::Channel(Imf::HALF));
     Imf::OutputFile file(fname, header);
 
     Imf::FrameBuffer frameBuffer;
-    frameBuffer.insert("R", Imf::Slice(Imf::HALF, (char*) rPixels, sizeof(*rPixels), width*sizeof(*rPixels)));
+    frameBuffer.insert("R", Imf::Slice(Imf::HALF,
+                                       (char*) rPixels_half,
+                                       sizeof(*rPixels_half),
+                                       width*sizeof(*rPixels_half)));
     file.setFrameBuffer(frameBuffer);
     file.writePixels(height);
+    delete[] rPixels_half;
 }
 
-void _writeRGB(const char fname[], const half* rPixels, const half* gPixels, const half* bPixels, int width, int height) {
+extern "C" void writeRGB(const char* fname, const float* rgbPixels, int width, int height) {
+    half* rPixels_half = new half[width*height];
+    half* gPixels_half = new half[width*height];
+    half* bPixels_half = new half[width*height];
+    for (int i=0; i < width*height; i++) {
+        rPixels_half[i] = half(rgbPixels[0 + 3*i]);
+        gPixels_half[i] = half(rgbPixels[1 + 3*i]);
+        bPixels_half[i] = half(rgbPixels[2 + 3*i]);
+    }
+
     Imf::Header header(width, height);
     header.channels().insert("R", Imf::Channel(Imf::HALF));
     header.channels().insert("G", Imf::Channel(Imf::HALF));
@@ -47,11 +41,23 @@ void _writeRGB(const char fname[], const half* rPixels, const half* gPixels, con
     Imf::OutputFile file(fname, header);
 
     Imf::FrameBuffer frameBuffer;
-    frameBuffer.insert("R", Imf::Slice(Imf::HALF, (char*) rPixels, sizeof(*rPixels), width*sizeof(*rPixels)));
-    frameBuffer.insert("G", Imf::Slice(Imf::HALF, (char*) gPixels, sizeof(*gPixels), width*sizeof(*gPixels)));
-    frameBuffer.insert("B", Imf::Slice(Imf::HALF, (char*) bPixels, sizeof(*bPixels), width*sizeof(*bPixels)));
+    frameBuffer.insert("R", Imf::Slice(Imf::HALF,
+                                       (char*) rPixels_half,
+                                       sizeof(*rPixels_half),
+                                       width*sizeof(*rPixels_half)));
+    frameBuffer.insert("G", Imf::Slice(Imf::HALF,
+                                       (char*) gPixels_half,
+                                       sizeof(*gPixels_half),
+                                       width*sizeof(*gPixels_half)));
+    frameBuffer.insert("B", Imf::Slice(Imf::HALF,
+                                       (char*) bPixels_half,
+                                       sizeof(*bPixels_half),
+                                       width*sizeof(*bPixels_half)));
     file.setFrameBuffer(frameBuffer);
     file.writePixels(height);
+    delete[] rPixels_half;
+    delete[] gPixels_half;
+    delete[] bPixels_half;
 }
 
 extern "C" float* readR(const char fname[], int& width, int& height) {

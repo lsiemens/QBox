@@ -15,8 +15,6 @@ _writeRGB = lib.writeRGB
 _writeRGB.restype = None
 _writeRGB.argtypes = [ctypes.c_char_p,
                       ndpointer(ctypes.c_float, flags="C_CONTIGUOUS"),
-                      ndpointer(ctypes.c_float, flags="C_CONTIGUOUS"),
-                      ndpointer(ctypes.c_float, flags="C_CONTIGUOUS"),
                       ctypes.c_int,
                       ctypes.c_int]
 
@@ -47,10 +45,8 @@ def writeRGB(fname, data):
     fname = ctypes.c_char_p(fname.encode("ascii"))
     data = data.astype(ctypes.c_float)
     height, width, channels = data.shape
-    rdata = data[:, :, 0].flatten()
-    gdata = data[:, :, 1].flatten()
-    bdata = data[:, :, 2].flatten()
-    _writeRGB(fname, rdata, gdata, bdata, width, height)
+    rgbdata = data.flatten()
+    _writeRGB(fname, rgbdata, width, height)
 
 def readR(fname):
     width, height = ctypes.c_int(), ctypes.c_int()
