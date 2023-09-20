@@ -20,7 +20,8 @@ public class GaussianDriver : MonoBehaviour
     public float minSpeedSlider;
     public float defaultSpeed;
 
-    public int previewScaling;
+    public int previewResolution;
+    [Tooltip("Time delay in seconds")]
     public int renderDelayMaximum;
 
     private float width;
@@ -32,10 +33,12 @@ public class GaussianDriver : MonoBehaviour
     private Vector2 gaussianPosition;
     private Vector2 gaussianVelocity;
 
+    private int previewStride;
     private float[][,] gaussian;
 
     private bool isActive;
-    private int renderDelay;
+    private float renderDelay;
+    private bool needsFullRender;
 
     private UnityAction OnMouseClickUpAction;
     private UnityAction OnMouseClickDownAction;
@@ -82,7 +85,11 @@ public class GaussianDriver : MonoBehaviour
         editorMode.coefficientsActive = new float[WaveFunction.NumberOfStates, 2];
         renderPreview();
         isActive = true;
-        renderDelay = renderDelayMaximum;
+        renderDelay = 0.0f;
+        needsFullRender = true;
+        
+        previewStride = (int)(QSystemController.currentQuantumSystem.qMath.resolution/previewResolution);
+        Debug.Log("preview stride " + previewStride);
 
         DialogManager.Show("gaussianDialogID");
     }
@@ -115,8 +122,9 @@ public class GaussianDriver : MonoBehaviour
     }
 
     void renderPreview() {
-        renderGaussian(previewScaling);
+        renderGaussian(previewStride);
         renderDelay = renderDelayMaximum;
+        needsFullRender = true;
     }
 
     void renderGaussian(int stride=1) {
@@ -124,6 +132,7 @@ public class GaussianDriver : MonoBehaviour
             gaussian = QSystemController.currentQuantumSystem.qMath.GaussianComplex(gaussianPosition*QSystemController.currentQuantumSystem.length/2.0f, speed*gaussianVelocity*QSystemController.currentQuantumSystem.length/2.0f, width*QSystemController.currentQuantumSystem.length/2.0f);
             editorMode.coefficientsActive = QSystemController.currentQuantumSystem.ProjectFunctionComplex(gaussian, stride);
             Debug.Log("render gaussian: " + stride);
+            needsFullRender = false;
         }
     }
 
@@ -139,13 +148,13 @@ public class GaussianDriver : MonoBehaviour
                 renderPreview();
             }
 
-            if (renderDelay >= 0) {
-                renderDelay -= 1;
+            if (needsFullRender) {
+                renderDelay -= Time.deltaTime;
+                
+                if (renderDelay < 0) {
+                    renderGaussian();
+                }
             }
-            if (renderDelay == 0){
-                renderGaussian();
-            }
-
         }
     }
 

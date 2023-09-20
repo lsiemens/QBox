@@ -76,7 +76,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -8490,8 +8490,8 @@ MonoBehaviour:
   maxSpeedSlider: 2
   minSpeedSlider: 0.01
   defaultSpeed: 1
-  previewScaling: 8
-  renderDelayMaximum: 15
+  previewResolution: 32
+  renderDelayMaximum: 1
 --- !u!114 &8585893122789349863 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4355391002431389692, guid: a8376879c197c264ca5a30d6a48bd213,
