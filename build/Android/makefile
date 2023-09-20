@@ -29,4 +29,3 @@ clean:
 
 clean-all:
 	rm ./*.aab ./*.apks ./*.pb ./*.apk -f
-

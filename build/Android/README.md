@@ -1,4 +1,4 @@
-# build: Android
+# QBox build: Android
 Target build directory for Android with some scripts for testing builds
 localy.
 

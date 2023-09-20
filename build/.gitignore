@@ -1,0 +1,10 @@
+# Ignore Everything
+*
+
+# Exceptions
+!Android/
+!Linux/
+!Windows/
+!.gitignore
+!*.md
+!makefile
