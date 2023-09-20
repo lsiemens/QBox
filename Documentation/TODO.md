@@ -1,11 +1,11 @@
 # TODO
 Current documentation tasks
-- [x] App userguide on the website with links in the app
-    - [x] How to use the app: Descripe options, modes, tips and tricks
+- [x] App user guide on the website with links in the app
+    - [x] How to use the app: Describe options, modes, tips and tricks
     - [ ] How to understand it: brief intro to the physics and interpretations
-- [ ] technical guid of the inner workings on the website.
+- [ ] technical guide of the inner workings on the website.
     - [ ] how the unity front end works
-    - [ ] how the Fortran/Python backend works
+    - [ ] how the FORTRAN/Python backend works
 
 Start with local documentation here then when it is close it can be
 copied to the gh-pages branch and modified to work with jekyll
@@ -16,7 +16,7 @@ copied to the gh-pages branch and modified to work with jekyll
 #### Unity ####
 - [ ] Add an _About_ page in the menu. It should contain name, version, descriptions, author and links
 - [ ] Add a resolution selector to the Options menu. It will likely be necessary to disable some potentials at low resolution
-- [ ] Add low frame rate dialoge to sugest lowering settings. It should apper at most once per session
+- [ ] Add low frame rate dialogue to suggest lowering settings. It should appear at most once per session
 - [x] Improve the Options page in the menu
 - [ ] Document Unity code
 - [ ] Reorganize and simplify Unity code
@@ -30,16 +30,17 @@ copied to the gh-pages branch and modified to work with jekyll
 #### Other ####
 - [x] Disable sleep in simulation mode
 - [x] rename display mode to real part
+- [x] Fix QBoxSolver pipeline
 
 ### Version ~ 2.0.0: Near Future ###
-- [ ] Momentum space repersentation of wave functions and wave function evolution
+- [ ] Momentum space representation of wave functions and wave function evolution
 - [ ] Measurements of expected position and momentum ...
 - [ ] Better color maps
 - [ ] Distribution on more platforms
 
 ### Version >> 2.0.0: Far Future ###
-- [ ] Add pertubation theory and time dependent hamiltonian (multiple potentials using projection to switch between)
-- [ ] 2 particle wave functions in 1D (Add a symmetry/antisymmetry condition to the solver and analisis tools for multiparticle wave functions)
-- [ ] Energy level diagrams to track, photon emmision/absorption, forbiden transitions and energy level splitting
+- [ ] Add perturbation theory and time dependent Hamiltonian (multiple potentials using projection to switch between)
+- [ ] 2 particle wave functions in 1D (Add a symmetry/antisymmetry condition to the solver and analysis tools for multiparticle wave functions)
+- [ ] Energy level diagrams to track, photon emission/absorption, forbidden transitions and energy level splitting
 
 - [ ] Add tool for thermal pure quantum state (This can approximate the position space distribution of a canonical ensemble for a quantum system)
