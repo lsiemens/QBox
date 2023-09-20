@@ -1,1 +1,1 @@
-Press the Tab key to switch display mode. Use the plus and minus numpad keys to adjust wave function brightness. The current potential can be changed in the main menu under "Select Potential".
+Press the Tab key to switch display mode. Use the plus and minus keys to adjust wave function brightness. The current potential can be changed in the main menu under "Select Potential".
