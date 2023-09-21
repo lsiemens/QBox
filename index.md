@@ -17,6 +17,7 @@ Features:
 - multiple problems to choose from
 - view steady state solutions
 - simulate time evolution of wave function
+- cross platform support (Android, Linux and Windows) 
 
 Problems/Potentials:
 - particle in a box
