@@ -18,6 +18,8 @@ public class ButtonFunctions : MonoBehaviour
     public void OpenDocumentation() {
         # if UNITY_ANDROID
             Application.OpenURL("https://qbox.lsiemens.com/Documentation/AndroidUserGuide.html");
+        # elif UNITY_STANDALONE
+        	Application.OpenURL("https://qbox.lsiemens.com/Documentation/PCUserGuide.html");
         # else
             Application.OpenURL("https://qbox.lsiemens.com/Documentation/README.html");
         # endif

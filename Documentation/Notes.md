@@ -1,4 +1,3 @@
-
 QBox
 
 This project is split into two different parts, the QBox viewer simulates the time

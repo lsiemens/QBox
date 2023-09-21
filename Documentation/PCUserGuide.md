@@ -1,4 +1,4 @@
-# QBox: Android User Guide
+# QBox: PC User Guide
 Welcome to the user documentation for QBox, simulation software for
 solving Schrödinger's equation in two dimensions in real time. In this
 documentation I will assume you are familiar with standard concepts and
