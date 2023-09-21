@@ -1,6 +1,6 @@
 ---
 layout: page
-title: "QBox: Android User Guide"
+title: "QBox: PC User Guide"
 date: 2020-01-01
 ---
 Welcome to the user documentation for QBox, simulation software for
