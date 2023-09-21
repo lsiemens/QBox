@@ -9,7 +9,7 @@ package:
 	cp $(LICENSE) $(TARGET)/LICENSE.txt
 	cp $(USERGUIDE) $(TARGET)/UserGuide.txt
 
-	tar -czvf $(TARGET).tar.gz $(TARGET)
+	zip $(TARGET).zip $(TARGET) -r
 
 clean:
-	rm $(TARGET)/*.txt $(TARGET).tar.gz -rf
+	rm $(TARGET)/*.txt $(TARGET).zip -rf

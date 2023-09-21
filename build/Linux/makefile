@@ -9,7 +9,10 @@ TARGET="./QBox"
 
 package:
 	mkdir $(TARGET)
-	cp $(README) $(LICENSE) $(USERGUIDE) $(TARGET)/
+	cp $(README) $(TARGET)/README
+	cp $(LICENSE) $(TARGET)/LICENSE
+	cp $(USERGUIDE) $(TARGET)/UserGuide
+
 	cp $(DATA) $(UNITYPLAYER) $(TARGET)/ -rf
 	cp $(EXICUTABLE) $(TARGET)/QBox
 
