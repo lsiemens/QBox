@@ -1,9 +1,14 @@
 Potential: {0}
 Display Mode: {1}
-Expected Energy = {4} <b>E<sub>h</sub></b>
-Time = {5} <b>ħ/E<sub>h</sub></b>
-Potential Energy range: {6} to {7} <b>E<sub>h</sub></b>
+Expected Energy = {4:F4} <b>E<sub>h</sub></b>
+Time = {5:F3} <b>ħ/E<sub>h</sub></b>
+Range of Potential: {6:F3} to {7:F3} <b>E<sub>h</sub></b>
 Length = {2} <b>a<sub>0</sub></b>
 Mass = {3} <b>m<sub>e</sub></b>
 
-All units are in Hartree units.
+All values are in Hartree units. Unit conversions to SI are as follows
+
+1 <b>E<sub>h</sub></b>	 = 4.3597E-18 J
+1 <b>ħ/E<sub>h</sub></b> = 2.4189E-17 s
+1 <b>a<sub>0</sub></b>	 = 5.2918E-11 m
+1 <b>m<sub>e</sub></b>	 = 9.1094E-28 g
