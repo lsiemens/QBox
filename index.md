@@ -29,5 +29,8 @@ Problems/Potentials:
   <img src='https://play.google.com/intl/en_gb/badges/static/images/badges/en_badge_web_generic.png' style="width:201px;" alt='Get it on Google Play'/>
 </a>
 
+QBox is also available for Windows and Linux. To download the latest version visit
+[github.com/lsiemens/QBox/releases](https://github.com/lsiemens/QBox/releases).
+
 Source code for this app is available under the 3-Clause BSD License at
 [github.com/lsiemens/QBox](https://github.com/lsiemens/QBox)
