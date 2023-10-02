@@ -21,6 +21,7 @@ copied to the gh-pages branch and modified to work with jekyll
 - [ ] Document Unity code
 - [ ] Reorganize and simplify Unity code
 - [x] Fix quantum data and display in the PC version
+- [ ] Fix build instructions for QBoxSolver
 
 #### Web and Documentation ####
 - [ ] Make a github-pages website. It should have download links, links to the repository and a description of the mathematical methods
